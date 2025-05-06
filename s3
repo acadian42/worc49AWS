@@ -1,0 +1,68 @@
+           {
+"Version": "2012-10-17",
+"Statement": [
+{
+"Effect": "Allow",
+"Principal": { "Service": "vmie.amazonaws.com" },
+"Action": "sts:AssumeRole",
+"Condition": {
+"StringEquals":{ 1 
+"sts:ExternalId": "vmimport"
+}
+}
+}
+]
+}
+* **Permissions Policy:** This role needs permissions to access the S3 bucket where the OVA is stored and to perform EC2 actions. An example policy might include:json
+{
+"Version": "2012-10-17",
+"Statement": [
+{
+"Effect": "Allow",
+"Action": [
+"s3:ListBucket",
+"s3:GetBucketLocation"
+],
+"Resource": [
+"arn:aws:s3:::your-s3-bucket-name"
+]
+},
+{
+"Effect": "Allow",
+"Action": [
+"s3:GetObject"
+],
+"Resource": [
+"arn:aws:s3:::your-s3-bucket-name/"
+]
+},
+{
+"Effect": "Allow",
+"Action": [
+"ec2:ModifySnapshotAttribute",
+"ec2:CopySnapshot",
+"ec2:RegisterImage",
+"ec2:Describe", 2 
+"ec2:CreateImage",
+"ec2:ImportImage",
+"ec2:ImportSnapshot",
+"ec2:CreateSnapshot",
+"ec2:DescribeImportImageTasks",
+"ec2:DescribeImportSnapshotTasks"
+],
+"Resource": ""
+},
+{
+"Effect": "Allow",
+"Action": [
+"kms:CreateGrant",
+"kms:Decrypt",
+"kms:DescribeKey",
+"kms:Encrypt",
+"kms:GenerateDataKey",
+"kms:ReEncrypt*"
+],
+"Resource": 3  "*" // Restrict if using specific KMS keys
+}
+]
+}
