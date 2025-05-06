@@ -8,3 +8,5 @@
     }
   }
 ]
+
+aws ec2 import-image --description "My New Web Server AMI" --license-type BYOL --disk-containers "file://./containers.json" --role-name vmimport --region your-aws-region
