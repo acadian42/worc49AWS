@@ -65,3 +65,72 @@
         }
     ]
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<powershell>
+# Define the download URL for the SSM Agent (replace with the latest version if needed)
+$SSMAgentDownloadURL = "https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/windows_amd64/AmazonSSMAgentSetup.exe"
+$SSMAgentInstaller = "C:\Temp\AmazonSSMAgentSetup.exe"
+
+# Create a temporary directory if it doesn't exist
+if (-not (Test-Path "C:\Temp")) {
+    New-Item -ItemType Directory -Path "C:\Temp" | Out-Null
+}
+
+# Download the SSM Agent installer
+try {
+    Invoke-WebRequest -Uri $SSMAgentDownloadURL -OutFile $SSMAgentInstaller
+    Write-Host "Successfully downloaded SSM Agent installer."
+} catch {
+    Write-Error "Failed to download SSM Agent installer: $($_.Exception.Message)"
+    exit 1
+}
+
+# Execute the SSM Agent installer
+try {
+    Start-Process -FilePath $SSMAgentInstaller -ArgumentList "/s" -Wait
+    Write-Host "Successfully installed SSM Agent."
+} catch {
+    Write-Error "Failed to install SSM Agent: $($_.Exception.Message)"
+    exit 1
+}
+
+# Start the SSM Agent service
+try {
+    Start-Service AmazonSSMAgent
+    Write-Host "Successfully started SSM Agent service."
+} catch {
+    Write-Error "Failed to start SSM Agent service: $($_.Exception.Message)"
+    exit 1
+}
+
+# Optionally, you can register the instance with a specific SSM Managed Instance Group using the following command
+# & "C:\Program Files\Amazon\SSM\amazon-ssm-agent.exe" -register -managed-instance-group "YourManagedInstanceGroupName"
+</powershell>
