@@ -2,24 +2,44 @@
     "Version": "2012-10-17",
     "Statement": [
         {
+            "Sid": "AllowStartSessionOnTaggedInstances",
             "Effect": "Allow",
             "Action": "ssm:StartSession",
-            "Resource": "arn:aws:ec2:*:*:instance/*",
+            "Resource": "arn:aws:ec2:YOUR_AWS_REGION:YOUR_ACCOUNT_ID:instance/*",
             "Condition": {
                 "StringEquals": {
                     "ssm:resourceTag/YourTagKey": "YourTagValue"
+                    // Example: "ssm:resourceTag/RDP-Access": "Allowed"
                 }
             }
         },
         {
+            "Sid": "AllowSSMGuiConnectToTaggedInstances",
+            "Effect": "Allow",
+            "Action": "ssm-guiconnect:StartConnection",
+            "Resource": "arn:aws:ec2:YOUR_AWS_REGION:YOUR_ACCOUNT_ID:instance/*", // MUST scope to instances
+            "Condition": {
+                "StringEquals": {
+                    "ssm:resourceTag/YourTagKey": "YourTagValue" // SAME condition as above
+                    // Example: "ssm:resourceTag/RDP-Access": "Allowed"
+                }
+            }
+        },
+        {
+            "Sid": "AllowGeneralSSMActions",
             "Effect": "Allow",
             "Action": [
                 "ssm:DescribeSessions",
                 "ssm:GetConnectionStatus",
-                "ssm:DescribeInstanceInformation",
-                "ssm:TerminateSession",
-                "ec2:DescribeInstances"
+                "ssm:DescribeInstanceInformation", // Needed for Fleet Manager to list instances
+                "ssm:TerminateSession"
             ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "AllowEC2DescribeInstances", // Needed to list instances in the console/Fleet Manager
+            "Effect": "Allow",
+            "Action": "ec2:DescribeInstances",
             "Resource": "*"
         }
     ]
