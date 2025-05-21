@@ -1,3 +1,26 @@
-aws ec2 modify-instance-attribute \
-  --instance-id i-xxxxxxxxxxxxxxxxx \
-  --block-device-mappings "[{\"DeviceName\": \"/dev/sda1\", \"Ebs\":{\"DeleteOnTermination\":true}}]"
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "ssm:StartSession",
+            "Resource": "arn:aws:ec2:*:*:instance/*",
+            "Condition": {
+                "StringEquals": {
+                    "ssm:resourceTag/YourTagKey": "YourTagValue"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:DescribeSessions",
+                "ssm:GetConnectionStatus",
+                "ssm:DescribeInstanceInformation",
+                "ssm:TerminateSession",
+                "ec2:DescribeInstances"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
