@@ -1,0 +1,11 @@
+Okay, here's how you can access your EC2 instances using Fleet Manager. The good news is that this method doesn't require you to install any additional software on your laptop.
+Accessing Your Malware Lab via Fleet Manager
+You can connect to your malware analysis EC2 instances in the private subnet using AWS Systems Manager Fleet Manager. Follow these steps:
+ * Login to AWS Console: Open your web browser and navigate to the AWS Management Console. Enter your credentials to log in.
+ * Navigate to EC2: Once logged in, type "EC2" in the AWS services search bar and select EC2 from the results.
+ * Select Your Instance: In the EC2 dashboard, click on Instances in the left-hand navigation pane. Find and click on the Instance ID of the specific malware node you want to access.
+ * Initiate Connection: On the instance details page, click the Connect button located at the top right.
+ * Choose RDP Client & Fleet Manager: Select the RDP client tab. Then, under "Connection type," choose Connect using Fleet Manager.
+ * Fleet Manager Remote Desktop: Click the Fleet Manager Remote Desktop button. This will open a new tab or window for the Fleet Manager interface.
+ * Enter Credentials & Connect: Within the Fleet Manager Remote Desktop interface, you will be prompted to enter your login credentials for the EC2 instance (typically the username and password for the Windows operating system). After entering your credentials, click Connect.
+This process leverages AWS Systems Manager to establish a secure connection to your private EC2 instances without needing a bastion host or direct RDP access from the internet, and importantly, without installing anything on your local machine.
