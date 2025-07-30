@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Define the source and destination paths
+SOURCE_MIRROR_PATH="/var/spool/apt-mirror/mirror/www/archive.ubuntu.com/ubuntu/"
+DEST_WEB_PATH="/var/www/html/ubuntu/"
+
+echo "Starting post-mirror sync from $SOURCE_MIRROR_PATH to $DEST_WEB_PATH"
+
+# Use rsync to synchronize the mirrored content to the web server's root
+# -a: archive mode (preserves permissions, ownership, timestamps, etc.)
+# --delete: deletes extraneous files from dest dir (useful for removed packages/old distros)
+# --progress: shows transfer progress
+rsync -a --delete --progress "$SOURCE_MIRROR_PATH" "$DEST_WEB_PATH"
+
+echo "Post-mirror sync finished."
