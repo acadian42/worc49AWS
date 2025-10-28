@@ -1,0 +1,74 @@
+#
+# Description: This script exports all Azure AD App Registrations and their
+#              API permissions to a CSV file. It translates Microsoft Graph
+#              permissions from their ID to a human-readable format.
+#
+# Pre-requisites: Azure CLI installed and you are logged in (az login).
+#
+
+Write-Host "Starting the script. This may take a few minutes for tenants with many apps..." -ForegroundColor Green
+
+# Step 1: Get the Service Principal for Microsoft Graph to translate permission IDs to names.
+Write-Host "Fetching Microsoft Graph permission details for translation..."
+$graphSpId = "00000003-0000-0000-c000-000000000000"
+$graphSp = az ad sp show --id $graphSpId | ConvertFrom-Json
+$permissionMap = @{}
+
+# Create a lookup map for Delegated permissions (Scopes)
+$graphSp.oauth2PermissionScopes | ForEach-Object {
+    $permissionMap[$_.id] = $_.value
+}
+
+# Create a lookup map for Application permissions (App Roles)
+$graphSp.appRoles | ForEach-Object {
+    if ($_.allowedMemberTypes -contains "Application") {
+        $permissionMap[$_.id] = $_.value
+    }
+}
+Write-Host "Successfully built permission map for Microsoft Graph."
+
+# Step 2: Get all application registrations in the tenant.
+Write-Host "Fetching all application registrations..."
+$apps = az ad app list --all | ConvertFrom-Json
+Write-Host "Found $($apps.Count) applications. Now processing each one."
+
+# Step 3: Process each application to extract its permissions.
+$results = @()
+$progress = 0
+
+foreach ($app in $apps) {
+    $progress++
+    Write-Progress -Activity "Processing Applications" -Status "App $progress of $($apps.Count): $($app.displayName)" -PercentComplete ($progress / $apps.Count * 100)
+
+    # Check if the app has any requested API permissions
+    if ($null -ne $app.requiredResourceAccess) {
+        foreach ($resource in $app.requiredResourceAccess) {
+            # Currently, this script focuses on decoding MS Graph permissions.
+            # You could extend this by fetching other Service Principals.
+            $resourceName = if ($resource.resourceAppId -eq $graphSpId) { "Microsoft Graph" } else { $resource.resourceAppId }
+
+            foreach ($permission in $resource.resourceAccess) {
+                $permissionName = $permissionMap[$permission.id] # Look up the friendly name
+                if ($null -eq $permissionName) {
+                    $permissionName = "Unknown/Other Permission (ID: $($permission.id))"
+                }
+
+                $record = [PSCustomObject]@{
+                    AppName          = $app.displayName
+                    AppId            = $app.appId
+                    Resource         = $resourceName
+                    PermissionType   = $permission.type
+                    PermissionName   = $permissionName
+                }
+                $results += $record
+            }
+        }
+    }
+}
+
+# Step 4: Export the collected data to a CSV file.
+$filePath = ".\AzureAppPermissions.csv"
+$results | Export-Csv -Path $filePath -NoTypeInformation
+
+Write-Host "`nScript finished successfully!" -ForegroundColor Green
+Write-Host "Results have been exported to: $filePath"
