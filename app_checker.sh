@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # ---
+# az login --scope "https://graph.microsoft.com/AppGovernance.Read.All" "https://graph.microsoft.com/Application.Read.All" "https://graph.microsoft.com/.default"
 # Script to find High Privilege Azure AD apps from App Governance
 # and then query for their owners.
 #
