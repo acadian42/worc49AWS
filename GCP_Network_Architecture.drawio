@@ -1,0 +1,387 @@
+<mxfile host="app.diagrams.net" modified="2026-01-20T12:00:00.000Z" agent="Claude AI" version="21.0.0" etag="gxo-network-diagram" type="device">
+  <diagram id="gcp-network" name="GCP Network Architecture">
+    <mxGraphModel dx="1800" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Title -->
+        <mxCell id="title" value="GCP Network Architecture - Current State" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="500" y="20" width="600" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Legend -->
+        <mxCell id="legend-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="80" width="230" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" value="Legend" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14" vertex="1" parent="1">
+          <mxGeometry x="1350" y="85" width="230" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-ncc" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="115" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-ncc-text" value="NCC Hub" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="115" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-vpc" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="140" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-vpc-text" value="VPC" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="140" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-security" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="165" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-security-text" value="Security Control" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="165" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-mcd" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="190" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-mcd-text" value="MCD Network" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="190" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-onprem" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="215" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-onprem-text" value="On-Premises/Equinix" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="215" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-psa" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="240" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-psa-text" value="PSA/PSC Services" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="240" width="130" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Internet Zone -->
+        <mxCell id="internet-zone" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="300" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="internet-label" value="INTERNET ZONE" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="40" y="85" width="300" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="internet" value="Internet" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="130" y="110" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="glb" value="Global Load Balancer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="60" y="180" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cloud-armor" value="Cloud Armor&#xa;(WAF)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="180" y="180" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="iap" value="IAP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="280" y="180" width="50" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- NCC Hub - Main -->
+        <mxCell id="ncc-hub-main" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="360" y="80" width="960" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="ncc-hub-label" value="NCC HUB (Network Connectivity Center)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14" vertex="1" parent="1">
+          <mxGeometry x="360" y="85" width="400" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- Trusted Connect VPC -->
+        <mxCell id="trusted-vpc" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="380" y="120" width="280" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="trusted-label" value="TRUSTED CONNECT VPC" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="380" y="125" width="280" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="cisco-8kv" value="Cisco 8KV&#xa;Router Appliances&#xa;(HA Pair)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="400" y="150" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cloud-interconnect" value="Cloud Interconnect&#xa;(4 Locations)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="530" y="150" width="110" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="router-spoke-trusted" value="Router Spoke&#xa;(NCC)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="400" y="220" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ngfw-trusted" value="Next-Gen&#xa;Firewall" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="520" y="220" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="vpc-sc" value="VPC Service&#xa;Controls" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="400" y="270" width="90" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Production VPC -->
+        <mxCell id="prod-vpc" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="680" y="120" width="280" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="prod-label" value="PRODUCTION VPC" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="680" y="125" width="280" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="gce-prod" value="GCE Instances" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="700" y="150" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ngfw-prod" value="Next-Gen&#xa;Firewall&#xa;(L7 Filtering)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="820" y="150" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cloud-ids-prod" value="Cloud IDS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="700" y="200" width="80" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="swp-prod" value="Secure Web&#xa;Proxy (SWP)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="800" y="210" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="rubrik" value="Rubrik&#xa;Backup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="700" y="250" width="80" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- GKE VPC -->
+        <mxCell id="gke-vpc" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="980" y="120" width="320" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="gke-label" value="GKE VPC (Scalable per Solution)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="980" y="125" width="320" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="gke-clusters" value="GKE Clusters&#xa;(Multiple)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="150" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="gke-secondary" value="Secondary Ranges&#xa;(100.64.0.0/10)&#xa;Pod/Service CIDRs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="150" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ngfw-gke" value="Next-Gen&#xa;Firewall&#xa;(L7)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="210" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ncc-filter" value="NCC Export&#xa;Filters&#xa;(Pod Routes)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="220" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ip-masq" value="IP Masquerading&#xa;(Pods→Nodes)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="220" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- PSA/PSC Services VPC -->
+        <mxCell id="psa-vpc" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="380" y="340" width="280" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="psa-label" value="PSA/PSC VPC (Google Native Services)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="380" y="345" width="280" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="cloud-sql" value="Cloud SQL&#xa;(PSA)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="395" y="370" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="spanner" value="Cloud Spanner&#xa;(API)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="485" y="370" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="apigee" value="Apigee&#xa;(PSC)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="575" y="370" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="bigquery" value="BigQuery&#xa;GCS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="395" y="415" width="80" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- MCD Network Section -->
+        <mxCell id="mcd-section" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="340" width="620" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="mcd-label" value="MCD NETWORK (Managed - Retained for GCVE/NetApp Inspection)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="680" y="345" width="620" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- GCVE VPC -->
+        <mxCell id="gcve-vpc" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="700" y="370" width="180" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="gcve-label" value="GCVE VPC (VMware Engine)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="700" y="375" width="180" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="gcve" value="Google Cloud&#xa;VMware Engine&#xa;(Broadcom)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="715" y="395" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="gcve-regions" value="US Regions&#xa;(2)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=9" vertex="1" parent="1">
+          <mxGeometry x="820" y="405" width="50" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- NetApp VPC -->
+        <mxCell id="netapp-vpc" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="900" y="370" width="140" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="netapp-label" value="NetApp VPC" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="900" y="375" width="140" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="netapp" value="NetApp&#xa;Cloud Volumes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="920" y="400" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- MCD Cisco 8KVs -->
+        <mxCell id="mcd-8kv" value="Cisco 8KV&#xa;(MCD)&#xa;Traffic Inspection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="380" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mcd-inspection" value="IPS/IDS&#xa;Inspection&#xa;(Inbound GCVE)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1190" y="380" width="90" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mcd-note" value="Note: GCVE/NetApp require MCD&#xa;inspection until cross-org NCC peering&#xa;feature is released" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="1060" y="450" width="220" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- On-Premises / Equinix -->
+        <mxCell id="onprem-section" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="40" y="600" width="1260" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="onprem-label" value="ON-PREMISES / EQUINIX COLOCATION" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14" vertex="1" parent="1">
+          <mxGeometry x="40" y="605" width="400" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="sdwan" value="SD-WAN&#xa;(Fortinet)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="80" y="650" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sdwan-ips" value="SD-WAN&#xa;IPS/IDS&#xa;Firewall" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="200" y="650" width="90" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="equinix" value="Equinix&#xa;Fabric&#xa;(4 Locations)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="320" y="650" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="datacenter" value="Corporate&#xa;Data Centers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="450" y="650" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="onprem-vms" value="On-Prem VMs&#xa;(Connect to&#xa;Cloud SQL)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="580" y="650" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="users" value="End Users&#xa;(PAW/Jump&#xa;Servers)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="710" y="650" width="90" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="entra" value="Entra ID&#xa;(Workforce&#xa;Identity)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="830" y="650" width="90" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <!-- Internet to GLB -->
+        <mxCell id="conn-internet-glb" value="" style="endArrow=classic;startArrow=classic;html=1;strokeWidth=2;strokeColor=#666666;" edge="1" parent="1" source="internet" target="glb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- GLB to Cloud Armor -->
+        <mxCell id="conn-glb-armor" value="" style="endArrow=classic;html=1;strokeWidth=1;strokeColor=#b85450;" edge="1" parent="1" source="glb" target="cloud-armor">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Internet Zone to Trusted VPC -->
+        <mxCell id="conn-internet-trusted" value="" style="endArrow=classic;startArrow=classic;html=1;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340" y="200" as="sourcePoint" />
+            <mxPoint x="380" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Trusted to Prod VPC -->
+        <mxCell id="conn-trusted-prod" value="" style="endArrow=classic;startArrow=classic;html=1;strokeWidth=2;strokeColor=#9673a6;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="660" y="200" as="sourcePoint" />
+            <mxPoint x="680" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Prod to GKE VPC -->
+        <mxCell id="conn-prod-gke" value="" style="endArrow=classic;startArrow=classic;html=1;strokeWidth=2;strokeColor=#9673a6;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="960" y="200" as="sourcePoint" />
+            <mxPoint x="980" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Trusted to PSA -->
+        <mxCell id="conn-trusted-psa" value="" style="endArrow=classic;startArrow=classic;html=1;strokeWidth=2;strokeColor=#9673a6;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="520" y="320" as="sourcePoint" />
+            <mxPoint x="520" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Trusted to MCD -->
+        <mxCell id="conn-trusted-mcd" value="" style="endArrow=classic;startArrow=classic;html=1;strokeWidth=2;strokeColor=#d6b656;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="660" y="280" as="sourcePoint" />
+            <mxPoint x="700" y="360" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="680" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Cloud Interconnect to On-Prem -->
+        <mxCell id="conn-interconnect-onprem" value="Cloud&#xa;Interconnect" style="endArrow=classic;startArrow=classic;html=1;strokeWidth=3;strokeColor=#82b366;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="580" y="210" as="sourcePoint" />
+            <mxPoint x="370" y="600" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="580" y="580" />
+              <mxPoint x="370" y="580" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Security Controls Section -->
+        <mxCell id="security-section" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="780" width="1260" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="security-label" value="SECURITY CONTROLS SUMMARY" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14" vertex="1" parent="1">
+          <mxGeometry x="40" y="785" width="300" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- Perimeter Security -->
+        <mxCell id="perimeter-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="60" y="815" width="230" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="perimeter-title" value="Perimeter Security" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="60" y="820" width="230" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="perimeter-list" value="• Cloud Armor (WAF/DDoS)&#xa;• Global Load Balancer&#xa;• Identity-Aware Proxy (IAP)&#xa;• No public IPs on GCE/GKE&#xa;• SD-WAN IPS/Firewall (Equinix)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="70" y="845" width="210" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- Network Security -->
+        <mxCell id="network-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="310" y="815" width="230" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="network-title" value="Network Security" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="310" y="820" width="230" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="network-list" value="• Next-Gen Firewall (L7 filtering)&#xa;• Cloud IDS (IPS/IDS)&#xa;• Secure Web Proxy (SWP)&#xa;• Packet Intercept capability&#xa;• NCC Export Filters (GKE pods)&#xa;• Wildfire Threat Defense" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="320" y="845" width="210" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- Data Security -->
+        <mxCell id="data-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="560" y="815" width="230" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="data-title" value="Data &amp; API Security" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="560" y="820" width="230" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="data-list" value="• VPC Service Controls&#xa;  - Perimeter for Spanner/BigQuery/GCS&#xa;  - Source VPC restrictions&#xa;  - Service account requirements&#xa;• IAM Controls&#xa;• Entra ID Integration (Workforce)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="570" y="845" width="210" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- Inspection Points -->
+        <mxCell id="inspection-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="810" y="815" width="230" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="inspection-title" value="Inspection Points" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="810" y="820" width="230" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="inspection-list" value="• On-Prem → GCP: SD-WAN IPS&#xa;• GCP Native → Native: NGFW&#xa;• GCVE Traffic: MCD 8KV Inspection&#xa;• NetApp Traffic: MCD Inspection&#xa;• Egress inspection via firewall&#xa;  policies (ingress + egress rules)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="820" y="845" width="210" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- Architecture Notes -->
+        <mxCell id="notes-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="815" width="220" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="notes-title" value="Architecture Notes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="1060" y="820" width="220" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="notes-list" value="• NCC Hub: Full Mesh topology&#xa;• GKE: 100.64.0.0/10 for pods&#xa;• VPC Spoke limit: 1 NCC Hub&#xa;• PSA/PSC: Producer spoke&#xa;  propagation to all VPCs&#xa;• GCVE/NetApp: Pending cross-&#xa;  org NCC peering feature" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1070" y="845" width="200" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- NCC Spoke Connection Labels -->
+        <mxCell id="ncc-spoke-label1" value="VPC&#xa;Spoke" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=8;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="660" y="170" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ncc-spoke-label2" value="VPC&#xa;Spoke" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=8;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="960" y="170" width="40" height="30" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
