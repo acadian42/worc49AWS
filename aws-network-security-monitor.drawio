@@ -1,0 +1,298 @@
+<mxfile host="app.diagrams.net" modified="2026-01-20T12:00:00.000Z" agent="Claude" version="21.0.0" type="device">
+  <diagram id="network-security-monitor" name="Network Security Monitor">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- AWS Cloud Container -->
+        <mxCell id="aws-cloud" value="" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_aws_cloud_alt;strokeColor=#232F3E;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#232F3E;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1020" height="770" as="geometry" />
+        </mxCell>
+        
+        <!-- AWS Cloud Label -->
+        <mxCell id="aws-label" value="AWS Cloud" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14;fontColor=#232F3E;" vertex="1" parent="1">
+          <mxGeometry x="60" y="50" width="100" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Landing Zone Label -->
+        <mxCell id="landing-zone-label" value="Landing Zone" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=12;fontColor=#147EBA;" vertex="1" parent="1">
+          <mxGeometry x="60" y="75" width="100" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Networking VPC -->
+        <mxCell id="networking-vpc" value="" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_vpc;strokeColor=#248814;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#248814;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="70" y="110" width="960" height="680" as="geometry" />
+        </mxCell>
+        
+        <!-- VPC Label -->
+        <mxCell id="vpc-label" value="Networking VPC" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=13;fontColor=#248814;" vertex="1" parent="1">
+          <mxGeometry x="100" y="120" width="150" height="25" as="geometry" />
+        </mxCell>
+        
+        <!-- Public Subnet -->
+        <mxCell id="public-subnet" value="" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_security_group;grStroke=0;strokeColor=#7AA116;fillColor=#F2F6E8;verticalAlign=top;align=left;spacingLeft=30;fontColor=#248814;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="100" y="160" width="300" height="200" as="geometry" />
+        </mxCell>
+        
+        <!-- Public Subnet Label -->
+        <mxCell id="public-subnet-label" value="Public Subnet" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11;fontColor=#248814;" vertex="1" parent="1">
+          <mxGeometry x="120" y="170" width="100" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Application Load Balancer -->
+        <mxCell id="alb" value="Application&#xa;Load Balancer" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#8C4FFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.application_load_balancer;" vertex="1" parent="1">
+          <mxGeometry x="205" y="220" width="78" height="78" as="geometry" />
+        </mxCell>
+        
+        <!-- Private Subnet 1 (AZ1) -->
+        <mxCell id="private-subnet-1" value="" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_security_group;grStroke=0;strokeColor=#147EBA;fillColor=#E6F2F8;verticalAlign=top;align=left;spacingLeft=30;fontColor=#147EBA;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="430" y="160" width="280" height="400" as="geometry" />
+        </mxCell>
+        
+        <!-- Private Subnet 1 Label -->
+        <mxCell id="private-subnet-1-label" value="Private Subnet - AZ1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11;fontColor=#147EBA;" vertex="1" parent="1">
+          <mxGeometry x="450" y="170" width="140" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Private Subnet 2 (AZ2) -->
+        <mxCell id="private-subnet-2" value="" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_security_group;grStroke=0;strokeColor=#147EBA;fillColor=#E6F2F8;verticalAlign=top;align=left;spacingLeft=30;fontColor=#147EBA;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="740" y="160" width="260" height="400" as="geometry" />
+        </mxCell>
+        
+        <!-- Private Subnet 2 Label -->
+        <mxCell id="private-subnet-2-label" value="Private Subnet - AZ2" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11;fontColor=#147EBA;" vertex="1" parent="1">
+          <mxGeometry x="760" y="170" width="140" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Kubernetes Cluster Container -->
+        <mxCell id="k8s-cluster" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 8;strokeColor=#326CE5;strokeWidth=2;fillColor=none;verticalAlign=top;align=left;spacingLeft=10;fontColor=#326CE5;" vertex="1" parent="1">
+          <mxGeometry x="450" y="200" width="530" height="340" as="geometry" />
+        </mxCell>
+        
+        <!-- K8s Label with Logo -->
+        <mxCell id="k8s-label" value="Amazon EKS / Kubernetes Cluster" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=12;fontColor=#326CE5;" vertex="1" parent="1">
+          <mxGeometry x="470" y="205" width="230" height="25" as="geometry" />
+        </mxCell>
+        
+        <!-- EC2 Instance 1 - AZ1 -->
+        <mxCell id="ec2-1" value="EC2 Worker Node&#xa;c6a.2xlarge" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.ec2_instance;" vertex="1" parent="1">
+          <mxGeometry x="510" y="250" width="60" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- EC2 Instance 2 - AZ2 -->
+        <mxCell id="ec2-2" value="EC2 Worker Node&#xa;c6a.2xlarge" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.ec2_instance;" vertex="1" parent="1">
+          <mxGeometry x="830" y="250" width="60" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Security Stack Container -->
+        <mxCell id="security-stack" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#FF6D00;strokeWidth=2;verticalAlign=top;align=center;" vertex="1" parent="1">
+          <mxGeometry x="470" y="350" width="490" height="170" as="geometry" />
+        </mxCell>
+        
+        <!-- Security Stack Label -->
+        <mxCell id="security-stack-label" value="Network Security Monitoring Stack (K8s Pods)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11;fontColor=#FF6D00;" vertex="1" parent="1">
+          <mxGeometry x="570" y="355" width="290" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Zeek -->
+        <mxCell id="zeek" value="Zeek&#xa;Network Analysis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1565C0;fontColor=#ffffff;strokeColor=#0D47A1;fontStyle=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="490" y="390" width="100" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Suricata -->
+        <mxCell id="suricata" value="Suricata&#xa;IDS/IPS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C62828;fontColor=#ffffff;strokeColor=#B71C1C;fontStyle=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="610" y="390" width="100" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Custom Tools -->
+        <mxCell id="custom-tools" value="Custom Security&#xa;Applications" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6A1B9A;fontColor=#ffffff;strokeColor=#4A148C;fontStyle=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="730" y="390" width="100" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Log Aggregation -->
+        <mxCell id="log-aggregation" value="Log Aggregation&#xa;&amp; Processing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#00695C;fontColor=#ffffff;strokeColor=#004D40;fontStyle=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="850" y="390" width="100" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Zeek Icon -->
+        <mxCell id="zeek-icon" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=data:image/svg+xml,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4em0tMS0xM2gydjZoLTJ6bTAgOGgydjJoLTJ6Ii8+PC9zdmc+;" vertex="1" parent="1">
+          <mxGeometry x="523" y="465" width="34" height="34" as="geometry" />
+        </mxCell>
+        
+        <!-- EFS Storage -->
+        <mxCell id="efs" value="Amazon EFS&#xa;(Storage Class)" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.elastic_file_system;" vertex="1" parent="1">
+          <mxGeometry x="200" y="600" width="78" height="78" as="geometry" />
+        </mxCell>
+        
+        <!-- VPC Traffic Mirroring / Virtual TAP -->
+        <mxCell id="vtap-container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8EAF6;strokeColor=#3949AB;strokeWidth=2;dashed=1;verticalAlign=top;align=center;" vertex="1" parent="1">
+          <mxGeometry x="100" y="410" width="300" height="150" as="geometry" />
+        </mxCell>
+        
+        <!-- VTAP Label -->
+        <mxCell id="vtap-label" value="VPC Traffic Mirroring (Virtual TAP)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11;fontColor=#3949AB;" vertex="1" parent="1">
+          <mxGeometry x="130" y="420" width="240" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Traffic Mirror Target -->
+        <mxCell id="mirror-target" value="Traffic Mirror&#xa;Target (ENI)" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#8C4FFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.network_interface;" vertex="1" parent="1">
+          <mxGeometry x="220" y="455" width="48" height="48" as="geometry" />
+        </mxCell>
+        
+        <!-- Traffic Mirror Session -->
+        <mxCell id="mirror-session" value="Traffic Mirror&#xa;Session" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#5C6BC0;fontColor=#ffffff;strokeColor=#3949AB;fontStyle=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="120" y="455" width="80" height="48" as="geometry" />
+        </mxCell>
+        
+        <!-- Traffic Mirror Filter -->
+        <mxCell id="mirror-filter" value="Traffic Mirror&#xa;Filter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#7986CB;fontColor=#ffffff;strokeColor=#3949AB;fontStyle=0;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="300" y="455" width="80" height="48" as="geometry" />
+        </mxCell>
+        
+        <!-- Source VPCs Indicator -->
+        <mxCell id="source-vpcs" value="Traffic Sources&#xa;(Other VPCs / ENIs)" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#8C4FFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.vpc_endpoints;" vertex="1" parent="1">
+          <mxGeometry x="140" y="710" width="55" height="55" as="geometry" />
+        </mxCell>
+        
+        <!-- Internet Gateway -->
+        <mxCell id="igw" value="Internet&#xa;Gateway" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#8C4FFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.internet_gateway;" vertex="1" parent="1">
+          <mxGeometry x="320" y="710" width="55" height="55" as="geometry" />
+        </mxCell>
+        
+        <!-- Transit Gateway -->
+        <mxCell id="tgw" value="Transit Gateway&#xa;(Landing Zone)" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#8C4FFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.transit_gateway;" vertex="1" parent="1">
+          <mxGeometry x="500" y="710" width="55" height="55" as="geometry" />
+        </mxCell>
+        
+        <!-- CloudWatch -->
+        <mxCell id="cloudwatch" value="CloudWatch&#xa;Logs &amp; Metrics" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" vertex="1" parent="1">
+          <mxGeometry x="680" y="710" width="55" height="55" as="geometry" />
+        </mxCell>
+        
+        <!-- S3 Bucket for Logs -->
+        <mxCell id="s3" value="S3 Bucket&#xa;(Log Archive)" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.bucket_with_objects;" vertex="1" parent="1">
+          <mxGeometry x="860" y="710" width="55" height="55" as="geometry" />
+        </mxCell>
+        
+        <!-- Security Group -->
+        <mxCell id="security-group" value="" style="fillColor=none;strokeColor=#DD3522;verticalAlign=top;fontStyle=0;fontColor=#DD3522;whiteSpace=wrap;html=1;dashed=1;dashPattern=5 5;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="440" y="190" width="550" height="360" as="geometry" />
+        </mxCell>
+        
+        <!-- Security Group Label -->
+        <mxCell id="sg-label" value="Security Group" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=10;fontColor=#DD3522;" vertex="1" parent="1">
+          <mxGeometry x="880" y="195" width="100" height="15" as="geometry" />
+        </mxCell>
+        
+        <!-- Connection: ALB to K8s -->
+        <mxCell id="conn-alb-k8s" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#232F3E;strokeWidth=2;endArrow=block;endFill=1;" edge="1" parent="1" source="alb" target="security-stack">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Connection: VTAP to K8s -->
+        <mxCell id="conn-vtap-k8s" value="Mirrored Traffic" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3949AB;strokeWidth=2;dashed=1;dashPattern=8 8;endArrow=block;endFill=1;fontColor=#3949AB;fontSize=9;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="mirror-target" target="security-stack">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="340" y="479" />
+              <mxPoint x="340" y="435" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Connection: EFS to K8s -->
+        <mxCell id="conn-efs-k8s" value="Persistent Storage" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7AA116;strokeWidth=2;endArrow=block;endFill=1;startArrow=block;startFill=1;fontColor=#7AA116;fontSize=9;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="efs" target="security-stack">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="239" y="570" />
+              <mxPoint x="420" y="570" />
+              <mxPoint x="420" y="435" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Connection: K8s to CloudWatch -->
+        <mxCell id="conn-k8s-cw" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E7157B;strokeWidth=1.5;endArrow=block;endFill=1;" edge="1" parent="1" source="security-stack" target="cloudwatch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Connection: K8s to S3 -->
+        <mxCell id="conn-k8s-s3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7AA116;strokeWidth=1.5;endArrow=block;endFill=1;" edge="1" parent="1" source="security-stack" target="s3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Connection: TGW to K8s -->
+        <mxCell id="conn-tgw-k8s" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#8C4FFF;strokeWidth=1.5;endArrow=block;endFill=1;startArrow=block;startFill=1;" edge="1" parent="1" source="tgw" target="vtap-container">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="528" y="620" />
+              <mxPoint x="250" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Connection: Source VPCs to VTAP -->
+        <mxCell id="conn-source-vtap" value="Mirrored from&#xa;Source ENIs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3949AB;strokeWidth=1.5;dashed=1;endArrow=block;endFill=1;fontColor=#3949AB;fontSize=8;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="source-vpcs" target="mirror-session">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Connection: Mirror Session to Target -->
+        <mxCell id="conn-session-target" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3949AB;strokeWidth=1.5;endArrow=block;endFill=1;" edge="1" parent="1" source="mirror-session" target="mirror-target">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Connection: Filter -->
+        <mxCell id="conn-filter" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3949AB;strokeWidth=1;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1" source="mirror-target" target="mirror-filter">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Connection: EC2-1 to Stack -->
+        <mxCell id="conn-ec2-1-stack" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#ED7100;strokeWidth=1;endArrow=block;endFill=0;dashed=1;" edge="1" parent="1" source="ec2-1" target="security-stack">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Connection: EC2-2 to Stack -->
+        <mxCell id="conn-ec2-2-stack" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#ED7100;strokeWidth=1;endArrow=block;endFill=0;dashed=1;" edge="1" parent="1" source="ec2-2" target="security-stack">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Legend Box -->
+        <mxCell id="legend" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#BDBDBD;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="750" y="580" width="240" height="110" as="geometry" />
+        </mxCell>
+        
+        <!-- Legend Title -->
+        <mxCell id="legend-title" value="Architecture Components" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=10;fontColor=#424242;" vertex="1" parent="1">
+          <mxGeometry x="760" y="585" width="150" height="15" as="geometry" />
+        </mxCell>
+        
+        <!-- Legend Items -->
+        <mxCell id="legend-1" value="• 2x EC2 c6a.2xlarge (K8s Workers)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=9;fontColor=#616161;" vertex="1" parent="1">
+          <mxGeometry x="760" y="602" width="220" height="15" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-2" value="• Application Load Balancer" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=9;fontColor=#616161;" vertex="1" parent="1">
+          <mxGeometry x="760" y="617" width="220" height="15" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-3" value="• Amazon EFS (K8s Storage Class)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=9;fontColor=#616161;" vertex="1" parent="1">
+          <mxGeometry x="760" y="632" width="220" height="15" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-4" value="• VPC Traffic Mirroring (Virtual TAP)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=9;fontColor=#616161;" vertex="1" parent="1">
+          <mxGeometry x="760" y="647" width="220" height="15" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend-5" value="• Security Stack: Zeek, Suricata, Custom" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontSize=9;fontColor=#616161;" vertex="1" parent="1">
+          <mxGeometry x="760" y="662" width="220" height="15" as="geometry" />
+        </mxCell>
+        
+        <!-- Title -->
+        <mxCell id="diagram-title" value="AWS Network Security Monitoring Stack" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=18;fontColor=#232F3E;" vertex="1" parent="1">
+          <mxGeometry x="350" y="5" width="400" height="30" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
