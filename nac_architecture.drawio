@@ -1,0 +1,210 @@
+<mxfile host="app.diagrams.net" modified="2024-02-03T00:00:00.000Z" agent="Claude" version="22.1.16">
+  <diagram name="Page-1" id="nac-architecture">
+    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Title -->
+        <mxCell id="title" value="High-Level NAC Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=28;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="450" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Device Authentication Section -->
+        <mxCell id="device-auth-label" value="Device&#xa;Authentication" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#D2691E;" vertex="1" parent="1">
+          <mxGeometry x="40" y="680" width="160" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Device Icons (Left Side) -->
+        <mxCell id="smartphone" value="" style="shape=mxgraph.signs.transportation.smartphone;html=1;pointerEvents=1;fillColor=#1a1a4d;strokeColor=#1a1a4d;verticalLabelPosition=bottom;verticalAlign=top;align=center;sketch=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="150" width="50" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="laptop" value="" style="fontColor=#0066CC;verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;fillColor=#1a1a4d;strokeColor=#1a1a4d;gradientColor=none;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.laptop;" vertex="1" parent="1">
+          <mxGeometry x="70" y="300" width="90" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="desktop" value="" style="fontColor=#0066CC;verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;fillColor=#1a1a4d;strokeColor=#1a1a4d;gradientColor=none;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.monitor;" vertex="1" parent="1">
+          <mxGeometry x="70" y="450" width="90" height="70" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="printer" value="" style="fontColor=#0066CC;verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;fillColor=#1a1a4d;strokeColor=#1a1a4d;gradientColor=none;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.printer;" vertex="1" parent="1">
+          <mxGeometry x="70" y="600" width="90" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Lines from devices to Enforcement Node (Top) -->
+        <mxCell id="line1" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#666666;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="enforcement-node-top">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="160" y="190" as="sourcePoint" />
+            <mxPoint x="450" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="line2" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#666666;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="enforcement-node-top">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="160" y="330" as="sourcePoint" />
+            <mxPoint x="450" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="line3" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#666666;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="enforcement-node-bottom">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="160" y="485" as="sourcePoint" />
+            <mxPoint x="450" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="line4" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#666666;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="enforcement-node-bottom">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="160" y="630" as="sourcePoint" />
+            <mxPoint x="450" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Enforcement Node Top (Access Point/Router) -->
+        <mxCell id="enforcement-node-top" value="" style="fontColor=#0066CC;verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;fillColor=#1a1a4d;strokeColor=#1a1a4d;gradientColor=none;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.router;" vertex="1" parent="1">
+          <mxGeometry x="450" y="180" width="100" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- WiFi Symbol -->
+        <mxCell id="wifi" value="" style="fontColor=#0066CC;verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;fillColor=#1a1a4d;strokeColor=#1a1a4d;gradientColor=none;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.wireless_hub;" vertex="1" parent="1">
+          <mxGeometry x="470" y="110" width="60" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Enforcement Node Label -->
+        <mxCell id="enforcement-label" value="Enforcement&#xa;Node" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="330" y="370" width="120" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Enforcement Node Bottom (Switch/Router) -->
+        <mxCell id="enforcement-node-bottom" value="" style="fontColor=#0066CC;verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;fillColor=#1a1a4d;strokeColor=#1a1a4d;gradientColor=none;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.router;" vertex="1" parent="1">
+          <mxGeometry x="450" y="480" width="100" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Vertical Line connecting enforcement nodes -->
+        <mxCell id="vertical-line" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#1a1a4d;strokeWidth=3;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="499.5" y="210" as="sourcePoint" />
+            <mxPoint x="499.5" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Guest Network Box -->
+        <mxCell id="guest-network" value="Guest Network" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#D2691E;align=left;verticalAlign=top;fontSize=14;fontStyle=1;fontColor=#D2691E;strokeWidth=2;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="600" y="200" width="300" height="140" as="geometry" />
+        </mxCell>
+        
+        <!-- Corporate Network Box -->
+        <mxCell id="corporate-network" value="Corporate Network" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#D2691E;align=left;verticalAlign=top;fontSize=14;fontStyle=1;fontColor=#D2691E;strokeWidth=2;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="600" y="360" width="300" height="140" as="geometry" />
+        </mxCell>
+        
+        <!-- Lines from Enforcement Nodes to Networks -->
+        <mxCell id="line-to-guest" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#1a1a4d;strokeWidth=3;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="500" y="270" as="sourcePoint" />
+            <mxPoint x="600" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="line-to-corporate" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#1a1a4d;strokeWidth=3;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="500" y="430" as="sourcePoint" />
+            <mxPoint x="600" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Policy Server -->
+        <mxCell id="policy-server" value="" style="fontColor=#0066CC;verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;fillColor=#1a1a4d;strokeColor=#1a1a4d;gradientColor=none;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.router;" vertex="1" parent="1">
+          <mxGeometry x="950" y="480" width="100" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="policy-server-label" value="Policy Server" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="470" width="120" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Line from Corporate Network to Policy Server -->
+        <mxCell id="line-to-policy" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#666666;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="corporate-network" target="policy-server">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="900" y="430" as="sourcePoint" />
+            <mxPoint x="950" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Vertical dashed line from Policy Server -->
+        <mxCell id="policy-vertical-line" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#1a1a4d;strokeWidth=2;dashed=1;dashPattern=8 8;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="999.5" y="520" as="sourcePoint" />
+            <mxPoint x="999.5" y="680" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Internet Cloud -->
+        <mxCell id="internet-cloud" value="" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#1a1a4d;strokeColor=#1a1a4d;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="930" y="240" width="120" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="internet-label" value="Internet" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="255" width="80" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Line from Guest Network to Internet -->
+        <mxCell id="line-to-internet" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#666666;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="guest-network" target="internet-cloud">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="900" y="270" as="sourcePoint" />
+            <mxPoint x="950" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Quarantine Section -->
+        <mxCell id="quarantine-icon" value="" style="shape=triangle;direction=north;perimeter=trianglePerimeter;html=1;fillColor=#FFFFFF;strokeColor=#1a1a4d;strokeWidth=3;rotation=0;" vertex="1" parent="1">
+          <mxGeometry x="560" y="630" width="80" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="quarantine-exclamation" value="!" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=40;fontStyle=1;fontColor=#1a1a4d;" vertex="1" parent="1">
+          <mxGeometry x="575" y="650" width="50" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="quarantine-label" value="Quarantine" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="540" y="720" width="120" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Line from Enforcement Node to Quarantine -->
+        <mxCell id="line-to-quarantine" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#666666;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="500" y="510" as="sourcePoint" />
+            <mxPoint x="590" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Device Visibility Section -->
+        <mxCell id="visibility-icon" value="" style="fontColor=#0066CC;verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;fillColor=#FFFFFF;strokeColor=#1a1a4d;gradientColor=none;strokeWidth=3;shape=ellipse;" vertex="1" parent="1">
+          <mxGeometry x="940" y="640" width="120" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="visibility-eye" value="👁" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=48;fontColor=#1a1a4d;" vertex="1" parent="1">
+          <mxGeometry x="960" y="650" width="80" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="visibility-label" value="Device&#xa;Visibility" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="940" y="730" width="120" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Source Attribution -->
+        <mxCell id="source" value="Source: Gartner" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="40" y="790" width="150" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="source-id" value="719265_C" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="40" y="810" width="150" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Gartner Logo -->
+        <mxCell id="gartner-logo" value="Gartner" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1a1a4d;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="810" width="120" height="30" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
