@@ -1,0 +1,373 @@
+<mxfile host="app.diagrams.net" modified="2026-04-13T00:00:00.000Z" agent="Claude" version="24.0.0">
+  <diagram name="Migration Pipeline" id="pipeline-overview">
+    <mxGraphModel dx="2200" dy="1600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ============================================ -->
+        <!-- TITLE -->
+        <!-- ============================================ -->
+        <mxCell id="title1" value="&lt;b&gt;Arctic Wolf → CrowdStrike Falcon LogScale Migration Pipeline&lt;/b&gt;&lt;br&gt;Historical SIEM Log Migration | ~160TB Uncompressed | April 2026" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="360" y="20" width="820" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- SECTION 1: DATA FLOW PIPELINE -->
+        <!-- ============================================ -->
+        <mxCell id="section1_label" value="&lt;b&gt;PROPOSED DATA FLOW PIPELINE&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="280" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Arctic Wolf S3 -->
+        <mxCell id="aw_container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="130" width="240" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="aw_label" value="&lt;b&gt;Arctic Wolf S3 Bucket&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot;&gt;AWS Commercial (us-west)&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="140" width="200" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="aw_icon" value="" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#3F8624;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.bucket;" vertex="1" parent="1">
+          <mxGeometry x="127" y="185" width="50" height="52" as="geometry"/>
+        </mxCell>
+        <mxCell id="aw_data" value="&lt;b&gt;~6 TB&lt;/b&gt; (.zst compressed)&lt;br&gt;&lt;b&gt;~160 TB&lt;/b&gt; uncompressed&lt;br&gt;&lt;font color=&quot;#888888&quot;&gt;Format: customer_id/YYYY/MM/DD/&lt;br&gt;HH_MM_SS-###.log.zst&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="55" y="245" width="195" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrow 1: AW S3 to Your S3 -->
+        <mxCell id="arrow1" value="" style="endArrow=block;endFill=1;html=1;strokeWidth=3;strokeColor=#d6b656;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="aw_container" target="your_s3_container">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow1_label" value="&lt;b&gt;Step 1: S3 Copy&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot;&gt;aws s3 sync&lt;br&gt;or DataSync&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#009900&quot;&gt;&lt;b&gt;Same-region = $0 transfer&lt;/b&gt;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="arrow1">
+          <mxGeometry x="-0.1" y="-1" relative="1" as="geometry">
+            <mxPoint y="-40" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Your S3 Bucket -->
+        <mxCell id="your_s3_container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="400" y="130" width="240" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="your_s3_label" value="&lt;b&gt;Your S3 Bucket&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot;&gt;AWS Commercial (us-west-1)&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="425" y="140" width="200" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="your_s3_icon" value="" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#3F8624;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.bucket;" vertex="1" parent="1">
+          <mxGeometry x="490" y="185" width="50" height="52" as="geometry"/>
+        </mxCell>
+        <mxCell id="your_s3_data" value="&lt;b&gt;~6 TB&lt;/b&gt; (.zst files landing zone)&lt;br&gt;&lt;font color=&quot;#888888&quot;&gt;Temporary storage&lt;br&gt;Delete after migration complete&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="425" y="255" width="195" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrow 2: Your S3 to EC2 -->
+        <mxCell id="arrow2" value="" style="endArrow=block;endFill=1;html=1;strokeWidth=3;strokeColor=#6c8ebf;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="your_s3_container" target="ec2_container">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow2_label" value="&lt;b&gt;Step 2: Pull &amp; Transform&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot;&gt;S3 GET → EC2&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#009900&quot;&gt;&lt;b&gt;Same-region = $0 transfer&lt;/b&gt;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="arrow2">
+          <mxGeometry x="-0.1" y="-1" relative="1" as="geometry">
+            <mxPoint y="-35" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- EC2 Transform -->
+        <mxCell id="ec2_container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="760" y="130" width="280" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="ec2_label" value="&lt;b&gt;EC2 Worker Instance(s)&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot;&gt;AWS Commercial (us-west-1)&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="795" y="140" width="220" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="ec2_icon" value="" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.instance2;" vertex="1" parent="1">
+          <mxGeometry x="870" y="180" width="48" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="ec2_process" value="&lt;b&gt;Stream Transform:&lt;/b&gt;&lt;br&gt;zstd -d --stdout file.zst&lt;br&gt;| gzip&lt;br&gt;| POST → CrowdStrike ingest&lt;br&gt;&lt;font color=&quot;#888888&quot;&gt;Recommended: c6i.2xlarge&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="790" y="245" width="195" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrow 3: EC2 to CrowdStrike -->
+        <mxCell id="arrow3" value="" style="endArrow=block;endFill=1;html=1;strokeWidth=3;strokeColor=#b85450;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ec2_container" target="cs_container">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow3_label" value="&lt;b&gt;Step 3: Ingest&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot;&gt;HTTPS POST (gzip)&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#cc0000&quot;&gt;&lt;b&gt;Internet egress = $$$ &lt;/b&gt;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="arrow3">
+          <mxGeometry x="-0.1" y="-1" relative="1" as="geometry">
+            <mxPoint y="-35" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- CrowdStrike GovCloud -->
+        <mxCell id="cs_container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="130" width="260" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="cs_label" value="&lt;b&gt;CrowdStrike Falcon LogScale&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666666&quot;&gt;AWS GovCloud (us-gov-west-1)&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="140" width="240" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="cs_icon" value="🛡️" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=36;" vertex="1" parent="1">
+          <mxGeometry x="1275" y="185" width="55" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="cs_details" value="&lt;b&gt;Ingest Endpoint (confirmed reachable)&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#888888&quot;&gt;HTTP Endpoint or API Endpoint&lt;br&gt;(TBD — confirm with CrowdStrike)&lt;br&gt;Accepts: gzip compressed logs&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1185" y="250" width="230" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- PARTITION WALL CALLOUT -->
+        <!-- ============================================ -->
+        <mxCell id="partition_wall" value="" style="shape=mxgraph.basic.patternFillRect;fillStyle=diagGrid;step=4;fillStrokeWidth=0.2;fillStrokeColor=#cc0000;strokeColor=#cc0000;strokeWidth=2;dashed=1;dashPattern=8 4;opacity=30;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="120" width="10" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="partition_label" value="&lt;font color=&quot;#cc0000&quot;&gt;&lt;b&gt;AWS PARTITION&lt;br&gt;BOUNDARY&lt;/b&gt;&lt;br&gt;Commercial ↔ GovCloud&lt;br&gt;IAM cannot cross&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="1095" y="325" width="120" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- SECTION 2: OPTION COMPARISON -->
+        <!-- ============================================ -->
+        <mxCell id="section2_label" value="&lt;b&gt;ARCHITECTURE OPTIONS COMPARISON&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="40" y="420" width="320" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Option A: EC2 Streaming (Recommended) -->
+        <mxCell id="optA_container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;arcSize=6;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="40" y="460" width="440" height="320" as="geometry"/>
+        </mxCell>
+        <mxCell id="optA_badge" value="&lt;b&gt;✅ RECOMMENDED&lt;/b&gt;" style="label;whiteSpace=wrap;html=1;fillColor=#82b366;strokeColor=none;fontColor=#ffffff;fontSize=11;rounded=1;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="315" y="470" width="150" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="optA_title" value="&lt;b&gt;Option A: EC2 Stream-Through to HTTP Ingest&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;fontColor=#2d6a2e;" vertex="1" parent="1">
+          <mxGeometry x="55" y="468" width="365" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="optA_flow" value="&lt;div style=&quot;text-align:left;&quot;&gt;&lt;b&gt;Flow:&lt;/b&gt; AW S3 → Your S3 → EC2 → CrowdStrike Ingest URL&lt;br&gt;&lt;br&gt;&lt;b&gt;How it works:&lt;/b&gt;&lt;br&gt;• aws s3 sync from Arctic Wolf bucket to yours&lt;br&gt;• EC2 streams: zstd decompress → gzip recompress → HTTP POST&lt;br&gt;• No intermediate uncompressed data lands on disk&lt;br&gt;• Parallelizable across multiple instances or GNU parallel&lt;br&gt;&lt;br&gt;&lt;b&gt;Pros:&lt;/b&gt;&lt;br&gt;• Works TODAY — no dependency on CrowdStrike fixing IAM role&lt;br&gt;• Minimal AWS resources (1-3 EC2 instances)&lt;br&gt;• Simple to build, monitor, and debug&lt;br&gt;• Stream-through avoids needing 160TB disk&lt;br&gt;&lt;br&gt;&lt;b&gt;Cons:&lt;/b&gt;&lt;br&gt;• Must handle batching (5K events / 5MB per API request)&lt;br&gt;• Need retry logic for HTTP failures&lt;br&gt;• Full internet egress cost on gzip output&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="50" y="495" width="420" height="270" as="geometry"/>
+        </mxCell>
+
+        <!-- Option B: S3/SQS Ingest Feed (Blocked) -->
+        <mxCell id="optB_container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=6;strokeWidth=2;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="460" width="440" height="320" as="geometry"/>
+        </mxCell>
+        <mxCell id="optB_badge" value="&lt;b&gt;🚫 BLOCKED&lt;/b&gt;" style="label;whiteSpace=wrap;html=1;fillColor=#d6b656;strokeColor=none;fontColor=#ffffff;fontSize=11;rounded=1;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="800" y="470" width="145" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="optB_title" value="&lt;b&gt;Option B: S3 Landing Zone + SQS Ingest Feed&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;fontColor=#8c7a1e;" vertex="1" parent="1">
+          <mxGeometry x="535" y="468" width="365" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="optB_flow" value="&lt;div style=&quot;text-align:left;&quot;&gt;&lt;b&gt;Flow:&lt;/b&gt; AW S3 → Your S3 → EC2 (transform) → S3 (.gz) → SQS → CS&lt;br&gt;&lt;br&gt;&lt;b&gt;How it works:&lt;/b&gt;&lt;br&gt;• Copy ZST to your bucket, EC2 transforms to gzip, writes back to S3&lt;br&gt;• CrowdStrike LogScale S3 ingest feed reads .gz from S3 via SQS&lt;br&gt;• CrowdStrike manages pull &amp; ingest automatically&lt;br&gt;&lt;br&gt;&lt;b&gt;Pros:&lt;/b&gt;&lt;br&gt;• CrowdStrike-recommended architecture&lt;br&gt;• No HTTP batching or retry logic needed&lt;br&gt;• Scales automatically on CrowdStrike side&lt;br&gt;&lt;br&gt;&lt;b&gt;Cons:&lt;/b&gt;&lt;br&gt;• ⚠️ BLOCKED: S3 connector requires CrossAccountAccessRole&lt;br&gt;• GovCloud IAM role (arn:aws-us-gov:iam::358431324613:role/&lt;br&gt;  crowdstrike-3pi-laggar-connectors) does not appear to exist&lt;br&gt;• CrowdStrike must confirm/provision the role first&lt;br&gt;• Requires additional S3 storage for .gz intermediary files&lt;br&gt;• Still has egress cost if S3 is in commercial partition&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="530" y="495" width="420" height="280" as="geometry"/>
+        </mxCell>
+
+        <!-- Option C: AWS Batch -->
+        <mxCell id="optC_container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;arcSize=6;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="460" width="440" height="320" as="geometry"/>
+        </mxCell>
+        <mxCell id="optC_badge" value="&lt;b&gt;ALTERNATIVE&lt;/b&gt;" style="label;whiteSpace=wrap;html=1;fillColor=#9673a6;strokeColor=none;fontColor=#ffffff;fontSize=11;rounded=1;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="1280" y="470" width="145" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="optC_title" value="&lt;b&gt;Option C: AWS Batch Managed Compute&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;fontColor=#6a4c8a;" vertex="1" parent="1">
+          <mxGeometry x="1015" y="468" width="310" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="optC_flow" value="&lt;div style=&quot;text-align:left;&quot;&gt;&lt;b&gt;Flow:&lt;/b&gt; AW S3 → Your S3 → AWS Batch jobs → CrowdStrike Ingest&lt;br&gt;&lt;br&gt;&lt;b&gt;How it works:&lt;/b&gt;&lt;br&gt;• Same transform as Option A but managed by AWS Batch&lt;br&gt;• Batch handles job scheduling, parallelism, retries&lt;br&gt;• Containerized workers (Docker) with same zstd→gzip pipeline&lt;br&gt;&lt;br&gt;&lt;b&gt;Pros:&lt;/b&gt;&lt;br&gt;• Built-in retry, parallel job management, monitoring&lt;br&gt;• Auto-scales workers based on queue depth&lt;br&gt;• Better for very large jobs with many files&lt;br&gt;&lt;br&gt;&lt;b&gt;Cons:&lt;/b&gt;&lt;br&gt;• More setup overhead (job defs, compute envs, containers)&lt;br&gt;• Overkill for a one-time migration&lt;br&gt;• Same egress costs as Option A&lt;br&gt;• Additional complexity for marginal benefit&lt;br&gt;• You still need to build the transform logic anyway&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="495" width="420" height="270" as="geometry"/>
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- SECTION 3: COST BREAKDOWN TABLE -->
+        <!-- ============================================ -->
+        <mxCell id="section3_label" value="&lt;b&gt;COST ESTIMATES (ALL OPTIONS)&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="40" y="810" width="280" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Cost Table Header -->
+        <mxCell id="cost_header" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="40" y="850" width="1400" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="cost_h1" value="&lt;b&gt;&lt;font color=&quot;#ffffff&quot;&gt;Cost Item&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="852" width="280" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="cost_h2" value="&lt;b&gt;&lt;font color=&quot;#ffffff&quot;&gt;Calculation&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="320" y="852" width="340" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="cost_h3" value="&lt;b&gt;&lt;font color=&quot;#ffffff&quot;&gt;Option A (EC2 Direct)&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="660" y="852" width="200" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="cost_h4" value="&lt;b&gt;&lt;font color=&quot;#ffffff&quot;&gt;Option B (S3/SQS)&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="890" y="852" width="200" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="cost_h5" value="&lt;b&gt;&lt;font color=&quot;#ffffff&quot;&gt;Option C (AWS Batch)&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="852" width="200" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="cost_h6" value="&lt;b&gt;&lt;font color=&quot;#ffffff&quot;&gt;Notes&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1310" y="852" width="130" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Row 1: S3 Copy -->
+        <mxCell id="row1_bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="885" width="1400" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="row1_c1" value="S3-to-S3 Copy (AW → You)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="45" y="890" width="270" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row1_c2" value="Same region, cross-account: $0 transfer + S3 requests" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="325" y="890" width="330" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row1_c3" value="&lt;font color=&quot;#009900&quot;&gt;&lt;b&gt;~$30&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="720" y="890" width="60" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row1_c4" value="&lt;font color=&quot;#009900&quot;&gt;&lt;b&gt;~$30&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="955" y="890" width="60" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row1_c5" value="&lt;font color=&quot;#009900&quot;&gt;&lt;b&gt;~$30&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1185" y="890" width="60" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row1_c6" value="S3 PUT/GET requests only" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="1310" y="890" width="125" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- Row 2: S3 Storage -->
+        <mxCell id="row2_bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e0e0e0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="920" width="1400" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="row2_c1" value="S3 Storage (6TB ZST, ~1 month)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="45" y="925" width="270" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row2_c2" value="6,000 GB × $0.023/GB/mo = ~$138/mo" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="325" y="925" width="330" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row2_c3" value="&lt;b&gt;~$138&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="720" y="925" width="60" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row2_c4" value="&lt;b&gt;~$370*&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="950" y="925" width="70" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row2_c5" value="&lt;b&gt;~$138&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1185" y="925" width="60" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row2_c6" value="*B needs .gz copy too (~10TB)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="1305" y="925" width="130" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- Row 3: EC2 Compute -->
+        <mxCell id="row3_bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="955" width="1400" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="row3_c1" value="EC2 Compute (c6i.2xlarge)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="45" y="960" width="270" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row3_c2" value="~$0.34/hr × ~72-168 hrs (est 3-7 days)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="325" y="960" width="330" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row3_c3" value="&lt;b&gt;~$25-60&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="710" y="960" width="80" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row3_c4" value="&lt;b&gt;~$25-60&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="945" y="960" width="80" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row3_c5" value="&lt;b&gt;~$25-60&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1175" y="960" width="80" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row3_c6" value="Spot instances = ~60% off" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="1310" y="960" width="125" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- Row 4: EGRESS (The Big One) -->
+        <mxCell id="row4_bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff0f0;strokeColor=#e0e0e0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="990" width="1400" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="row4_c1" value="&lt;b&gt;&lt;font color=&quot;#cc0000&quot;&gt;⚠ Internet Egress to CrowdStrike&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="45" y="1000" width="270" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row4_c2" value="~10TB gzip × $0.09/GB (first 10TB tier)&lt;br&gt;Gzip ratio on logs ≈ 10-16:1 → ~10-16TB gzip output" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="325" y="993" width="330" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="row4_c3" value="&lt;font color=&quot;#cc0000&quot;&gt;&lt;b&gt;~$900-$1,440&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="700" y="1000" width="105" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row4_c4" value="&lt;font color=&quot;#cc0000&quot;&gt;&lt;b&gt;~$900-$1,440&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="935" y="1000" width="105" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row4_c5" value="&lt;font color=&quot;#cc0000&quot;&gt;&lt;b&gt;~$900-$1,440&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1165" y="1000" width="105" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row4_c6" value="&lt;b&gt;Unavoidable cost&lt;br&gt;Don has been warned&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#cc0000;" vertex="1" parent="1">
+          <mxGeometry x="1305" y="997" width="130" height="35" as="geometry"/>
+        </mxCell>
+
+        <!-- Row 5: DataSync (optional) -->
+        <mxCell id="row5_bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#e0e0e0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1035" width="1400" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="row5_c1" value="DataSync (if used for S3 copy step)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="45" y="1040" width="270" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row5_c2" value="$0.0125/GB copied = 6,000 GB × $0.0125" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="325" y="1040" width="330" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row5_c3" value="&lt;font color=&quot;#888888&quot;&gt;+$75 if used&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="710" y="1040" width="80" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row5_c4" value="&lt;font color=&quot;#888888&quot;&gt;+$75 if used&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="945" y="1040" width="80" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row5_c5" value="&lt;font color=&quot;#888888&quot;&gt;+$75 if used&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1175" y="1040" width="80" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="row5_c6" value="aws s3 sync = $0" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="1325" y="1040" width="105" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- Row 6: TOTAL -->
+        <mxCell id="row6_bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1070" width="1400" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="row6_c1" value="&lt;b&gt;&lt;font color=&quot;#ffffff&quot;&gt;ESTIMATED TOTAL&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="45" y="1075" width="270" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="row6_c3" value="&lt;font color=&quot;#4CAF50&quot;&gt;&lt;b&gt;~$1,100 - $1,670&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="690" y="1075" width="130" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="row6_c4" value="&lt;font color=&quot;#FFC107&quot;&gt;&lt;b&gt;~$1,330 - $1,900&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="920" y="1075" width="130" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="row6_c5" value="&lt;font color=&quot;#CE93D8&quot;&gt;&lt;b&gt;~$1,100 - $1,670&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="1075" width="130" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="row6_c6" value="&lt;font color=&quot;#ffffff&quot;&gt;&lt;b&gt;+ BLOCKED&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1310" y="1075" width="130" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- SECTION 4: KEY DECISIONS & BLOCKERS -->
+        <!-- ============================================ -->
+        <mxCell id="section4_label" value="&lt;b&gt;OPEN DECISIONS &amp; BLOCKERS&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1135" width="260" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Blocker 1 -->
+        <mxCell id="blocker1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1175" width="440" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="blocker1_text" value="&lt;b&gt;🔴 BLOCKER: CrowdStrike GovCloud IAM Role&lt;/b&gt;&lt;br&gt;arn:aws-us-gov:iam::358431324613:role/&lt;br&gt;crowdstrike-3pi-laggar-connectors does not exist.&lt;br&gt;Blocks Option B (S3/SQS ingest). Does NOT block Option A." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="50" y="1185" width="420" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Decision 1 -->
+        <mxCell id="decision1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="520" y="1175" width="440" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="decision1_text" value="&lt;b&gt;🟡 DECISION: HTTP Endpoint vs API Endpoint&lt;/b&gt;&lt;br&gt;HTTP raw endpoint: not suited for large volume per CS docs.&lt;br&gt;API endpoint: 5,000 events / 5MB uncompressed per request.&lt;br&gt;Confirm with CrowdStrike which is appropriate for 6TB bulk." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="530" y="1185" width="420" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Decision 2 -->
+        <mxCell id="decision2" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="1175" width="440" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="decision2_text" value="&lt;b&gt;🟡 DECISION: Gzip Compression Ratio&lt;/b&gt;&lt;br&gt;ZST input: ~6TB. Uncompressed: ~160TB.&lt;br&gt;Gzip output estimate: ~10-16TB (10:1 to 16:1 ratio on logs).&lt;br&gt;Actual ratio affects egress cost — test with sample files first." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="1185" width="420" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- FOOTER NOTE -->
+        <!-- ============================================ -->
+        <mxCell id="footer" value="&lt;font color=&quot;#999999&quot;&gt;Note: Previous context doc referenced ~$11.5K egress — that estimate may have been based on different data volumes or raw uncompressed transfer.&lt;br&gt;Revised estimate above is based on gzip-compressed output (~10-16TB) egressing from us-west-1. Confirm actual gzip output size with test run.&lt;br&gt;CrowdStrike ingest endpoint reachability confirmed from AWS us-west-1. | Prepared: April 13, 2026 | Lead: Marc&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1300" width="850" height="50" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
