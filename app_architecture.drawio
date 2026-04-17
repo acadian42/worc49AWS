@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-04-17T00:00:00.000Z" agent="Claude" version="24.0.0">
+  <diagram name="Tines-ECM-Architecture" id="tines-ecm">
+    <mxGraphModel dx="1800" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- TITLE -->
+        <mxCell id="title" value="&lt;b&gt;Tines.io &amp;lt;CLOUD_PROVIDER&amp;gt; ECM DER Architecture/Data Flow Diagram&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="380" y="20" width="940" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- INFO BLOCK (top-left) -->
+        <mxCell id="info" value="&lt;b&gt;&amp;lt;CLOUD_PROVIDER&amp;gt;&lt;/b&gt;: ECM&#10;&lt;b&gt;Region&lt;/b&gt;: &amp;lt;REGION&amp;gt;&#10;&lt;b&gt;EnvID&lt;/b&gt;: &amp;lt;ENVID&amp;gt;&#10;&lt;b&gt;Data Types&lt;/b&gt;: &amp;lt;DATA_TYPE&amp;gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="80" y="140" width="320" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ECM VPC BIG BOX -->
+        <mxCell id="vpc" value="&lt;b&gt;AWS: ECM VPC&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;verticalAlign=top;fontSize=14;fontStyle=1;strokeWidth=2" vertex="1" parent="1">
+          <mxGeometry x="60" y="240" width="940" height="720" as="geometry" />
+        </mxCell>
+
+        <!-- Tines.io logical grouping inside VPC -->
+        <mxCell id="tines_grp" value="&lt;b&gt;Tines.io Server&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#666666;dashed=1;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="340" y="320" width="620" height="600" as="geometry" />
+        </mxCell>
+
+        <!-- App Security Group (dashed) inside VPC -->
+        <mxCell id="sg_app" value="&lt;b&gt;Security Group&lt;/b&gt;&#10;HTTP/HTTPS" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#D79B00;dashed=1;verticalAlign=top;align=left;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="360" y="440" width="580" height="280" as="geometry" />
+        </mxCell>
+
+        <!-- Load Balancer -->
+        <mxCell id="lb" value="&lt;b&gt;Load balancer&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="560" y="360" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Web server(s) -->
+        <mxCell id="web" value="&lt;b&gt;Web server(s)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="410" y="480" width="170" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Command runner(s) (optional) -->
+        <mxCell id="cmd" value="&lt;b&gt;Command runner(s)&lt;/b&gt;&#10;(optional)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;dashed=1;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="700" y="475" width="210" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Background worker(s) -->
+        <mxCell id="bw" value="&lt;b&gt;Background worker(s)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="410" y="630" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Postgres -->
+        <mxCell id="pg" value="&lt;b&gt;Postgres&lt;/b&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="750" y="620" width="110" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Redis -->
+        <mxCell id="redis" value="&lt;b&gt;Redis&lt;/b&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="750" y="800" width="110" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- SMTP server (optional - inside VPC, on the left) -->
+        <mxCell id="smtp" value="&lt;b&gt;SMTP server&lt;/b&gt;&#10;internal.SMTP.com&#10;(optional)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="110" y="625" width="200" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- LLM provider (optional - inside VPC, on the left) -->
+        <mxCell id="llm" value="&lt;b&gt;LLM provider&lt;/b&gt;&#10;(optional)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="110" y="480" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ================= EXTERNAL ENTITIES ================= -->
+
+        <!-- Slack hosts (top right) -->
+        <mxCell id="slack_grp" value="&lt;b&gt;Slack (External SaaS)&lt;/b&gt;&#10;&#10;slack.com&#10;api.slack.com&#10;hooks.slack.com&#10;files.slack.com&#10;*.slack.com" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;verticalAlign=top;fontSize=11;fontStyle=0;align=center" vertex="1" parent="1">
+          <mxGeometry x="1080" y="260" width="240" height="140" as="geometry" />
+        </mxCell>
+
+        <!-- Amazon Bedrock (PrivateLink) -->
+        <mxCell id="bedrock" value="&lt;b&gt;Amazon Bedrock (PrivateLink)&lt;/b&gt;&#10;&#10;com.amazonaws.bedrock-agent-runtime&#10;privatebedrock.corp.com&#10;privatebedrock2.corp.com" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF9900;strokeColor=#232F3E;verticalAlign=top;fontSize=11;fontStyle=0;fontColor=#FFFFFF;align=center" vertex="1" parent="1">
+          <mxGeometry x="1080" y="450" width="240" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- ServiceNow.com -->
+        <mxCell id="snow" value="&lt;b&gt;ServiceNow.com&lt;/b&gt;&#10;(External SaaS)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;verticalAlign=top;fontSize=11;fontStyle=0;align=center" vertex="1" parent="1">
+          <mxGeometry x="1080" y="630" width="240" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Internal.pypi.com -->
+        <mxCell id="pypi" value="&lt;b&gt;Internal.pypi.com&lt;/b&gt;&#10;(Internal Package Repository)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontSize=11;fontStyle=0;align=center" vertex="1" parent="1">
+          <mxGeometry x="1080" y="780" width="240" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ================= CONNECTIONS ================= -->
+
+        <!-- Load Balancer -> Web server (3000) -->
+        <mxCell id="c_lb_web" value="3000" style="endArrow=classic;html=1;rounded=0;strokeColor=#E8A33D;strokeWidth=2;fontSize=11;fontStyle=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0" edge="1" parent="1" source="lb" target="web">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Web server -> Command runner (4400) -->
+        <mxCell id="c_web_cmd" value="4400" style="endArrow=classic;html=1;rounded=0;strokeColor=#E8A33D;strokeWidth=2;fontSize=11;fontStyle=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="web" target="cmd">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Background worker -> Postgres (5432) -->
+        <mxCell id="c_bw_pg" value="5432" style="endArrow=classic;html=1;rounded=0;strokeColor=#E8A33D;strokeWidth=2;fontSize=11;fontStyle=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="bw" target="pg">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Background worker -> Redis (6379) -->
+        <mxCell id="c_bw_redis" value="6379" style="endArrow=classic;html=1;rounded=0;strokeColor=#E8A33D;strokeWidth=2;fontSize=11;fontStyle=1;exitX=1;exitY=1;entryX=0;entryY=0.5" edge="1" parent="1" source="bw" target="redis">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="835" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Web server -> LLM provider (443, optional) -->
+        <mxCell id="c_web_llm" value="443" style="endArrow=classic;html=1;rounded=0;strokeColor=#E8A33D;strokeWidth=2;fontSize=11;fontStyle=1;dashed=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5" edge="1" parent="1" source="web" target="llm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Background worker -> SMTP (587) -->
+        <mxCell id="c_bw_smtp" value="587 (SMTP)" style="endArrow=classic;html=1;rounded=0;strokeColor=#E8A33D;strokeWidth=2;fontSize=11;fontStyle=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5" edge="1" parent="1" source="bw" target="smtp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Command runner -> Internal.pypi.com (443/80) - OUTBOUND from VPC -->
+        <mxCell id="c_cmd_pypi" value="443 / 80&#10;(HTTPS / HTTP)" style="endArrow=classic;html=1;rounded=0;strokeColor=#E8A33D;strokeWidth=2;fontSize=11;fontStyle=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="cmd" target="pypi">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1020" y="505" />
+              <mxPoint x="1020" y="815" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Web server -> Amazon Bedrock (443 PrivateLink) - OUTBOUND from VPC -->
+        <mxCell id="c_web_bedrock" value="443 (HTTPS)&#10;PrivateLink" style="endArrow=classic;html=1;rounded=0;strokeColor=#E8A33D;strokeWidth=2;fontSize=11;fontStyle=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="web" target="bedrock">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1040" y="505" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Background worker -> ServiceNow.com (443) - OUTBOUND from VPC -->
+        <mxCell id="c_bw_snow" value="443 (HTTPS)" style="endArrow=classic;html=1;rounded=0;strokeColor=#E8A33D;strokeWidth=2;fontSize=11;fontStyle=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="bw" target="snow">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1040" y="655" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Background worker -> Slack (443) - OUTBOUND from VPC -->
+        <mxCell id="c_bw_slack" value="443 (HTTPS)" style="endArrow=classic;html=1;rounded=0;strokeColor=#E8A33D;strokeWidth=2;fontSize=11;fontStyle=1;exitX=1;exitY=0;entryX=0;entryY=0.5" edge="1" parent="1" source="bw" target="slack_grp">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1040" y="330" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Outbound label on VPC edge -->
+        <mxCell id="outbound_label" value="&lt;b&gt;&lt;i&gt;Outbound from ECM VPC&lt;/i&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#5D2A8C" vertex="1" parent="1">
+          <mxGeometry x="990" y="215" width="180" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ================= NOTES / AWS SERVICES USED ================= -->
+
+        <!-- AWS Services Cloud -->
+        <mxCell id="aws_cloud" value="&lt;b&gt;AWS Services Used&lt;/b&gt;&#10;&#10;• EC2 (Web / Workers / Runners)&#10;• VPC&#10;• RDS (Postgres)&#10;• ElastiCache (Redis)&#10;• ELB / ALB&#10;• PrivateLink (Bedrock)&#10;• Bedrock (bedrock-agent-runtime)&#10;• VPC Endpoint / NAT Gateway" style="shape=cloud;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;fontSize=10;align=left;spacingLeft=30" vertex="1" parent="1">
+          <mxGeometry x="430" y="980" width="300" height="170" as="geometry" />
+        </mxCell>
+
+        <!-- AWS Services arrow from VPC down to cloud -->
+        <mxCell id="aws_arrow" value="AWS Services" style="endArrow=classic;html=1;rounded=0;strokeColor=#000000;strokeWidth=1;fontSize=10;endFill=1;startArrow=classic;startFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0" edge="1" parent="1" source="vpc" target="aws_cloud">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ECM Inherited Services Note (bottom-left) -->
+        <mxCell id="inherited" value="&lt;b&gt;The ECM Tenant is utilizing the&#10;following items:&lt;/b&gt;&#10;&#10;• All logging going to SPLUNK&#10;• Leidos Corporate Managed/Patched&#10;   AWS AMI Images&#10;• Nessus Scanning&#10;• SAST (Checkmarx)&#10;• DAST Scanning (Netsparker)&#10;• SCCM Patch Management&#10;• CMDB&#10;• Leidos Corporate Active Directory&#10;• CyberArk Privileged Credential&#10;   Storage&#10;• CloudStrike AV" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=top;align=left;fontSize=10;spacingLeft=6" vertex="1" parent="1">
+          <mxGeometry x="80" y="980" width="300" height="220" as="geometry" />
+        </mxCell>
+
+        <!-- ECM Inherited Services label arrow -->
+        <mxCell id="inherited_label" value="&lt;b&gt;ECM Inherited Services&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="105" y="955" width="250" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ================= LEGEND ================= -->
+        <mxCell id="legend" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;verticalAlign=top;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="1080" y="880" width="340" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_title" value="&lt;b&gt;Legend&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1080" y="885" width="340" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_orange" value="&lt;font color='#E8A33D'&gt;━━━━━&lt;/font&gt; &lt;b&gt;Orange Line&lt;/b&gt; = Standard User / Application" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1095" y="920" width="320" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_blue" value="&lt;font color='#5B7FBD'&gt;━━━━━&lt;/font&gt; &lt;b&gt;Blue Line&lt;/b&gt; = Management / Privileged Users" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1095" y="942" width="320" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_dash" value="&lt;b&gt;- - -&lt;/b&gt; Dashed box/line = Optional component" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1095" y="965" width="320" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_note" value="This diagram does not show the default CIO/&#10;Enterprise Services, Ports and Protocols that&#10;are a part of LeidosNet/ECM (logging,&#10;patching, Active Directory, scanning and&#10;various security agents)." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1095" y="995" width="320" height="100" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
