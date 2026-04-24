@@ -1,0 +1,403 @@
+<mxfile host="app.diagrams.net" modified="2026-04-24T10:30:00.000Z" agent="Claude" version="22.1.16" type="device">
+  <diagram name="GCP Asset Reporting" id="gcp-asset-arch">
+    <mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1754" pageHeight="1240" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ================= TITLE ================= -->
+        <mxCell id="title" value="Asset Reporting &amp; Unified Source-of-Truth — GCP Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#1A73E8" vertex="1" parent="1">
+          <mxGeometry x="300" y="20" width="1150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="Cross-tool hostname/asset reconciliation with AI query agent and historic reporting" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="300" y="60" width="1150" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- ================= LAYER CONTAINERS ================= -->
+        <mxCell id="layer-sources" value="External Data Sources" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1A73E8;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=8;fontColor=#1A73E8" vertex="1" parent="1">
+          <mxGeometry x="40" y="110" width="220" height="900" as="geometry" />
+        </mxCell>
+        <mxCell id="layer-ingest" value="Ingestion" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E6F4EA;strokeColor=#188038;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=8;fontColor=#188038" vertex="1" parent="1">
+          <mxGeometry x="290" y="110" width="220" height="900" as="geometry" />
+        </mxCell>
+        <mxCell id="layer-process" value="Processing &amp; Matching" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FEF7E0;strokeColor=#F9AB00;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=8;fontColor=#B06000" vertex="1" parent="1">
+          <mxGeometry x="540" y="110" width="220" height="900" as="geometry" />
+        </mxCell>
+        <mxCell id="layer-store" value="Storage (Google-native)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3E8FD;strokeColor=#8430CE;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=8;fontColor=#8430CE" vertex="1" parent="1">
+          <mxGeometry x="790" y="110" width="220" height="900" as="geometry" />
+        </mxCell>
+        <mxCell id="layer-ai" value="AI Agent &amp; Reporting" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FCE8E6;strokeColor=#D93025;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=8;fontColor=#D93025" vertex="1" parent="1">
+          <mxGeometry x="1040" y="110" width="220" height="900" as="geometry" />
+        </mxCell>
+        <mxCell id="layer-consume" value="Consumers" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F1F3F4;strokeColor=#5F6368;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=8;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="1290" y="110" width="220" height="900" as="geometry" />
+        </mxCell>
+
+        <!-- ================= EXTERNAL SOURCES ================= -->
+        <!-- These are non-GCP tools, use simple styled icons with labels -->
+        <mxCell id="src-qualys" value="Qualys&#xa;(Vuln scanner)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#C41E3A;strokeWidth=2;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="70" y="160" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="src-cs" value="CrowdStrike&#xa;(EDR)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ED1C24;strokeWidth=2;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="70" y="250" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="src-cmdb" value="CMDB&#xa;(ServiceNow etc.)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#62D84E;strokeWidth=2;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="70" y="340" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="src-intune" value="Intune / SCCM&#xa;(EUC management)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0078D4;strokeWidth=2;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="70" y="430" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="src-ad" value="Active Directory&#xa;(identity / servers)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0078D4;strokeWidth=2;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="70" y="520" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="src-pbi" value="Legacy PowerBI&#xa;(existing reports)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#F2C811;strokeWidth=2;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="70" y="610" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="src-more" value="+ Future source&#xa;(drop-in pattern)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9AA0A6;strokeWidth=2;fontSize=11;verticalAlign=middle;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="700" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="src-note" value="Pulled per source:&#xa;hostname, serial,&#xa;last-seen, attrs" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="70" y="780" width="160" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- ================= INGESTION — GCP ICONS ================= -->
+        <!-- Cloud Scheduler -->
+        <mxCell id="ing-scheduler" value="Cloud Scheduler" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;labelBackgroundColor=#E6F4EA;shape=mxgraph.gcp2.cloud_scheduler;" vertex="1" parent="1">
+          <mxGeometry x="350" y="160" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ing-sched-cap" value="Cron triggers" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="320" y="220" width="160" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Cloud Run Pullers -->
+        <mxCell id="ing-pullers" value="Cloud Run" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;labelBackgroundColor=#E6F4EA;shape=mxgraph.gcp2.cloud_run;" vertex="1" parent="1">
+          <mxGeometry x="350" y="300" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ing-pullers-cap" value="Pullers — one service per source&#xa;(API clients, auth, rate-limit)" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="305" y="360" width="190" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- Secret Manager -->
+        <mxCell id="ing-secret" value="Secret Manager" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;labelBackgroundColor=#E6F4EA;shape=mxgraph.gcp2.secret_manager;" vertex="1" parent="1">
+          <mxGeometry x="350" y="440" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ing-secret-cap" value="Source API keys" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="320" y="500" width="160" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Pub/Sub -->
+        <mxCell id="ing-pubsub" value="Pub/Sub" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;labelBackgroundColor=#E6F4EA;shape=mxgraph.gcp2.pub_sub;" vertex="1" parent="1">
+          <mxGeometry x="350" y="580" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ing-pubsub-cap" value="Topic per source (raw events)&#xa;decouples producers/consumers" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="305" y="640" width="190" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- Ingestion scale-out note -->
+        <mxCell id="ing-scale" value="➕ Add a new puller =&#xa;onboard a new tool.&#xa;Zero changes downstream." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F4EA;strokeColor=#188038;strokeWidth=1;dashed=1;fontSize=10;fontColor=#188038;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="310" y="860" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ================= PROCESSING — GCP ICONS ================= -->
+        <!-- Dataflow -->
+        <mxCell id="proc-dataflow" value="Dataflow" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;labelBackgroundColor=#FEF7E0;shape=mxgraph.gcp2.dataflow;" vertex="1" parent="1">
+          <mxGeometry x="600" y="160" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="proc-df-cap" value="Streaming ETL&#xa;• normalise schema&#xa;• clean / dedupe" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="555" y="220" width="190" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Matching Service (Cloud Run) -->
+        <mxCell id="proc-match" value="Cloud Run" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;labelBackgroundColor=#FEF7E0;shape=mxgraph.gcp2.cloud_run;" vertex="1" parent="1">
+          <mxGeometry x="600" y="320" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="proc-match-cap" value="Matching Service&#xa;keyed on &lt;b&gt;serial&lt;/b&gt;&#xa;(hostnames unreliable)" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="555" y="380" width="190" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Cloud Functions (Enrichment) -->
+        <mxCell id="proc-enrich" value="Cloud Functions" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;labelBackgroundColor=#FEF7E0;shape=mxgraph.gcp2.cloud_functions;" vertex="1" parent="1">
+          <mxGeometry x="600" y="480" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="proc-enrich-cap" value="Enrichment&#xa;cross-tool joins,&#xa;gap detection" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="555" y="540" width="190" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Cloud Monitoring (DQ / feedback) -->
+        <mxCell id="proc-dq" value="Cloud Monitoring" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;labelBackgroundColor=#FEF7E0;shape=mxgraph.gcp2.cloud_monitoring;" vertex="1" parent="1">
+          <mxGeometry x="600" y="640" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="proc-dq-cap" value="Data-quality checks&#xa;feedback loop: retired-but-live,&#xa;live-but-retired alerts" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="555" y="700" width="190" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="proc-scale" value="🔄 Dataflow auto-scales workers&#xa;with volume; Cloud Run scales&#xa;0 → N per service." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF7E0;strokeColor=#F9AB00;strokeWidth=1;dashed=1;fontSize=10;fontColor=#B06000;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="560" y="860" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ================= STORAGE — GCP ICONS ================= -->
+        <!-- BigQuery -->
+        <mxCell id="sto-bq" value="BigQuery" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=1;labelBackgroundColor=#F3E8FD;shape=mxgraph.gcp2.bigquery;" vertex="1" parent="1">
+          <mxGeometry x="855" y="160" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="sto-bq-cap" value="&lt;b&gt;Primary warehouse&lt;/b&gt;&#xa;• table per tool (raw)&#xa;• unified asset view&#xa;• partitioned by date" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=0;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="800" y="220" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Cloud Spanner -->
+        <mxCell id="sto-spanner" value="Cloud Spanner" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=1;labelBackgroundColor=#F3E8FD;shape=mxgraph.gcp2.cloud_spanner;" vertex="1" parent="1">
+          <mxGeometry x="855" y="330" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="sto-spanner-cap" value="&lt;b&gt;Matched asset table&lt;/b&gt;&#xa;• transactional key store&#xa;• serial → unified ID&#xa;• low-latency lookups" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=0;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="800" y="390" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Cloud Storage -->
+        <mxCell id="sto-gcs" value="Cloud Storage" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=1;labelBackgroundColor=#F3E8FD;shape=mxgraph.gcp2.cloud_storage;" vertex="1" parent="1">
+          <mxGeometry x="855" y="500" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="sto-gcs-cap" value="&lt;b&gt;Historic archive&lt;/b&gt;&#xa;• raw pulls retained&#xa;• lifecycle policies&#xa;• Nearline / Coldline tiers" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=0;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="800" y="560" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Dataplex -->
+        <mxCell id="sto-dataplex" value="Dataplex" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=1;labelBackgroundColor=#F3E8FD;shape=mxgraph.gcp2.dataplex;" vertex="1" parent="1">
+          <mxGeometry x="855" y="670" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="sto-dataplex-cap" value="Schema registry,&#xa;lineage, governance,&#xa;policy enforcement" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=0;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="800" y="730" width="200" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="sto-scale" value="📈 BQ: PB-scale, slot auto-scaling.&#xa;Spanner: multi-region, horizontal.&#xa;GCS: lifecycle to Coldline/Archive." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E8FD;strokeColor=#8430CE;strokeWidth=1;dashed=1;fontSize=10;fontColor=#8430CE;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="810" y="860" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ================= AI & REPORTING — GCP ICONS ================= -->
+        <!-- Vertex AI -->
+        <mxCell id="ai-vertex" value="Vertex AI" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=1;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.vertex_ai;" vertex="1" parent="1">
+          <mxGeometry x="1105" y="160" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-vertex-cap" value="Agent Builder (Gemini)&#xa;NL → SQL over BQ/Spanner&#xa;e.g. &quot;seen in Qualys but not CS&quot;" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="1050" y="220" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- API Gateway / Cloud Run Query API -->
+        <mxCell id="ai-api" value="API Gateway" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.api_gateway;" vertex="1" parent="1">
+          <mxGeometry x="1105" y="320" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-api-cap" value="Query API&#xa;auth + guardrails + rate-limit" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="1050" y="380" width="200" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- Looker -->
+        <mxCell id="ai-looker" value="Looker" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=1;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.looker;" vertex="1" parent="1">
+          <mxGeometry x="1105" y="460" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-looker-cap" value="&lt;b&gt;Historic reporting&lt;/b&gt;&#xa;• fixed dashboards&#xa;• trend &amp; drift reports" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=0;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="1050" y="520" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- App Engine / UI -->
+        <mxCell id="ai-ui" value="App Engine" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.app_engine;" vertex="1" parent="1">
+          <mxGeometry x="1105" y="620" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-ui-cap" value="Chat front-end&#xa;web UI" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="1050" y="680" width="200" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- Cloud IAM - security wrapper -->
+        <mxCell id="ai-iam" value="Cloud IAM" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.identity_and_access_management;" vertex="1" parent="1">
+          <mxGeometry x="1105" y="750" width="50" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-iam-cap" value="Auth/AuthZ across&#xa;agent, API, dashboards" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="1050" y="810" width="200" height="35" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ai-scale" value="🤖 AI = ad-hoc exploration.&#xa;Looker = trusted, repeatable&#xa;reporting. IAM fronts both." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE8E6;strokeColor=#D93025;strokeWidth=1;dashed=1;fontSize=10;fontColor=#D93025;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="870" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ================= CONSUMERS ================= -->
+        <mxCell id="con-sec" value="Security Team" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fontSize=11;fontColor=#5F6368;strokeColor=#5F6368;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1370" y="160" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="con-sec-cap" value="(vuln ↔ EDR coverage)" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="1310" y="230" width="160" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="con-infra" value="Infrastructure / EUC" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fontSize=11;fontColor=#5F6368;strokeColor=#5F6368;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1370" y="320" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="con-infra-cap" value="(CMDB drift, retirements)" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="1310" y="390" width="160" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="con-biz" value="Business / Exec" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fontSize=11;fontColor=#5F6368;strokeColor=#5F6368;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1370" y="480" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="con-biz-cap" value="(Looker dashboards)" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="1310" y="550" width="160" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="con-audit" value="Audit / Compliance" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fontSize=11;fontColor=#5F6368;strokeColor=#5F6368;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1370" y="640" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="con-audit-cap" value="(historic lookups, evidence)" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="1310" y="710" width="160" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ================= EDGES ================= -->
+        <!-- Sources → Pullers -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#1A73E8;strokeWidth=1.5;" edge="1" parent="1" source="src-qualys" target="ing-pullers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#1A73E8;strokeWidth=1.5;" edge="1" parent="1" source="src-cs" target="ing-pullers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#1A73E8;strokeWidth=1.5;" edge="1" parent="1" source="src-cmdb" target="ing-pullers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#1A73E8;strokeWidth=1.5;" edge="1" parent="1" source="src-intune" target="ing-pullers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#1A73E8;strokeWidth=1.5;" edge="1" parent="1" source="src-ad" target="ing-pullers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#1A73E8;strokeWidth=1.5;" edge="1" parent="1" source="src-pbi" target="ing-pullers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#9AA0A6;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="src-more" target="ing-pullers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Scheduler triggers Pullers -->
+        <mxCell id="e8" value="triggers" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#188038;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="ing-scheduler" target="ing-pullers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Secret Manager → Pullers -->
+        <mxCell id="e9" value="creds" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#188038;strokeWidth=1.5;dashed=1;fontSize=10;" edge="1" parent="1" source="ing-secret" target="ing-pullers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Pullers → Pub/Sub -->
+        <mxCell id="e10" value="publish" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#188038;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="ing-pullers" target="ing-pubsub">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Pub/Sub → Dataflow -->
+        <mxCell id="e11" value="subscribe" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#188038;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="ing-pubsub" target="proc-dataflow">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Processing chain -->
+        <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#F9AB00;strokeWidth=1.5;" edge="1" parent="1" source="proc-dataflow" target="proc-match">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#F9AB00;strokeWidth=1.5;" edge="1" parent="1" source="proc-match" target="proc-enrich">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#F9AB00;strokeWidth=1.5;" edge="1" parent="1" source="proc-enrich" target="proc-dq">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Storage edges -->
+        <mxCell id="e15" value="raw per-tool tables" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="proc-dataflow" target="sto-bq">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" value="unified asset rows" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="proc-match" target="sto-spanner">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" value="archive raw" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;fontSize=10;dashed=1;" edge="1" parent="1" source="proc-dataflow" target="sto-gcs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" value="alerts" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;fontSize=10;dashed=1;" edge="1" parent="1" source="proc-dq" target="sto-bq">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Dataplex governance (dashed, no arrows) -->
+        <mxCell id="e19" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=none;strokeColor=#8430CE;strokeWidth=1;dashed=1;" edge="1" parent="1" source="sto-dataplex" target="sto-bq">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=none;strokeColor=#8430CE;strokeWidth=1;dashed=1;" edge="1" parent="1" source="sto-dataplex" target="sto-spanner">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Storage → AI -->
+        <mxCell id="e21" value="SQL queries" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="sto-bq" target="ai-vertex">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" value="lookups" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="sto-spanner" target="ai-api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;" edge="1" parent="1" source="sto-bq" target="ai-looker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e24" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="sto-gcs" target="ai-looker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- AI internal -->
+        <mxCell id="e25" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;" edge="1" parent="1" source="ai-vertex" target="ai-api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e26" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;" edge="1" parent="1" source="ai-api" target="ai-ui">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e27" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=none;strokeColor=#D93025;strokeWidth=1;dashed=1;" edge="1" parent="1" source="ai-iam" target="ai-api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e28" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=none;strokeColor=#D93025;strokeWidth=1;dashed=1;" edge="1" parent="1" source="ai-iam" target="ai-looker">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- AI/Looker → Consumers -->
+        <mxCell id="e29" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#5F6368;strokeWidth=1.5;" edge="1" parent="1" source="ai-ui" target="con-sec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e30" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#5F6368;strokeWidth=1.5;" edge="1" parent="1" source="ai-ui" target="con-infra">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e31" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#5F6368;strokeWidth=1.5;" edge="1" parent="1" source="ai-looker" target="con-biz">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e32" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#5F6368;strokeWidth=1.5;" edge="1" parent="1" source="ai-looker" target="con-audit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ================= SCALE-OUT LEGEND ================= -->
+        <mxCell id="legend" value="Scale-out considerations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1A73E8;strokeWidth=2;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=8;fontColor=#1A73E8" vertex="1" parent="1">
+          <mxGeometry x="40" y="1040" width="1470" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-1" value="➕ &lt;b&gt;New source&lt;/b&gt; → drop in a Cloud Run puller + Pub/Sub topic. Dataflow picks it up via a new subscription. Zero downstream changes." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="60" y="1075" width="700" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-2" value="📊 &lt;b&gt;Volume&lt;/b&gt; → Pub/Sub &amp; Dataflow auto-scale. BigQuery slot-based scaling. Cloud Run 0 → N per service independently." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="60" y="1097" width="700" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-3" value="🗄️ &lt;b&gt;Retention&lt;/b&gt; → BQ date-partitioning + clustering on (serial, tool). GCS lifecycle rules tier cold data to Nearline/Coldline/Archive." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="60" y="1119" width="700" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-4" value="🌍 &lt;b&gt;HA / geography&lt;/b&gt; → Spanner multi-region for matched table. BQ multi-region dataset. Pub/Sub global topics optional." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="60" y="1141" width="700" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-5" value="🔑 &lt;b&gt;Matching cost&lt;/b&gt; → serial indexed in Spanner for O(1) lookup. Heavy joins pushed down to BigQuery." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="60" y="1163" width="700" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-6" value="🤖 &lt;b&gt;AI load&lt;/b&gt; → Vertex AI Agent Builder scales horizontally. API Gateway rate-limits per user. Cache common NL→SQL translations." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="780" y="1075" width="700" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-7" value="📚 &lt;b&gt;Governance&lt;/b&gt; → Dataplex tracks schema, lineage, quality across sources. Essential as tool count grows." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="780" y="1097" width="700" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-8" value="🔐 &lt;b&gt;Security&lt;/b&gt; → Cloud IAM for identity; VPC Service Controls around BQ/Spanner; Secret Manager for all tool creds." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="780" y="1119" width="700" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-9" value="🔄 &lt;b&gt;Feedback loop&lt;/b&gt; → DQ alerts surface retired-but-live / live-but-retired drift, feeding back to CMDB owners (Dan's EUC point)." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="780" y="1141" width="700" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-10" value="🔀 &lt;b&gt;Alt path&lt;/b&gt; → if Eric's data taxonomy already exists, attach Vertex AI Agent directly to his dataset (skip ingestion for phase 1)." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="780" y="1163" width="700" height="22" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
