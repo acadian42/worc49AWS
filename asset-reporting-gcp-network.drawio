@@ -1,0 +1,408 @@
+<mxfile host="app.diagrams.net" modified="2026-04-24T10:30:00.000Z" agent="Claude" version="22.1.16" type="device">
+  <diagram name="GCP Network Architecture" id="gcp-network-arch">
+    <mxGraphModel dx="2200" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1500" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ================= TITLE ================= -->
+        <mxCell id="title" value="Asset Reporting Platform — GCP Network Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=22;fontStyle=1;fontColor=#1A73E8" vertex="1" parent="1">
+          <mxGeometry x="300" y="20" width="1300" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="VPC topology, network perimeter, and Private Service Connect path to Google-managed services" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=13;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="300" y="58" width="1300" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- ================= EXTERNAL / INTERNET ZONE ================= -->
+        <mxCell id="internet-zone" value="Internet" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8F9FA;strokeColor=#9AA0A6;strokeWidth=1;verticalAlign=top;fontStyle=1;fontSize=12;spacingTop=6;fontColor=#5F6368;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="100" width="1820" height="130" as="geometry" />
+        </mxCell>
+
+        <!-- External SaaS sources -->
+        <mxCell id="ext-sources-box" value="External SaaS / On-prem Data Sources" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#5F6368;verticalAlign=top;fontStyle=1;fontSize=11;spacingTop=4;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="60" y="135" width="780" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-qualys" value="Qualys&#xa;API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#C41E3A;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="160" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-cs" value="CrowdStrike&#xa;API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ED1C24;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="185" y="160" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-cmdb" value="CMDB&#xa;API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#62D84E;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="290" y="160" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-intune" value="Intune/SCCM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0078D4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="395" y="160" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-ad" value="Active&#xa;Directory" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0078D4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="500" y="160" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-pbi" value="PowerBI&#xa;(legacy)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#F2C811;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="605" y="160" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-more" value="+ future&#xa;sources" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9AA0A6;fontSize=10;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="710" y="160" width="90" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- End users -->
+        <mxCell id="ext-users-box" value="End Users" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#5F6368;verticalAlign=top;fontStyle=1;fontSize=11;spacingTop=4;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="1080" y="135" width="760" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="u-sec" value="Security" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fontSize=9;fontColor=#5F6368;strokeColor=#5F6368;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="160" width="22" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="u-infra" value="Infra/EUC" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fontSize=9;fontColor=#5F6368;strokeColor=#5F6368;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="160" width="22" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="u-biz" value="Business" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fontSize=9;fontColor=#5F6368;strokeColor=#5F6368;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1470" y="160" width="22" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="u-audit" value="Audit" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fontSize=9;fontColor=#5F6368;strokeColor=#5F6368;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1630" y="160" width="22" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- ================= GCP PROJECT CONTAINER ================= -->
+        <mxCell id="gcp-project" value="GCP Project: asset-reporting-prod" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1A73E8;strokeWidth=2;verticalAlign=top;fontStyle=1;fontSize=14;spacingTop=10;spacingLeft=15;align=left;fontColor=#1A73E8" vertex="1" parent="1">
+          <mxGeometry x="40" y="260" width="1820" height="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="gcp-project-badge" value="☁ Google Cloud" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1A73E8;fontSize=10;fontStyle=1;fontColor=#1A73E8;" vertex="1" parent="1">
+          <mxGeometry x="1730" y="270" width="120" height="24" as="geometry" />
+        </mxCell>
+
+        <!-- ============== EDGE / INGRESS LANE ============== -->
+        <mxCell id="edge-lane" value="Edge / Ingress &amp; Egress" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FCE8E6;strokeColor=#D93025;strokeWidth=1;verticalAlign=top;fontStyle=1;fontSize=11;spacingTop=4;fontColor=#D93025;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="70" y="305" width="1760" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Cloud Armor -->
+        <mxCell id="cloud-armor" value="Cloud Armor" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.cloud_armor;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="330" width="40" height="36" as="geometry" />
+        </mxCell>
+        <!-- External HTTPS LB -->
+        <mxCell id="ext-lb" value="External HTTPS LB" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.cloud_load_balancing;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="330" width="40" height="36" as="geometry" />
+        </mxCell>
+        <!-- IAP -->
+        <mxCell id="iap" value="Identity-Aware Proxy" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.identity_aware_proxy;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="330" width="40" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- Cloud NAT (egress) -->
+        <mxCell id="cloud-nat" value="Cloud NAT" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.cloud_nat;" vertex="1" parent="1">
+          <mxGeometry x="250" y="330" width="40" height="36" as="geometry" />
+        </mxCell>
+        <!-- Cloud Router -->
+        <mxCell id="cloud-router" value="Cloud Router" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.cloud_router;" vertex="1" parent="1">
+          <mxGeometry x="380" y="330" width="40" height="36" as="geometry" />
+        </mxCell>
+        <!-- VPN / Interconnect (optional) -->
+        <mxCell id="cloud-vpn" value="Cloud VPN / Interconnect&#xa;(optional, for private sources)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=2;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.cloud_interconnect;" vertex="1" parent="1">
+          <mxGeometry x="530" y="330" width="40" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- Egress / Ingress labels -->
+        <mxCell id="egress-label" value="⇦ Egress path (pull from external SaaS)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#D93025" vertex="1" parent="1">
+          <mxGeometry x="80" y="380" width="400" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ingress-label" value="Ingress path (users) ⇨" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#D93025" vertex="1" parent="1">
+          <mxGeometry x="1450" y="380" width="370" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ============== MAIN VPC CONTAINER ============== -->
+        <mxCell id="vpc" value="VPC: asset-vpc (custom mode, 10.10.0.0/16)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1A73E8;strokeWidth=1.5;verticalAlign=top;fontStyle=1;fontSize=12;spacingTop=8;spacingLeft=12;align=left;fontColor=#1A73E8" vertex="1" parent="1">
+          <mxGeometry x="70" y="425" width="1100" height="690" as="geometry" />
+        </mxCell>
+
+        <!-- Firewall rules label -->
+        <mxCell id="firewall" value="Firewall Rules: deny-all default; allow egress to source APIs; allow IAP→app-snet:443; allow subnet-to-PSC" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF7E0;strokeColor=#F9AB00;strokeWidth=1;fontSize=10;fontColor=#B06000;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="90" y="455" width="1060" height="26" as="geometry" />
+        </mxCell>
+
+        <!-- ============ REGION 1 (PRIMARY) ============ -->
+        <mxCell id="region1" value="Region: europe-west2 (London) — primary" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8F9FA;strokeColor=#1A73E8;strokeWidth=1;verticalAlign=top;fontStyle=1;fontSize=11;spacingTop=5;spacingLeft=8;align=left;fontColor=#1A73E8;dashed=4" vertex="1" parent="1">
+          <mxGeometry x="90" y="495" width="1060" height="450" as="geometry" />
+        </mxCell>
+
+        <!-- ============ SUBNET: ingest ============ -->
+        <mxCell id="snet-ingest" value="Subnet: ingest-snet&#xa;10.10.1.0/24" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E6F4EA;strokeColor=#188038;strokeWidth=1;verticalAlign=top;fontStyle=1;fontSize=10;spacingTop=4;fontColor=#188038;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="110" y="530" width="330" height="395" as="geometry" />
+        </mxCell>
+        <!-- Resources in ingest subnet -->
+        <mxCell id="r-scheduler" value="Cloud Scheduler" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#E6F4EA;shape=mxgraph.gcp2.cloud_scheduler;" vertex="1" parent="1">
+          <mxGeometry x="150" y="580" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="r-pullers" value="Cloud Run&#xa;(pullers — one svc per source)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#E6F4EA;shape=mxgraph.gcp2.cloud_run;" vertex="1" parent="1">
+          <mxGeometry x="150" y="695" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="r-funcs" value="Cloud Functions&#xa;(light transforms)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#E6F4EA;shape=mxgraph.gcp2.cloud_functions;" vertex="1" parent="1">
+          <mxGeometry x="150" y="820" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="r-conn-ingest" value="Serverless VPC&#xa;Access Connector" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=2;labelBackgroundColor=#E6F4EA;shape=mxgraph.gcp2.virtual_private_cloud;" vertex="1" parent="1">
+          <mxGeometry x="340" y="580" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="r-conn-ingest-note" value="Egress via&#xa;Cloud NAT&#xa;to source APIs" style="text;html=1;strokeColor=none;fillColor=none;align=center;whiteSpace=wrap;fontSize=9;fontStyle=2;fontColor=#188038" vertex="1" parent="1">
+          <mxGeometry x="310" y="695" width="100" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ============ SUBNET: process ============ -->
+        <mxCell id="snet-process" value="Subnet: process-snet&#xa;10.10.2.0/24" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FEF7E0;strokeColor=#F9AB00;strokeWidth=1;verticalAlign=top;fontStyle=1;fontSize=10;spacingTop=4;fontColor=#B06000;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="460" y="530" width="330" height="395" as="geometry" />
+        </mxCell>
+        <mxCell id="r-dataflow" value="Dataflow&#xa;(streaming workers in VPC)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#FEF7E0;shape=mxgraph.gcp2.dataflow;" vertex="1" parent="1">
+          <mxGeometry x="510" y="580" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="r-match" value="Cloud Run&#xa;(matching service — serial key)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#FEF7E0;shape=mxgraph.gcp2.cloud_run;" vertex="1" parent="1">
+          <mxGeometry x="510" y="720" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="r-gke" value="(Optional) GKE&#xa;for heavier workloads" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=2;labelBackgroundColor=#FEF7E0;shape=mxgraph.gcp2.google_kubernetes_engine;" vertex="1" parent="1">
+          <mxGeometry x="510" y="850" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="r-conn-process" value="Serverless VPC&#xa;Access Connector" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=2;labelBackgroundColor=#FEF7E0;shape=mxgraph.gcp2.virtual_private_cloud;" vertex="1" parent="1">
+          <mxGeometry x="680" y="580" width="40" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- ============ SUBNET: app ============ -->
+        <mxCell id="snet-app" value="Subnet: app-snet&#xa;10.10.3.0/24" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FCE8E6;strokeColor=#D93025;strokeWidth=1;verticalAlign=top;fontStyle=1;fontSize=10;spacingTop=4;fontColor=#D93025;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="810" y="530" width="320" height="395" as="geometry" />
+        </mxCell>
+        <mxCell id="r-apigw" value="API Gateway&#xa;(Query API)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.api_gateway;" vertex="1" parent="1">
+          <mxGeometry x="860" y="580" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="r-app" value="App Engine&#xa;(UI / chat front-end)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.app_engine;" vertex="1" parent="1">
+          <mxGeometry x="860" y="720" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="r-internal-lb" value="Internal HTTPS LB" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.cloud_load_balancing;" vertex="1" parent="1">
+          <mxGeometry x="860" y="850" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="r-conn-app" value="Serverless VPC&#xa;Access Connector" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=2;labelBackgroundColor=#FCE8E6;shape=mxgraph.gcp2.virtual_private_cloud;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="580" width="40" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- ============ REGION 2 (DR) ============ -->
+        <mxCell id="region2" value="Region: europe-west1 (Belgium) — DR / read replicas" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8F9FA;strokeColor=#1A73E8;strokeWidth=1;verticalAlign=top;fontStyle=1;fontSize=11;spacingTop=5;spacingLeft=8;align=left;fontColor=#1A73E8;dashed=4" vertex="1" parent="1">
+          <mxGeometry x="90" y="960" width="1060" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="r2-snet" value="DR subnets (mirror of primary: ingest / process / app, 10.20.x.x)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F3F4;strokeColor=#5F6368;strokeWidth=1;fontSize=10;fontStyle=2;fontColor=#5F6368;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="110" y="995" width="680" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="r2-note" value="Failover via DNS / global LB.&#xa;Dataflow jobs restart in-region.&#xa;Spanner multi-region handles&#xa;cross-region replication itself." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="820" y="995" width="320" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- ============== PRIVATE SERVICE CONNECT LANE ============== -->
+        <mxCell id="psc-lane" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3E8FD;strokeColor=#8430CE;strokeWidth=1.5;verticalAlign=top;fontStyle=1;fontSize=11;spacingTop=5;fontColor=#8430CE;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="1190" y="425" width="640" height="690" as="geometry" />
+        </mxCell>
+        <mxCell id="psc-lane-label" value="Private Service Connect endpoints&#xa;&amp; VPC Service Controls perimeter" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=11;fontStyle=1;fontColor=#8430CE" vertex="1" parent="1">
+          <mxGeometry x="1200" y="430" width="620" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- PSC endpoint icons row -->
+        <mxCell id="psc-endpoint" value="PSC Endpoints&#xa;(in VPC, route to Google services)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#F3E8FD;shape=mxgraph.gcp2.private_service_connect;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="475" width="40" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- VPC-SC perimeter (inner box) -->
+        <mxCell id="vpcsc" value="VPC Service Controls perimeter — blocks data exfiltration" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#D93025;strokeWidth=2;verticalAlign=top;fontStyle=1;fontSize=10;spacingTop=5;fontColor=#D93025;dashed=2" vertex="1" parent="1">
+          <mxGeometry x="1210" y="555" width="610" height="535" as="geometry" />
+        </mxCell>
+
+        <!-- Google-managed services (inside VPC-SC perimeter) -->
+        <mxCell id="svc-bq" value="BigQuery&#xa;(primary warehouse,&#xa;table-per-tool + unified view)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;shape=mxgraph.gcp2.bigquery;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="600" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="svc-spanner" value="Cloud Spanner&#xa;(matched asset table,&#xa;serial → unified ID)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;shape=mxgraph.gcp2.cloud_spanner;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="600" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="svc-gcs" value="Cloud Storage&#xa;(historic archive,&#xa;Nearline → Coldline)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;shape=mxgraph.gcp2.cloud_storage;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="600" width="40" height="36" as="geometry" />
+        </mxCell>
+
+        <mxCell id="svc-pubsub" value="Pub/Sub&#xa;(topic per source)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#ffffff;shape=mxgraph.gcp2.pub_sub;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="740" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="svc-secrets" value="Secret Manager&#xa;(source API keys)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#ffffff;shape=mxgraph.gcp2.secret_manager;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="740" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="svc-vertex" value="Vertex AI&#xa;(Agent Builder + Gemini)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;shape=mxgraph.gcp2.vertex_ai;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="740" width="40" height="36" as="geometry" />
+        </mxCell>
+
+        <mxCell id="svc-looker" value="Looker&#xa;(dashboards &amp; reports)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=1;labelBackgroundColor=#ffffff;shape=mxgraph.gcp2.looker;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="880" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="svc-dataplex" value="Dataplex&#xa;(governance / lineage)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#ffffff;shape=mxgraph.gcp2.dataplex;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="880" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="svc-kms" value="Cloud KMS&#xa;(CMEK keys)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#ffffff;shape=mxgraph.gcp2.key_management_service;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="880" width="40" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- Note inside VPC-SC -->
+        <mxCell id="vpcsc-note" value="All services accessed via Private Google Access /&#xa;PSC endpoints — traffic never leaves Google backbone.&#xa;VPC-SC prevents data exfil even with stolen creds." style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#D93025" vertex="1" parent="1">
+          <mxGeometry x="1220" y="1020" width="590" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ============== GLOBAL / PROJECT-WIDE SERVICES ============== -->
+        <mxCell id="global-lane" value="Project-wide services (Identity, Observability, Security)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F1F3F4;strokeColor=#5F6368;strokeWidth=1;verticalAlign=top;fontStyle=1;fontSize=11;spacingTop=5;fontColor=#5F6368;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="70" y="1140" width="1760" height="160" as="geometry" />
+        </mxCell>
+
+        <mxCell id="g-iam" value="Cloud IAM" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#F1F3F4;shape=mxgraph.gcp2.identity_and_access_management;" vertex="1" parent="1">
+          <mxGeometry x="160" y="1180" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="g-logging" value="Cloud Logging" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#F1F3F4;shape=mxgraph.gcp2.cloud_logging;" vertex="1" parent="1">
+          <mxGeometry x="380" y="1180" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="g-mon" value="Cloud Monitoring" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#F1F3F4;shape=mxgraph.gcp2.cloud_monitoring;" vertex="1" parent="1">
+          <mxGeometry x="600" y="1180" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="g-scc" value="Security Command Center" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#F1F3F4;shape=mxgraph.gcp2.security_command_center;" vertex="1" parent="1">
+          <mxGeometry x="830" y="1180" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="g-dns" value="Cloud DNS" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#F1F3F4;shape=mxgraph.gcp2.cloud_dns;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="1180" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="g-build" value="Cloud Build&#xa;(CI/CD)" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#F1F3F4;shape=mxgraph.gcp2.cloud_build;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="1180" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="g-armor-repo" value="Artifact Registry" style="sketch=0;outlineConnect=0;fontColor=#3B3B3B;gradientColor=none;fillColor=#ffffff;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;labelBackgroundColor=#F1F3F4;shape=mxgraph.gcp2.artifact_registry;" vertex="1" parent="1">
+          <mxGeometry x="1540" y="1180" width="40" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="g-note" value="These services attach globally to the project and are enforced regardless of subnet or region. IAM gates all API calls; Logging &amp; Monitoring capture every flow; SCC posture-checks the whole environment." style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontStyle=2;fontColor=#5F6368" vertex="1" parent="1">
+          <mxGeometry x="90" y="1250" width="1720" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ================= EDGES (NETWORK FLOWS) ================= -->
+
+        <!-- External sources → Cloud NAT → Pullers (egress path) -->
+        <mxCell id="ed1" value="HTTPS pull" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;startArrow=classic;strokeColor=#D93025;strokeWidth=1.5;fontSize=10;fontStyle=2;" edge="1" parent="1" source="ext-sources-box" target="cloud-nat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed2" value="NAT egress" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="cloud-nat" target="r-pullers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Users → Armor → LB → IAP → App Engine (ingress path) -->
+        <mxCell id="ed3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;" edge="1" parent="1" source="ext-users-box" target="cloud-armor">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;" edge="1" parent="1" source="cloud-armor" target="ext-lb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;" edge="1" parent="1" source="ext-lb" target="iap">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed6" value="auth" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="iap" target="r-app">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Internal flows: scheduler → pullers → pubsub (via PSC) -->
+        <mxCell id="ed7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#188038;strokeWidth=1.5;" edge="1" parent="1" source="r-scheduler" target="r-pullers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Pullers → VPC Connector → PSC → Pub/Sub -->
+        <mxCell id="ed8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#188038;strokeWidth=1.5;" edge="1" parent="1" source="r-pullers" target="r-conn-ingest">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed9" value="publish (via PSC)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="r-conn-ingest" target="svc-pubsub">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Secrets → Pullers -->
+        <mxCell id="ed10" value="creds (PSC)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;dashed=1;fontSize=10;" edge="1" parent="1" source="svc-secrets" target="r-pullers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Pub/Sub → Dataflow -->
+        <mxCell id="ed11" value="subscribe (PSC)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="svc-pubsub" target="r-dataflow">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Dataflow → Matching → BQ/Spanner/GCS -->
+        <mxCell id="ed12" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#F9AB00;strokeWidth=1.5;" edge="1" parent="1" source="r-dataflow" target="r-match">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed13" value="raw rows (PSC)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="r-conn-process" target="svc-bq">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed14" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#F9AB00;strokeWidth=1.5;" edge="1" parent="1" source="r-dataflow" target="r-conn-process">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed15" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#F9AB00;strokeWidth=1.5;" edge="1" parent="1" source="r-match" target="r-conn-process">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed16" value="matched rows (PSC)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="r-conn-process" target="svc-spanner">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed17" value="archive (PSC)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;dashed=1;fontSize=10;" edge="1" parent="1" source="r-conn-process" target="svc-gcs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- App / API → Vertex / Looker -->
+        <mxCell id="ed18" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;" edge="1" parent="1" source="r-apigw" target="r-app">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed19" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;" edge="1" parent="1" source="r-app" target="r-internal-lb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed20" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#D93025;strokeWidth=1.5;" edge="1" parent="1" source="r-internal-lb" target="r-conn-app">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed21" value="NL query (PSC)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="r-conn-app" target="svc-vertex">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed22" value="SQL (PSC)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="r-conn-app" target="svc-bq">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed23" value="lookups (PSC)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;fontSize=10;" edge="1" parent="1" source="r-conn-app" target="svc-spanner">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Vertex AI queries BQ/Spanner -->
+        <mxCell id="ed24" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="svc-vertex" target="svc-bq">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ed25" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="svc-vertex" target="svc-spanner">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Looker reads BQ -->
+        <mxCell id="ed26" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=classic;strokeColor=#8430CE;strokeWidth=1.5;" edge="1" parent="1" source="svc-looker" target="svc-bq">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ================= SCALE-OUT LEGEND ================= -->
+        <mxCell id="legend" value="Network &amp; Scale-out Considerations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1A73E8;strokeWidth=2;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=8;fontColor=#1A73E8" vertex="1" parent="1">
+          <mxGeometry x="40" y="1340" width="1820" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-n1" value="🌐 &lt;b&gt;VPC topology&lt;/b&gt; — custom-mode VPC, /16 per region. Subnets sized for burst: ingest /24, process /24, app /24. Secondary ranges reserved for GKE pods/services if workloads move there." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="60" y="1375" width="880" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-n2" value="🔒 &lt;b&gt;Private path only&lt;/b&gt; — Serverless VPC Connectors + PSC endpoints for all Google APIs. No public IPs on workloads. VPC-SC perimeter prevents BQ/GCS/Spanner exfil." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="60" y="1397" width="880" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-n3" value="⬇ &lt;b&gt;Egress to external APIs&lt;/b&gt; — all source-API calls leave through Cloud NAT with allow-listed egress; Cloud Router advertises routes. Optional Cloud VPN/Interconnect for private sources (CMDB, AD)." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="60" y="1419" width="880" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-n4" value="⬆ &lt;b&gt;User ingress&lt;/b&gt; — External HTTPS LB → Cloud Armor (WAF, DDoS) → Identity-Aware Proxy (SSO, context-aware) → App Engine. No direct public access to data layers." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="60" y="1441" width="880" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-n5" value="📈 &lt;b&gt;Horizontal scale&lt;/b&gt; — Cloud Run auto-scales 0→N per source; Dataflow workers scale with Pub/Sub backlog; BigQuery slots scale on demand; Spanner nodes added independently." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="960" y="1375" width="880" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-n6" value="🌍 &lt;b&gt;Multi-region&lt;/b&gt; — primary europe-west2, DR europe-west1. Spanner multi-region config = synchronous replication. BQ multi-region dataset. Global HTTPS LB handles failover via health-checks." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="960" y="1397" width="880" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-n7" value="➕ &lt;b&gt;Onboard a new source&lt;/b&gt; — add a Cloud Run service in ingest-snet + a Pub/Sub topic. Firewall rule &amp; NAT egress allow-list updated. No VPC changes." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="960" y="1419" width="880" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-n8" value="🔐 &lt;b&gt;Hardening checklist&lt;/b&gt; — IAM least-privilege, CMEK via KMS on BQ/Spanner/GCS, audit logs to dedicated project, SCC Premium posture monitoring, Binary Authorization on Cloud Run/GKE." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=11;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="960" y="1441" width="880" height="22" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
