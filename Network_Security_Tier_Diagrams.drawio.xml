@@ -1,0 +1,436 @@
+<mxfile host="app.diagrams.net" modified="2026-04-29T00:00:00.000Z" agent="Claude" version="24.0.0" type="device">
+  <diagram name="Tier 1 - Site-Level Controls" id="tier1">
+    <mxGraphModel dx="1422" dy="757" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t1_title" value="Tier 1: Site-Level Controls" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;fontColor=#1F3864;" vertex="1" parent="1">
+          <mxGeometry x="20" y="10" width="1160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_sub" value="Warehouse / Office Site  •  Stateful Packet Inspection  •  No DPI/IPS at site" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontStyle=2;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="20" y="40" width="1160" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_site" value="Warehouse / Office Site" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="60" y="90" width="760" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_v1" value="compayLLC Corporate VLAN
+(Users, Endpoints)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="80" y="130" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_v2" value="compayLLC Operations VLAN
+(WMS, WCS, Print, Scan)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="228" y="130" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_v3" value="3rd Party VLAN
+(Vendor / Carrier)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="376" y="130" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_v4" value="External DMZ
+(Where required)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="524" y="130" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_v5" value="Internet Only / Guest
+(Untrusted)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="672" y="130" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_iiot" value="Automation / IIoT segment
+(east-west controls only where required)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="80" y="230" width="288" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_fw" value="Site Firewall
+(SD-WAN appliance / MPLS perimeter router)
+Stateful ACL only" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="280" y="410" width="320" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_note" value="Tier 1 enforcement
+• Stateful Packet Inspection (SPI)
+• VLAN zone separation
+• North/South ACL (DC, cloud, Zscaler permitted; RFC1918 deny)
+• East/West only where automation/IIoT requires it
+• NO DPI / NO IPS — handled upstream" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="860" y="90" width="320" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_hub" value="Equinix Hub
+(Tier 2 — DPI/IPS)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="220" y="600" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_sse" value="Zscaler
+(Tier 0 — SSE)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="470" y="600" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_dc" value="TSG Data Centre
+(legacy)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="720" y="600" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_e1" value="DC / Cloud traffic" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=2;fontSize=10;" edge="1" parent="1" source="t1_fw" target="t1_hub">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_e2" value="Internet / SaaS tunnel" style="endArrow=classic;html=1;rounded=0;strokeColor=#D79B00;strokeWidth=3;fontSize=10;" edge="1" parent="1" source="t1_fw" target="t1_sse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t1_e3" value="Legacy DC traffic" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=1;dashed=1;fontSize=10;" edge="1" parent="1" source="t1_fw" target="t1_dc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Tier 2 - Hub-Level Controls (Equinix)" id="tier2">
+    <mxGraphModel dx="1422" dy="757" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t2_title" value="Tier 2: Hub-Level Controls (Equinix Colocation)" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;fontColor=#1F3864;" vertex="1" parent="1">
+          <mxGeometry x="20" y="10" width="1160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_sub" value="Single point of deep inspection on the north/south path  •  DPI + IPS + Anti-Malware" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontStyle=2;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="20" y="40" width="1160" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_s1" value="Warehouse Site A" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="100" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_s2" value="Warehouse Site B" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="190" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_s3" value="Office Site C" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="280" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_s4" value="NetMod Site D" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="370" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_hubE" value="Equinix Hub — East" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="360" y="110" width="360" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_fwE" value="Hub Firewall (East)
+• Deep Packet Inspection
+• IPS / IDS
+• Anti-Malware
+• Service-Based App Rules
+• Threat Intel Feeds" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="380" y="145" width="320" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_hubC" value="Equinix Hub — Central" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="360" y="360" width="360" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_fwC" value="Hub Firewall (Central)
+• Deep Packet Inspection
+• IPS / IDS
+• Anti-Malware
+• Service-Based App Rules
+• Threat Intel Feeds" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="380" y="395" width="320" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_fail" value="Active / Active failover" style="endArrow=classic;startArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=2;fontSize=10;" edge="1" parent="1" source="t2_hubE" target="t2_hubC">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_gcve" value="GCVE
+(Tier 3 — NSX micro-seg)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="820" y="110" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_gce" value="GCE
+(Tier 3 — VPC firewall)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="820" y="220" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_dc" value="TSG Data Centre
+(legacy)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="820" y="360" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_partner" value="Partner / 3rd Party
+(B2B circuits)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="820" y="470" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="e_t2_s1_E" value="DPI/IPS" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t2_s1" target="t2_hubE">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_t2_s2_E" value="DPI/IPS" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t2_s2" target="t2_hubE">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_t2_s3_C" value="DPI/IPS" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t2_s3" target="t2_hubC">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_t2_s4_C" value="DPI/IPS" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t2_s4" target="t2_hubC">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_e1" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=2;fontSize=10;" edge="1" parent="1" source="t2_hubE" target="t2_gcve">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_e2" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=2;fontSize=10;" edge="1" parent="1" source="t2_hubE" target="t2_gce">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_e3" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=2;fontSize=10;" edge="1" parent="1" source="t2_hubC" target="t2_dc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_e4" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=2;fontSize=10;" edge="1" parent="1" source="t2_hubC" target="t2_partner">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_note" value="Tier 2 enforcement
+• Single full-inspection point on N/S path
+• DPI / IPS / Anti-Malware concentrated here
+• Service-based rules → cloud micro-seg as workloads migrate
+• Sized hardware, single team owns IPS tuning
+• Internet-bound traffic does NOT traverse the hub" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="600" width="1100" height="110" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Tier 3 - Cloud-Level Controls (GCVE &amp; GCE)" id="tier3">
+    <mxGraphModel dx="1422" dy="757" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t3_title" value="Tier 3: Cloud-Level Controls (GCVE &amp; GCE)" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;fontColor=#1F3864;" vertex="1" parent="1">
+          <mxGeometry x="20" y="10" width="1160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_sub" value="Application-aware micro-segmentation closest to the workload  •  No DPI re-inspection" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontStyle=2;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="20" y="40" width="1160" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_hub" value="From Equinix Hub (Tier 2)
+Already DPI / IPS inspected" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="480" y="80" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve" value="GCVE — VMware Cloud on Google
+NSX Distributed Firewall" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="60" y="160" width="540" height="540" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_web" value="Web Tier" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="80" y="200" width="500" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_w1" value="Web VM 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="100" y="230" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_w2" value="Web VM 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="220" y="230" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_w3" value="Web VM 3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="340" y="230" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_w4" value="Web VM 4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="460" y="230" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_app" value="App Tier" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="80" y="320" width="500" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_a1" value="App VM 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="100" y="350" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_a2" value="App VM 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="220" y="350" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_a3" value="App VM 3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="340" y="350" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_a4" value="App VM 4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="460" y="350" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_db" value="DB Tier" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="80" y="440" width="500" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_d1" value="DB VM 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="160" y="470" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_d2" value="DB VM 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="360" y="470" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_e_w_a1" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gcve_w1" target="t3_gcve_a1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_e_w_a2" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gcve_w2" target="t3_gcve_a2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_e_w_a3" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gcve_w3" target="t3_gcve_a3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_e_w_a4" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gcve_w4" target="t3_gcve_a4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_e_a_d1" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gcve_a1" target="t3_gcve_d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_e_a_d2" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gcve_a2" target="t3_gcve_d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_e_a_d3" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gcve_a3" target="t3_gcve_d2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_e_a_d4" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gcve_a4" target="t3_gcve_d2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gcve_note" value="NSX DFW: per-VM L4–L7 rules
+No IPS/DPI here — handled at hub" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="80" y="540" width="500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce" value="GCE — Native Google Compute
+VPC Firewall + Cloud Armor" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="640" y="160" width="500" height="540" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_armor" value="Cloud Armor
+(WAF / DDoS for public-facing services)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="700" y="200" width="380" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_web" value="Web Services (tag: web)" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="660" y="270" width="460" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_w1" value="GCE Web 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="680" y="295" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_w2" value="GCE Web 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="830" y="295" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_w3" value="GCE Web 3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="980" y="295" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_app" value="App Services (tag: app)" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="660" y="370" width="460" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_a1" value="GCE App 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="680" y="395" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_a2" value="GCE App 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="830" y="395" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_a3" value="GCE App 3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="980" y="395" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_db" value="Data Services (tag: db)" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="660" y="470" width="460" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_d1" value="Cloud SQL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="750" y="495" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_d2" value="Cloud SQL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9673A6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="920" y="495" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_g_w_a1" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gce_w1" target="t3_gce_a1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_g_w_a2" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gce_w2" target="t3_gce_a2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_g_w_a3" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gce_w3" target="t3_gce_a3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_g_a_d1" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gce_a1" target="t3_gce_d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_g_a_d2" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gce_a2" target="t3_gce_d1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_g_a_d3" style="endArrow=classic;html=1;rounded=0;strokeColor=#B85450;strokeWidth=2;fontSize=10;dashed=0;" edge="1" parent="1" source="t3_gce_a3" target="t3_gce_d2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_gce_note" value="VPC firewall rules + service tags
+Least-privilege per service-to-service flow" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="660" y="540" width="460" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_e_hub_gcve" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=2;fontSize=10;" edge="1" parent="1" source="t3_hub" target="t3_gcve">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_e_hub_gce" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=2;fontSize=10;" edge="1" parent="1" source="t3_hub" target="t3_gce">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_mig" value="Migration: translate NSX rules → VPC firewall (mandatory step in runbook)" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=1;dashed=1;fontSize=10;" edge="1" parent="1" source="t3_gcve" target="t3_gce">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_note" value="Tier 3 enforcement
+• Micro-segmentation at the resource / VM level — closest to the workload
+• GCVE: NSX distributed firewall  |  GCE: VPC firewall rules + Cloud Armor
+• No DPI/IPS at this tier (already done at hub) unless compliance demands it
+• Migration GCVE → GCE = enforcement mechanism changes, security policy must not" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="60" y="720" width="1080" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Tier 0 - Internet Edge &amp; SSE (Zscaler)" id="tier0">
+    <mxGraphModel dx="1422" dy="757" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t0_title" value="Tier 0: Internet Edge / SSE (Zscaler)" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;fontColor=#1F3864;" vertex="1" parent="1">
+          <mxGeometry x="20" y="10" width="1160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_sub" value="Internet &amp; SaaS traffic does NOT traverse the Equinix hub  •  Cloud-delivered inspection" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontStyle=2;fontColor=#404040;" vertex="1" parent="1">
+          <mxGeometry x="20" y="40" width="1160" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_s1" value="Warehouse Site A" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="110" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_s2" value="Warehouse Site B" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_s3" value="Office Site C" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="290" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_s4" value="Remote / Mobile User" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="380" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_sse" value="Zscaler — Security Service Edge" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=12;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="360" y="100" width="480" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_swg" value="Secure Web Gateway (SWG)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="390" y="150" width="420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_url" value="URL / Web Filtering" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="390" y="200" width="420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_ssl" value="SSL Inspection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="390" y="250" width="420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_dlp" value="Cloud DLP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="390" y="300" width="420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_mw" value="Malware Scanning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="390" y="350" width="420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_dns" value="DNS Security" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="390" y="400" width="420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_casb" value="CASB  (planned — SaaS visibility &amp; control)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=11;fontStyle=2;dashed=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="390" y="450" width="420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_ztna" value="ZTNA  (planned — replaces VPN concentrators)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=11;fontStyle=2;dashed=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="390" y="500" width="420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_inet" value="Internet" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="920" y="130" width="200" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_saas" value="SaaS Applications
+(M365, Salesforce, etc.)" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="920" y="280" width="200" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_priv" value="Private Apps
+(future ZTNA targets)" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="920" y="420" width="200" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="e_t0_s1_sse" value="GRE / IPsec tunnel" style="endArrow=classic;html=1;rounded=0;strokeColor=#D79B00;strokeWidth=3;fontSize=10;" edge="1" parent="1" source="t0_s1" target="t0_sse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_t0_s2_sse" value="GRE / IPsec tunnel" style="endArrow=classic;html=1;rounded=0;strokeColor=#D79B00;strokeWidth=3;fontSize=10;" edge="1" parent="1" source="t0_s2" target="t0_sse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_t0_s3_sse" value="GRE / IPsec tunnel" style="endArrow=classic;html=1;rounded=0;strokeColor=#D79B00;strokeWidth=3;fontSize=10;" edge="1" parent="1" source="t0_s3" target="t0_sse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_t0_s4_sse" value="Z-App / ZTNA" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=1;dashed=1;fontSize=10;" edge="1" parent="1" source="t0_s4" target="t0_sse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_e1" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=2;fontSize=10;" edge="1" parent="1" source="t0_sse" target="t0_inet">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_e2" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=2;fontSize=10;" edge="1" parent="1" source="t0_sse" target="t0_saas">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_e3" value="future" style="endArrow=classic;html=1;rounded=0;strokeColor=#404040;strokeWidth=1;dashed=1;fontSize=10;" edge="1" parent="1" source="t0_sse" target="t0_priv">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="t0_note" value="Tier 0 enforcement
+• Internet-bound traffic from sites tunnels DIRECTLY to Zscaler (no hub backhaul)
+• Full DPI for web/SaaS performed in the SSE cloud
+• Hub firewalls do NOT inspect this traffic — single inspection by SSE
+• Foundation for future SASE: progressively shift hub controls to SSE cloud" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="600" width="1120" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
