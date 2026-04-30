@@ -1,0 +1,416 @@
+<mxfile host="app.diagrams.net" modified="2026-04-30T08:00:00.000Z" agent="company Network Security" version="24.0.0" type="device"><diagram name="Cover" id="page0"><mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="c_1" value="company Network Security — Traffic Flow Validation" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="60" width="1620" height="50" as="geometry"/></mxCell>
+<mxCell id="c_2" value="Path-by-path validation that source → destination flows traverse the correct enforcement points without DPI duplication." style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#555555;" vertex="1" parent="1"><mxGeometry x="40" y="115" width="1620" height="30" as="geometry"/></mxCell>
+<mxCell id="c_3" value="Purpose" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="80" y="180" width="400" height="30" as="geometry"/></mxCell>
+<mxCell id="c_4" value="This pack accompanies the company Network Security Strategy (DOC-IT-IS-NSS-001) and validates that the tiered enforcement model holds end-to-end across every meaningful source → destination pair on the company network. It extends the three reference flows in the strategy doc (Flow 1/2/3) to cover the full set of paths so reviewers can confirm the restrictions, flows, and inspection points fit before the standard is circulated to the wider Network/Cloud/InfoSec teams." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="80" y="215" width="1540" height="100" as="geometry"/></mxCell>
+<mxCell id="c_5" value="How to read this pack" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="80" y="340" width="400" height="30" as="geometry"/></mxCell>
+<mxCell id="c_6" value="• Page 2 — Master Flow Matrix. Single-page summary of every flow versus every enforcement point. Use for review/sign-off.
+• Pages 3–12 — One detailed path diagram per flow (F1–F10). Each page shows source → enforcement points → destination, what is inspected at each hop, a status banner (compliant / transitional / exception), and explanatory notes.
+• Status banners: ✅ green = compliant with the tiered model · ⚠️ amber = transitional, exception-based, or migration-dependent.
+• Cross-references at the bottom of each diagram point to the relevant standard / strategy section." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="80" y="375" width="1540" height="130" as="geometry"/></mxCell>
+<mxCell id="c_7" value="Flows covered" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="80" y="530" width="400" height="30" as="geometry"/></mxCell>
+<mxCell id="c_8" value="• F1 — Warehouse → WMS in GCVE
+• F2 — Warehouse → App in Native GCE
+• F3 — Warehouse → Legacy App in TSG DC
+• F4 — Warehouse → Internet / SaaS
+• F5 — Site to Site (exception)
+• F6 — Remote User (VPN today / ZTNA future)
+• F7 — Internet Inbound → DMZ
+• F8 — 3rd Party → company Service
+• F9 — Intra-Cloud (GCVE → GCE)
+• F10 — Other Cloud (Azure/AWS/Oracle) → company" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="80" y="565" width="1540" height="230" as="geometry"/></mxCell>
+<mxCell id="c_9" value="Open questions for reviewers" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="80" y="815" width="400" height="30" as="geometry"/></mxCell>
+<mxCell id="c_10" value="1. Is the F3 (TSG DC) DPI duplication acceptable as transitional, and what is the target retirement date?
+2. F6 — agree on ZTNA pilot scope and the criteria for declaring VPN concentrators ready for retirement.
+3. F10 — confirm there are no current site-terminated private cloud links that would breach the standard.
+4. Are there any flows missing from this set that the network/cloud team needs validated?" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="80" y="850" width="1540" height="130" as="geometry"/></mxCell></root></mxGraphModel></diagram><diagram name="Master Flow Matrix" id="page1"><mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="m_1" value="Master Flow Matrix — Source → Destination by Enforcement Point" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="30" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="m_2" value="Single source of truth for which inspection occurs where. 'Primary' = enforcement point of record. Rows correspond to detailed flow pages F1–F10." style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#555555;" vertex="1" parent="1"><mxGeometry x="40" y="75" width="1620" height="30" as="geometry"/></mxCell>
+<mxCell id="m_3" value="#" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4d4d4d;fontColor=#ffffff;strokeColor=#333333;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="40" y="130" width="50" height="60" as="geometry"/></mxCell>
+<mxCell id="m_4" value="Source" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4d4d4d;fontColor=#ffffff;strokeColor=#333333;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="90" y="130" width="200" height="60" as="geometry"/></mxCell>
+<mxCell id="m_5" value="Destination" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4d4d4d;fontColor=#ffffff;strokeColor=#333333;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="290" y="130" width="200" height="60" as="geometry"/></mxCell>
+<mxCell id="m_6" value="Site FW
+(Tier 1)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4d4d4d;fontColor=#ffffff;strokeColor=#333333;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="490" y="130" width="140" height="60" as="geometry"/></mxCell>
+<mxCell id="m_7" value="Hub FW
+(Tier 2 — Equinix)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4d4d4d;fontColor=#ffffff;strokeColor=#333333;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="630" y="130" width="200" height="60" as="geometry"/></mxCell>
+<mxCell id="m_8" value="Cloud
+(Tier 3 — NSX/VPC)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4d4d4d;fontColor=#ffffff;strokeColor=#333333;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="830" y="130" width="180" height="60" as="geometry"/></mxCell>
+<mxCell id="m_9" value="SSE / Zscaler
+(Tier 0)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4d4d4d;fontColor=#ffffff;strokeColor=#333333;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1010" y="130" width="160" height="60" as="geometry"/></mxCell>
+<mxCell id="m_10" value="TSG DC
+(legacy)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4d4d4d;fontColor=#ffffff;strokeColor=#333333;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1170" y="130" width="140" height="60" as="geometry"/></mxCell>
+<mxCell id="m_11" value="Status" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#4d4d4d;fontColor=#ffffff;strokeColor=#333333;fontSize=11;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1310" y="130" width="350" height="60" as="geometry"/></mxCell>
+<mxCell id="m_12" value="F1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="40" y="190" width="50" height="50" as="geometry"/></mxCell>
+<mxCell id="m_13" value="Warehouse user (Corp VLAN)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="90" y="190" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_14" value="WMS in GCVE" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="290" y="190" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_15" value="SPI" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="490" y="190" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_16" value="DPI + IPS + AM (PRIMARY)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="630" y="190" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_17" value="NSX micro-seg (PRIMARY)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="830" y="190" width="180" height="50" as="geometry"/></mxCell>
+<mxCell id="m_18" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1010" y="190" width="160" height="50" as="geometry"/></mxCell>
+<mxCell id="m_19" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1170" y="190" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_20" value="✅ Compliant — single deep inspection point" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="1310" y="190" width="350" height="50" as="geometry"/></mxCell>
+<mxCell id="m_21" value="F2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="40" y="240" width="50" height="50" as="geometry"/></mxCell>
+<mxCell id="m_22" value="Warehouse user (Corp VLAN)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="90" y="240" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_23" value="App in native GCE" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="290" y="240" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_24" value="SPI" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="490" y="240" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_25" value="DPI + IPS + AM (PRIMARY)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="630" y="240" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_26" value="VPC FW + tags (PRIMARY)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="830" y="240" width="180" height="50" as="geometry"/></mxCell>
+<mxCell id="m_27" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1010" y="240" width="160" height="50" as="geometry"/></mxCell>
+<mxCell id="m_28" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1170" y="240" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_29" value="⚠️ Migration: translate NSX → VPC rules" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="1310" y="240" width="350" height="50" as="geometry"/></mxCell>
+<mxCell id="m_30" value="F3" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="40" y="290" width="50" height="50" as="geometry"/></mxCell>
+<mxCell id="m_31" value="Warehouse user (Corp VLAN)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="90" y="290" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_32" value="Legacy app in TSG DC" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="290" y="290" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_33" value="SPI" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="490" y="290" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_34" value="DPI + IPS + AM" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="630" y="290" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_35" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="830" y="290" width="180" height="50" as="geometry"/></mxCell>
+<mxCell id="m_36" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1010" y="290" width="160" height="50" as="geometry"/></mxCell>
+<mxCell id="m_37" value="SPI + DPI" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1170" y="290" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_38" value="⚠️ Transitional — DPI duplicated until DC retires" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="1310" y="290" width="350" height="50" as="geometry"/></mxCell>
+<mxCell id="m_39" value="F4" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="40" y="340" width="50" height="50" as="geometry"/></mxCell>
+<mxCell id="m_40" value="Warehouse user (Corp VLAN)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="90" y="340" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_41" value="Internet / SaaS" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="290" y="340" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_42" value="SPI (permit tunnel)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="490" y="340" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_43" value="BYPASSED" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="630" y="340" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_44" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="830" y="340" width="180" height="50" as="geometry"/></mxCell>
+<mxCell id="m_45" value="SWG + SSL + DLP + AM (PRIMARY)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1010" y="340" width="160" height="50" as="geometry"/></mxCell>
+<mxCell id="m_46" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1170" y="340" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_47" value="✅ Compliant — hub bypass intentional" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="1310" y="340" width="350" height="50" as="geometry"/></mxCell>
+<mxCell id="m_48" value="F5" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="40" y="390" width="50" height="50" as="geometry"/></mxCell>
+<mxCell id="m_49" value="Warehouse Site A" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="90" y="390" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_50" value="Warehouse Site B (exception)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="290" y="390" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_51" value="SPI + exception" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="490" y="390" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_52" value="DPI + IPS + AM" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="630" y="390" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_53" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="830" y="390" width="180" height="50" as="geometry"/></mxCell>
+<mxCell id="m_54" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1010" y="390" width="160" height="50" as="geometry"/></mxCell>
+<mxCell id="m_55" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1170" y="390" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_56" value="⚠️ Exception only — eliminate via cloud-mediated access" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="1310" y="390" width="350" height="50" as="geometry"/></mxCell>
+<mxCell id="m_57" value="F6" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="40" y="440" width="50" height="50" as="geometry"/></mxCell>
+<mxCell id="m_58" value="Remote / mobile user" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="90" y="440" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_59" value="Internal app" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="290" y="440" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_60" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="490" y="440" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_61" value="DPI + IPS + AM (post-VPN)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="630" y="440" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_62" value="Tier 3 enforces at app" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="830" y="440" width="180" height="50" as="geometry"/></mxCell>
+<mxCell id="m_63" value="ZTNA (target state)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1010" y="440" width="160" height="50" as="geometry"/></mxCell>
+<mxCell id="m_64" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1170" y="440" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_65" value="⚠️ Dual path — VPN today, ZTNA target" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="1310" y="440" width="350" height="50" as="geometry"/></mxCell>
+<mxCell id="m_66" value="F7" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="40" y="490" width="50" height="50" as="geometry"/></mxCell>
+<mxCell id="m_67" value="Internet (inbound)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="90" y="490" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_68" value="DMZ-hosted service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="290" y="490" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_69" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="490" y="490" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_70" value="DPI + IPS + AM (PRIMARY)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="630" y="490" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_71" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="830" y="490" width="180" height="50" as="geometry"/></mxCell>
+<mxCell id="m_72" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1010" y="490" width="160" height="50" as="geometry"/></mxCell>
+<mxCell id="m_73" value="DMZ termination" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1170" y="490" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_74" value="✅ Compliant — DMZ-only ingress enforced" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="1310" y="490" width="350" height="50" as="geometry"/></mxCell>
+<mxCell id="m_75" value="F8" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="40" y="540" width="50" height="50" as="geometry"/></mxCell>
+<mxCell id="m_76" value="3rd Party / B2B partner" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="90" y="540" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_77" value="company service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="290" y="540" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_78" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="490" y="540" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_79" value="DPI + IPS + AM (PRIMARY)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="630" y="540" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_80" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="830" y="540" width="180" height="50" as="geometry"/></mxCell>
+<mxCell id="m_81" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1010" y="540" width="160" height="50" as="geometry"/></mxCell>
+<mxCell id="m_82" value="Zone rule" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1170" y="540" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_83" value="✅ Compliant — dedicated per-partner zone" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="1310" y="540" width="350" height="50" as="geometry"/></mxCell>
+<mxCell id="m_84" value="F9" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="40" y="590" width="50" height="50" as="geometry"/></mxCell>
+<mxCell id="m_85" value="GCVE VM" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="90" y="590" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_86" value="GCE service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="290" y="590" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_87" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="490" y="590" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_88" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="630" y="590" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_89" value="NSX DFW + VPC FW (PRIMARY)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="830" y="590" width="180" height="50" as="geometry"/></mxCell>
+<mxCell id="m_90" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1010" y="590" width="160" height="50" as="geometry"/></mxCell>
+<mxCell id="m_91" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1170" y="590" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_92" value="✅ Compliant — no hub backhaul; watch migration translation" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="1310" y="590" width="350" height="50" as="geometry"/></mxCell>
+<mxCell id="m_93" value="F10" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="40" y="640" width="50" height="50" as="geometry"/></mxCell>
+<mxCell id="m_94" value="Other cloud tenant (Azure/AWS/Oracle)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="90" y="640" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_95" value="company destination" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="290" y="640" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_96" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="490" y="640" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_97" value="DPI + IPS + AM (PRIMARY)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="630" y="640" width="200" height="50" as="geometry"/></mxCell>
+<mxCell id="m_98" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="830" y="640" width="180" height="50" as="geometry"/></mxCell>
+<mxCell id="m_99" value="—" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1010" y="640" width="160" height="50" as="geometry"/></mxCell>
+<mxCell id="m_100" value="Zone rule" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=center;verticalAlign=middle;" vertex="1" parent="1"><mxGeometry x="1170" y="640" width="140" height="50" as="geometry"/></mxCell>
+<mxCell id="m_101" value="✅ Compliant — termination at hub/DC, not at site" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=10;align=left;verticalAlign=middle;spacingLeft=6;" vertex="1" parent="1"><mxGeometry x="1310" y="640" width="350" height="50" as="geometry"/></mxCell>
+<mxCell id="m_102" value="LEGEND   PRIMARY = enforcement point of record · '—' = not in path · BYPASSED = intentionally not traversed · Inspection: SPI = stateful packet inspection · DPI = deep packet inspection · IPS = intrusion prevention · AM = anti-malware · SWG = secure web gateway · DLP = data-loss prevention · ZTNA = zero-trust network access. Each row maps to a detailed path diagram on the following pages (F1–F10). Cross-references: company Network Security Strategy DOC-IT-IS-NSS-001 §Enforcement Point Matrix; Network Segmentation Standard v2.0 DOC-IT-IS-NSS-002; Inspection &amp; Threat Protection Standard DOC-IT-IS-ITP-001 §Inspection Placement Requirements." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="40" y="710" width="1620" height="110" as="geometry"/></mxCell></root></mxGraphModel></diagram><diagram name="F1 — Warehouse → WMS in GCVE" id="page2"><mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="p2_1" value="Flow 1: Warehouse User → WMS in GCVE" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="30" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p2_2" value="Reference flow from Network Security Strategy. Three inspection points, no DPI duplication." style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#555555;" vertex="1" parent="1"><mxGeometry x="40" y="75" width="1620" height="30" as="geometry"/></mxCell>
+<mxCell id="p2_3" value="Warehouse User
+
+Corporate VLAN
+(Site A)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1"><mxGeometry x="40" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p2_4" value="Site Firewall
+(Tier 1)
+
+SD-WAN / MPLS
+Stateful ACL only
+Permit DC/Cloud" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1"><mxGeometry x="365" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p2_5" value="Hub Firewall — Equinix
+(Tier 2)
+
+DPI + IPS/IDS
+Anti-Malware
+Threat Intel feeds" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="690" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p2_6" value="GCVE NSX DFW
+(Tier 3)
+
+Micro-segmentation
+Web → App → DB rules
+No DPI re-inspection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1015" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p2_7" value="WMS Application
+(GCVE VMs)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1340" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p2_8" value="MPLS / SD-WAN" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p2_3" target="p2_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p2_9" value="Site→Cloud traffic" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p2_4" target="p2_5"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p2_10" value="Permit src→WMS:443" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p2_5" target="p2_6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p2_11" value="App access" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p2_6" target="p2_7"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p2_12" value="✅ COMPLIANT — inspect once at hub, micro-seg at cloud, no DPI duplication." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;align=left;spacingLeft=10;" vertex="1" parent="1"><mxGeometry x="40" y="470" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p2_13" value="NOTES
+
+Inspection points: 3 (SPI at site, DPI/IPS at hub, micro-seg in cloud). Single deep inspection point on the path — no duplication. Latency budget: &lt;1ms site + 5–15ms hub + &lt;1ms NSX = within WMS tolerance. This is the canonical site-to-cloud flow. All other warehouse→cloud flows follow this shape." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="40" y="530" width="1620" height="130" as="geometry"/></mxCell></root></mxGraphModel></diagram><diagram name="F2 — Warehouse → App in Native GCE" id="page3"><mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="p3_1" value="Flow 2: Warehouse User → App in Native GCE" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="30" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p3_2" value="Same shape as F1, but enforcement at cloud shifts from NSX DFW to GCE VPC firewall + tags." style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#555555;" vertex="1" parent="1"><mxGeometry x="40" y="75" width="1620" height="30" as="geometry"/></mxCell>
+<mxCell id="p3_3" value="Warehouse User
+
+Corporate VLAN
+(Site A)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1"><mxGeometry x="40" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p3_4" value="Site Firewall
+(Tier 1)
+
+Stateful ACL
+Permit DC/Cloud" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1"><mxGeometry x="365" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p3_5" value="Hub Firewall — Equinix
+(Tier 2)
+
+DPI + IPS/IDS
+Anti-Malware" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="690" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p3_6" value="GCE VPC Firewall
+(Tier 3)
+
+Tag-based rules
+Security groups
+(translated from NSX)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1015" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p3_7" value="App in GCE
+(native compute)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1340" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p3_8" value="MPLS / SD-WAN" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p3_3" target="p3_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p3_9" value="Site→Cloud traffic" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p3_4" target="p3_5"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p3_10" value="Permit by tag" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p3_5" target="p3_6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p3_11" value="App access" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p3_6" target="p3_7"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p3_12" value="⚠️ COMPLIANT — but GCVE→GCE migration MUST translate NSX rules to VPC rules (mandatory runbook step)." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;fontStyle=1;align=left;spacingLeft=10;" vertex="1" parent="1"><mxGeometry x="40" y="470" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p3_13" value="NOTES
+
+GCVE→GCE migration risk: enforcement mechanism changes (NSX DFW → VPC firewall) but the security policy must NOT change. The application's communication matrix must be translated from NSX rules to VPC firewall rules + tags as a mandatory step in the migration runbook. Without this step there is a real risk of permissive default rules in GCE." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="40" y="530" width="1620" height="130" as="geometry"/></mxCell></root></mxGraphModel></diagram><diagram name="F3 — Warehouse → Legacy App in TSG DC" id="page4"><mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="p4_1" value="Flow 3: Warehouse User → Legacy App in TSG Data Centre" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="30" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p4_2" value="Transitional path — workloads migrating off TSG DC to GCVE/GCE." style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#555555;" vertex="1" parent="1"><mxGeometry x="40" y="75" width="1620" height="30" as="geometry"/></mxCell>
+<mxCell id="p4_3" value="Warehouse User
+
+Corporate VLAN" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1"><mxGeometry x="40" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p4_4" value="Site Firewall
+(Tier 1)
+
+Stateful ACL
+Permit DC range" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1"><mxGeometry x="365" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p4_5" value="Hub Firewall — Equinix
+(Tier 2)
+
+DPI + IPS/IDS
+Anti-Malware" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="690" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p4_6" value="TSG DC Firewall
+
+SPI + DPI
+(legacy controls)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1015" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p4_7" value="Legacy App
+(TSG DC server zone)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1340" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p4_8" value="MPLS / SD-WAN" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p4_3" target="p4_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p4_9" value="Site→DC traffic" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p4_4" target="p4_5"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p4_10" value="Permit to server zone" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p4_5" target="p4_6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p4_11" value="App access" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p4_6" target="p4_7"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p4_12" value="⚠️ TRANSITIONAL — DPI duplicated at hub + DC. Acceptable short-term; remove as workloads migrate to cloud." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;fontStyle=1;align=left;spacingLeft=10;" vertex="1" parent="1"><mxGeometry x="40" y="470" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p4_13" value="NOTES
+
+DPI is performed at BOTH the hub and the TSG DC firewall — this is the one DPI duplication in the current model. Justified short-term as the DC firewall is the legacy enforcement point and will be retired as workloads migrate to cloud. As migrations complete, the DC firewall's DPI/IPS role should be deprecated and the hub becomes the single deep inspection point." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="40" y="530" width="1620" height="130" as="geometry"/></mxCell></root></mxGraphModel></diagram><diagram name="F4 — Warehouse → Internet / SaaS" id="page5"><mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="p5_1" value="Flow 4: Warehouse User → Internet / SaaS via Zscaler" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="30" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p5_2" value="Internet-bound traffic does NOT traverse the hub. Single inspection at SSE." style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#555555;" vertex="1" parent="1"><mxGeometry x="40" y="75" width="1620" height="30" as="geometry"/></mxCell>
+<mxCell id="p5_3" value="Warehouse User
+
+Corporate VLAN" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1"><mxGeometry x="40" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p5_4" value="Site Firewall
+(Tier 1)
+
+Stateful ACL
+Permit Zscaler tunnel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1"><mxGeometry x="473" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p5_5" value="Zscaler SSE
+(Tier 0)
+
+SWG + URL filter
+SSL inspect + DLP
+Malware scan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1"><mxGeometry x="906" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p5_6" value="Internet /
+SaaS (M365,
+Salesforce, …)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1340" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p5_7" value="GRE / IPsec tunnel" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p5_3" target="p5_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p5_8" value="Direct to SSE
+(NOT via hub)" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p5_4" target="p5_5"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p5_9" value="Inspected outbound" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p5_5" target="p5_6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p5_10" value="✅ COMPLIANT — single inspection at SSE. Hub bypass intentional. Foundation for SASE." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;align=left;spacingLeft=10;" vertex="1" parent="1"><mxGeometry x="40" y="470" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p5_11" value="NOTES
+
+The hub firewall is NOT involved in this path. Internet-bound traffic is tunnelled directly from the site to Zscaler. This eliminates hub backhaul latency for the largest traffic class (internet/SaaS) and is the foundation for future SASE evolution. Hub IPS does not need to duplicate URL filtering or web malware scanning." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="40" y="530" width="1620" height="130" as="geometry"/></mxCell></root></mxGraphModel></diagram><diagram name="F5 — Site to Site (exception)" id="page6"><mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="p6_1" value="Flow 5: Site-to-Site Communication (exception-based)" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="30" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p6_2" value="Denied by default. Where a business exception exists, traffic still inspected at hub." style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#555555;" vertex="1" parent="1"><mxGeometry x="40" y="75" width="1620" height="30" as="geometry"/></mxCell>
+<mxCell id="p6_3" value="Warehouse Site A
+
+Corporate VLAN" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1"><mxGeometry x="40" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p6_4" value="Site A Firewall
+(Tier 1)
+
+Stateful ACL
+Exception rule" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1"><mxGeometry x="365" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p6_5" value="Hub Firewall — Equinix
+(Tier 2)
+
+DPI + IPS/IDS
+Anti-Malware
+on cross-site flow" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="690" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p6_6" value="Site B Firewall
+(Tier 1)
+
+Stateful ACL
+Permit from Site A" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1015" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p6_7" value="Warehouse Site B
+
+Destination VLAN" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1"><mxGeometry x="1340" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p6_8" value="MPLS / SD-WAN" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p6_3" target="p6_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p6_9" value="Cross-site traffic" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p6_4" target="p6_5"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p6_10" value="Inspected" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p6_5" target="p6_6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p6_11" value="Permit inbound" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p6_6" target="p6_7"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p6_12" value="⚠️ EXCEPTION-BASED — eliminate over time by moving shared apps to cloud. Audit all exceptions for expiry." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;fontStyle=1;align=left;spacingLeft=10;" vertex="1" parent="1"><mxGeometry x="40" y="470" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p6_13" value="NOTES
+
+Default rule: RFC 1918 deny between sites. This flow only applies where a documented business exception exists (e.g., shared WMS across warehouses). All exceptions must have an expiry date. Strategic goal: eliminate site-to-site exceptions over time by routing cross-site application access through the cloud (GCVE/GCE) rather than direct site-to-site, removing east-west spread risk." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="40" y="530" width="1620" height="130" as="geometry"/></mxCell></root></mxGraphModel></diagram><diagram name="F6 — Remote User (VPN today / ZTNA future)" id="page7"><mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="p7_1" value="Flow 6: Remote / Mobile User → Internal App" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="30" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p7_2" value="Two paths shown: current state (VPN concentrator) and target state (ZTNA via SSE)." style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#555555;" vertex="1" parent="1"><mxGeometry x="40" y="75" width="1620" height="30" as="geometry"/></mxCell>
+<mxCell id="p7_3" value="Remote /
+Mobile User" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1"><mxGeometry x="40" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p7_4" value="Corporate VPN
+Concentrator
+(current state)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="473" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p7_5" value="Hub / DC Firewall
+
+DPI + IPS/IDS
+Anti-Malware" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="906" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p7_6" value="Internal App
+(GCVE / GCE / DC)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1340" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p7_7" value="IPsec tunnel + MFA" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p7_3" target="p7_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p7_8" value="Inspected post-VPN" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p7_4" target="p7_5"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p7_9" value="Permit by zone rule" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p7_5" target="p7_6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p7_10" value="Zscaler ZTNA
+(Tier 0 — target)
+
+Identity-based access
+Per-app brokering
+No network-layer reach" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1"><mxGeometry x="670" y="500" width="280" height="130" as="geometry"/></mxCell>
+<mxCell id="p7_11" value="ZTNA client (target)" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;dashed=1;" edge="1" parent="1" source="p7_3" target="p7_10"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p7_12" value="Identity-brokered access" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;dashed=1;" edge="1" parent="1" source="p7_10" target="p7_6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p7_13" value="⚠️ DUAL PATH — VPN today, ZTNA target. Migrate as ZPA pilot completes." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;fontStyle=1;align=left;spacingLeft=10;" vertex="1" parent="1"><mxGeometry x="40" y="540" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p7_14" value="NOTES
+
+Current state: VPN concentrator places the remote device on the network. Hub/DC firewall still inspects via DPI/IPS. Target state (medium-term): Zscaler ZTNA replaces the VPN — user accesses a specific app via an identity-brokered session, without network-layer reach. This is a key SSE roadmap milestone and removes the VPN concentrator as a perimeter device." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="40" y="600" width="1620" height="130" as="geometry"/></mxCell></root></mxGraphModel></diagram><diagram name="F7 — Internet Inbound → DMZ" id="page8"><mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="p8_1" value="Flow 7: Internet Inbound → DMZ-hosted Service" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="30" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p8_2" value="Only permitted inbound path. All inbound terminates in DMZ — never directly into internal zones." style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#555555;" vertex="1" parent="1"><mxGeometry x="40" y="75" width="1620" height="30" as="geometry"/></mxCell>
+<mxCell id="p8_3" value="Internet
+(public)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p8_4" value="Hub / DC Firewall
+
+DPI + IPS/IDS
+Anti-Malware
+WAF (if web)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="473" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p8_5" value="External DMZ
+(Security Level 50)
+
+Layer-3 only
+No direct DB/internal reach" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="906" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p8_6" value="DMZ-hosted
+Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1340" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p8_7" value="Public ingress" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p8_3" target="p8_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p8_8" value="Permit only to DMZ" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p8_4" target="p8_5"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p8_9" value="Service access" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p8_5" target="p8_6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p8_10" value="✅ COMPLIANT — DMZ termination enforced. Internet→Trusted is a Critical-severity exception." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;align=left;spacingLeft=10;" vertex="1" parent="1"><mxGeometry x="40" y="470" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p8_11" value="NOTES
+
+Per Network Segmentation Standard §Internet Zone Rules: all connectivity from the internet MUST terminate in the Internet Zone (DMZ). Internal/Trusted zones never accept direct internet ingress. Internet→Trusted/Secure/Isolated/3rd-Party = Critical exception severity. If the service is web-facing, WAF is required (separate standard / addendum)." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="40" y="530" width="1620" height="130" as="geometry"/></mxCell></root></mxGraphModel></diagram><diagram name="F8 — 3rd Party → company Service" id="page9"><mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="p9_1" value="Flow 8: 3rd Party Network → company Service (B2B circuit)" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="30" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p9_2" value="3rd Party = Security Level 30 (Risky). Dedicated zone per partner. Inspected at hub/DC." style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#555555;" vertex="1" parent="1"><mxGeometry x="40" y="75" width="1620" height="30" as="geometry"/></mxCell>
+<mxCell id="p9_3" value="3rd Party Network
+(B2B partner)
+Sec Level 30" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1"><mxGeometry x="40" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p9_4" value="Hub / DC Firewall
+
+DPI + IPS/IDS
+Anti-Malware
+Strict zone rules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="473" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p9_5" value="3rd Party Zone
+(dedicated per partner)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="906" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p9_6" value="company Service
+(specific port/proto)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1340" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p9_7" value="Dedicated B2B circuit" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p9_3" target="p9_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p9_8" value="Inspect + minimum-access ACL" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p9_4" target="p9_5"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p9_9" value="Permit specific service" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p9_5" target="p9_6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p9_10" value="✅ COMPLIANT — strict per-partner zoning. Watch for 'any' rules (High severity exceptions)." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;align=left;spacingLeft=10;" vertex="1" parent="1"><mxGeometry x="40" y="470" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p9_11" value="NOTES
+
+Each 3rd party gets a dedicated zone (no co-tenancy without explicit design + sign-off from all parties). Source/destination 'any' to/from 3rd Party zone = High severity exception. Where a third party cannot terminate at a company firewall, a separate 3rd Party Network must be created by exception to host the VPN termination point. Anti-malware is particularly important on this path per the Inspection &amp; Threat Protection Standard." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="40" y="530" width="1620" height="130" as="geometry"/></mxCell></root></mxGraphModel></diagram><diagram name="F9 — Intra-Cloud (GCVE → GCE)" id="page10"><mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="p10_1" value="Flow 9: Intra-Cloud — GCVE VM → GCE Service" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="30" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p10_2" value="No hub backhaul. NSX DFW egress + GCE VPC firewall ingress. No DPI re-inspection." style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#555555;" vertex="1" parent="1"><mxGeometry x="40" y="75" width="1620" height="30" as="geometry"/></mxCell>
+<mxCell id="p10_3" value="GCVE VM
+(e.g., App tier)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p10_4" value="NSX DFW
+(egress)
+
+Micro-seg permit
+App → Cloud SQL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1"><mxGeometry x="473" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p10_5" value="GCE VPC Firewall
+(ingress)
+
+Tag-based permit" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1"><mxGeometry x="906" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p10_6" value="GCE Service
+(e.g., Cloud SQL)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1340" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p10_7" value="Internal cloud routing" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p10_3" target="p10_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p10_8" value="Permit App→DB:5432" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p10_4" target="p10_5"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p10_9" value="Service access" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p10_5" target="p10_6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p10_10" value="✅ COMPLIANT — no hub backhaul. Watch GCVE→GCE migrations for rule translation." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;align=left;spacingLeft=10;" vertex="1" parent="1"><mxGeometry x="40" y="470" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p10_11" value="NOTES
+
+Intra-cloud traffic does NOT transit the Equinix hub — that would be unnecessary backhaul. NSX DFW handles egress micro-seg, GCE VPC firewall handles ingress. No DPI/IPS at this tier unless a specific compliance scenario requires it. When a GCVE workload migrates to native GCE, the inter-tier rules must be translated from NSX policy to VPC rules — this is the same migration concern flagged in F2." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="40" y="530" width="1620" height="130" as="geometry"/></mxCell></root></mxGraphModel></diagram><diagram name="F10 — Other Cloud (Azure/AWS/Oracle) → company" id="page11"><mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="p11_1" value="Flow 10: Other Cloud Tenant → company (private link / VPN)" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="40" y="30" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p11_2" value="Must terminate at hub or DC — never at a warehouse or office site." style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#555555;" vertex="1" parent="1"><mxGeometry x="40" y="75" width="1620" height="30" as="geometry"/></mxCell>
+<mxCell id="p11_3" value="Other Cloud Tenant
+(Azure / AWS /
+Oracle)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1"><mxGeometry x="40" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p11_4" value="Hub / DC
+Termination
+(private link or VPN)
+NOT at site" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="473" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p11_5" value="Hub Firewall
+(Tier 2)
+
+DPI + IPS/IDS
+Anti-Malware" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="906" y="280" width="240" height="140" as="geometry"/></mxCell>
+<mxCell id="p11_6" value="Destination Zone
+(company)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="1340" y="300" width="240" height="100" as="geometry"/></mxCell>
+<mxCell id="p11_7" value="Private link / VPN" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p11_3" target="p11_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p11_8" value="Terminate at company core" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p11_4" target="p11_5"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p11_9" value="Permit zone-to-zone" style="endArrow=classic;html=1;fontSize=10;rounded=0;strokeColor=#444444;" edge="1" parent="1" source="p11_5" target="p11_6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="p11_10" value="✅ COMPLIANT — termination at hub/DC enforced. Site-terminated cloud links are forbidden." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;align=left;spacingLeft=10;" vertex="1" parent="1"><mxGeometry x="40" y="470" width="1620" height="40" as="geometry"/></mxCell>
+<mxCell id="p11_11" value="NOTES
+
+Per Network Segmentation Standard §Cloud Zones: all non-GCVE/GCE cloud tenants must terminate via private link or VPN into a company datacentre or hub. Private cloud connections MUST NOT terminate at a warehouse or office site — this would bypass the hub inspection point. Once terminated, the traffic is treated as inter-zone traffic and follows standard hub DPI/IPS." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=top;spacingLeft=8;spacingTop=8;" vertex="1" parent="1"><mxGeometry x="40" y="530" width="1620" height="130" as="geometry"/></mxCell></root></mxGraphModel></diagram></mxfile>
