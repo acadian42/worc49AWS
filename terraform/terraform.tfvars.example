@@ -1,0 +1,75 @@
+# Copy this file to terraform.tfvars (or environments/govcloud/terraform.tfvars)
+# and fill in every <STUB> value before running terraform apply.
+
+region             = "us-gov-west-1"
+name_prefix        = "tines"
+use_fips_endpoint  = true
+
+# ── Identity ──────────────────────────────────────────────────────────────────
+tines_domain  = "<STUB: your-tines-hostname.example.gov>"
+tenant_email  = "<STUB: seed-admin@example.gov>"
+
+# ── Container images (pre-uploaded to ECR by operator) ───────────────────────
+# Full ECR URL including tag, e.g.:
+#   123456789012.dkr.ecr.us-gov-west-1.amazonaws.com/tines/tines-app:v45.0.0
+tines_app_ecr_image              = "<STUB: ECR_URL/tines/tines-app:TAG>"
+tines_command_runner_ecr_image   = "<STUB: ECR_URL/tines/tines-command-runner:TAG>"
+
+# ── Networking ────────────────────────────────────────────────────────────────
+vpc_cidr             = "10.0.0.0/16"
+availability_zones   = ["us-gov-west-1a", "us-gov-west-1b"]
+public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
+private_subnet_cidrs = ["10.0.10.0/24", "10.0.11.0/24"]
+
+# Restrict ALB inbound to known CIDRs (e.g., your VPN or corporate range).
+# Defaults to 0.0.0.0/0 if left empty — tighten for GovCloud.
+alb_ingress_cidrs = ["<STUB: 10.x.x.x/16>"]
+
+# true = internal ALB (no internet-facing exposure). Recommended for GovCloud.
+alb_internal = true
+
+# ── ACM Certificate ───────────────────────────────────────────────────────────
+# "create" = request a new ACM cert (requires route53_zone_id for DNS validation)
+# "import" = provide an existing cert ARN from an internal CA
+acm_certificate_mode     = "create"
+route53_zone_id          = "<STUB: Z0123456789ABCDEFGHIJ>"
+imported_certificate_arn = ""   # only needed when acm_certificate_mode = "import"
+
+# ── Internal PyPI ─────────────────────────────────────────────────────────────
+internal_pypi_url  = "<STUB: http://pypi.internal.example.gov/simple>"
+internal_pypi_host = "<STUB: pypi.internal.example.gov>"
+
+# ── SMTP (optional) ───────────────────────────────────────────────────────────
+smtp_address = "<STUB: smtp.internal.example.gov>"
+smtp_port    = 587
+smtp_user    = "<STUB: tines-mailer@example.gov>"
+
+# ── Database ──────────────────────────────────────────────────────────────────
+db_instance_class        = "db.r6g.large"
+db_engine_version        = "14.17"
+db_backup_retention_days = 7
+
+# ── Redis ─────────────────────────────────────────────────────────────────────
+redis_node_type      = "cache.r6g.large"
+redis_engine_version = "7.2"
+
+# ── ECS Sizing (Tier 2 baseline — tune per workload) ─────────────────────────
+app_task_cpu         = 1024
+app_task_memory      = 2048
+sidekiq_task_cpu     = 1024
+sidekiq_task_memory  = 2048
+app_desired_count    = 2
+sidekiq_desired_count = 2
+
+# ── Feature flags ─────────────────────────────────────────────────────────────
+enable_command_runner = true
+openssl_fips_mode     = true   # Set to true to enable FIPS OpenSSL in Tines containers
+log_retention_days    = 30
+
+# ── Tags ──────────────────────────────────────────────────────────────────────
+default_tags = {
+  Project     = "tines-soar"
+  Environment = "production"
+  ManagedBy   = "terraform"
+  Owner       = "<STUB: your-team>"
+}
