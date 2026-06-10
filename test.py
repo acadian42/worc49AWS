@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import csv
+import html
 import io
 import json
 import logging
 import traceback
+from datetime import datetime, timezone
 
 from crowdstrike.foundry.function import Function, Request, Response
 from falconpy import CloudSecurityDetections
@@ -233,46 +235,190 @@ def _summarize(findings):
     return counts
 
 
-def _build_html(findings, summary):
-    if not findings:
-        return ("<html><body style='font-family:Segoe UI,Arial,sans-serif'>"
-                "<h2>CSPM Critical &amp; High Misconfigurations</h2>"
-                "<p>No open Critical or High IOMs found for this period.</p>"
-                "</body></html>")
+# --------------------------------------------------------------------------
+# Email styling. Built for Outlook desktop, which renders through Word's
+# engine: no external/<style> CSS reliance, tables for layout, inline styles,
+# bgcolor attributes alongside background-color, hex colors only, and explicit
+# light backgrounds on every container so the report stays dark-on-light even
+# when the client is in dark mode (the cause of the washed-out first attempt).
+# --------------------------------------------------------------------------
 
-    fields = list(findings[0].keys())
-    summary_rows = "".join(
-        f"<tr><td style='padding:4px 12px'>{k}</td>"
-        f"<td style='padding:4px 12px;text-align:right'><b>{v}</b></td></tr>"
-        for k, v in sorted(summary.items())
-    )
-    header = "".join(
-        f"<th style='padding:6px 10px;text-align:left;border-bottom:2px solid #444'>{f}</th>"
-        for f in fields
-    )
-    rows = ""
-    for r in findings[:TABLE_LIMIT]:
-        cells = "".join(
-            f"<td style='padding:4px 10px;border-bottom:1px solid #ddd'>{r.get(f, '')}</td>"
-            for f in fields
+# Optional: paste the Falcon Cloud Security findings URL here to render a
+# "View in Falcon" button in the header. Left blank = no button (no broken link).
+CONSOLE_LINK = ""
+
+SEV_COLORS = {
+    "critical": "#C81E1E",
+    "high":     "#C2410C",
+    "medium":   "#B45309",
+    "low":      "#3F6212",
+}
+_OUTER_BG = "#E9EDF1"
+_CARD_BG  = "#FFFFFF"
+_HEAD_BG  = "#1B2430"
+_BORDER   = "#D0D7DE"
+_ZEBRA    = "#F3F5F7"
+_TXT      = "#1F2937"
+_MUTED    = "#6B7280"
+_FONT     = "Segoe UI,Arial,sans-serif"
+
+_HTML_HEAD = (
+    "<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'>"
+    "<meta name='viewport' content='width=device-width,initial-scale=1'>"
+    "<meta name='color-scheme' content='light'>"
+    "<meta name='supported-color-schemes' content='light'>"
+    "<style>:root{color-scheme:light;supported-color-schemes:light;}</style>"
+    "</head>"
+)
+
+
+def _esc(v):
+    return html.escape(str(v if v is not None else ""))
+
+
+def _now_utc():
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+
+def _sev_color(sev):
+    return SEV_COLORS.get(str(sev or "").lower(), "#4B5563")
+
+
+def _date_only(ts):
+    ts = str(ts or "")
+    return ts[:10] if len(ts) >= 10 else ts
+
+
+def _short_rid(rid):
+    """Last path segment of a long cloud resource id (full value stays in CSV)."""
+    return str(rid or "").rstrip("/").split("/")[-1]
+
+
+def _build_html(findings, summary):
+    generated = _now_utc()
+
+    if not findings:
+        body = (
+            f"<body style=\"margin:0;padding:0;background-color:{_OUTER_BG}\">"
+            f"<table width='100%' cellpadding='0' cellspacing='0' bgcolor='{_OUTER_BG}'"
+            f" style='background-color:{_OUTER_BG}'><tr><td align='center' style='padding:24px'>"
+            f"<table width='640' cellpadding='0' cellspacing='0' bgcolor='{_CARD_BG}'"
+            f" style='background-color:{_CARD_BG};border:1px solid {_BORDER};font-family:{_FONT}'>"
+            f"<tr><td bgcolor='{_HEAD_BG}' style='background-color:{_HEAD_BG};color:#fff;"
+            f"padding:18px 24px;font-size:18px;font-weight:bold'>"
+            f"Falcon Cloud Security (CSPM)</td></tr>"
+            f"<tr><td style='padding:24px;color:{_TXT};font-size:14px'>"
+            f"No open Critical or High misconfigurations were found for this period."
+            f"<div style='color:{_MUTED};font-size:12px;margin-top:16px'>"
+            f"Generated {generated} &middot; Falcon GovCloud</div>"
+            f"</td></tr></table></td></tr></table></body>"
         )
-        rows += f"<tr>{cells}</tr>"
+        return _HTML_HEAD + body + "</html>"
+
+    total = len(findings)
+    crit = sum(1 for f in findings if str(f.get("severity", "")).lower() == "critical")
+    high = sum(1 for f in findings if str(f.get("severity", "")).lower() == "high")
+
+    def card(label, value, bg):
+        return (
+            f"<td width='33%' align='center' bgcolor='{bg}' style='background-color:{bg};"
+            f"color:#fff;padding:14px;font-family:{_FONT}'>"
+            f"<div style='font-size:26px;font-weight:bold;line-height:1'>{value}</div>"
+            f"<div style='font-size:11px;text-transform:uppercase;letter-spacing:.5px;"
+            f"margin-top:4px'>{label}</div></td>"
+        )
+
+    cards = (
+        f"<table width='100%' cellpadding='0' cellspacing='6'><tr>"
+        f"{card('Total findings', total, _HEAD_BG)}"
+        f"{card('Critical', crit, SEV_COLORS['critical'])}"
+        f"{card('High', high, SEV_COLORS['high'])}"
+        f"</tr></table>"
+    )
+
+    cols = [
+        ("Severity", 74), ("Rule", 230), ("Service", 110), ("Cloud", 62),
+        ("Region", 84), ("Resource", 250), ("First seen", 92),
+    ]
+    header = "".join(
+        f"<th align='left' width='{w}' style='padding:8px 10px;font-size:11px;"
+        f"text-transform:uppercase;letter-spacing:.4px;color:#fff;"
+        f"background-color:{_HEAD_BG};font-family:{_FONT};white-space:nowrap'>{c}</th>"
+        for c, w in cols
+    )
+
+    td_base = (f"padding:7px 10px;font-size:12px;color:{_TXT};"
+               f"border-bottom:1px solid {_BORDER};vertical-align:top;font-family:{_FONT}")
+
+    rows = ""
+    for i, r in enumerate(findings[:TABLE_LIMIT]):
+        zebra = _CARD_BG if i % 2 == 0 else _ZEBRA
+        sev = r.get("severity", "")
+        sev_bg = _sev_color(sev)
+        rname = str(r.get("resource_name") or "")
+        rid_short = _short_rid(r.get("resource_id"))
+        sub = ""
+        if rname and rid_short and rid_short.lower() != rname.lower():
+            sub = (f"<div style='color:{_MUTED};font-size:11px;margin-top:2px;"
+                   f"word-break:break-all'>{_esc(rid_short)}</div>")
+        res_cell = (f"<div style='font-weight:600;word-break:break-word'>"
+                    f"{_esc(rname or rid_short) or '&mdash;'}</div>{sub}")
+
+        rows += (
+            f"<tr bgcolor='{zebra}' style='background-color:{zebra}'>"
+            f"<td bgcolor='{sev_bg}' style='background-color:{sev_bg};color:#fff;"
+            f"font-weight:bold;font-size:11px;text-align:center;padding:7px 8px;"
+            f"white-space:nowrap;font-family:{_FONT}'>{_esc(str(sev or '—').upper())}</td>"
+            f"<td style='{td_base};word-break:break-word'>{_esc(r.get('rule', ''))}</td>"
+            f"<td style='{td_base}'>{_esc(r.get('service', ''))}</td>"
+            f"<td style='{td_base}'>{_esc(r.get('cloud_provider', ''))}</td>"
+            f"<td style='{td_base};white-space:nowrap'>{_esc(r.get('region', ''))}</td>"
+            f"<td style='{td_base}'>{res_cell}</td>"
+            f"<td style='{td_base};white-space:nowrap'>{_esc(_date_only(r.get('first_seen')))}</td>"
+            f"</tr>"
+        )
 
     note = ""
-    if len(findings) > TABLE_LIMIT:
-        note = (f"<p>Showing the first {TABLE_LIMIT} of {len(findings)} findings. "
-                f"Full list is in the attached CSV.</p>")
+    if total > TABLE_LIMIT:
+        note = (f"<tr><td colspan='7' style='padding:10px;font-size:12px;color:{_MUTED};"
+                f"background-color:{_CARD_BG};font-family:{_FONT}'>"
+                f"Showing the first {TABLE_LIMIT} of {total} findings. "
+                f"Full list is in the attached CSV.</td></tr>")
 
-    return f"""\
-<html><body style="font-family:Segoe UI,Arial,sans-serif;color:#222">
-<h2>Falcon Cloud Security (CSPM) - Critical &amp; High Misconfigurations</h2>
-<p>Total findings: <b>{len(findings)}</b></p>
-<table style="border-collapse:collapse;margin-bottom:18px">{summary_rows}</table>
-{note}
-<table style="border-collapse:collapse;font-size:13px"><thead><tr>{header}</tr></thead>
-<tbody>{rows}</tbody></table>
-<p style="color:#888;font-size:12px">Automated monthly report from Falcon GovCloud (Foundry + Fusion SOAR).</p>
-</body></html>"""
+    button = ""
+    if CONSOLE_LINK:
+        button = (
+            f"<div style='margin-top:12px'><a href='{_esc(CONSOLE_LINK)}' "
+            f"style='background-color:#E12E26;color:#fff;text-decoration:none;"
+            f"padding:8px 16px;font-size:12px;font-weight:bold;font-family:{_FONT};"
+            f"display:inline-block'>View in Falcon &rarr;</a></div>"
+        )
+
+    body = (
+        f"<body style=\"margin:0;padding:0;background-color:{_OUTER_BG}\">"
+        f"<table width='100%' cellpadding='0' cellspacing='0' bgcolor='{_OUTER_BG}'"
+        f" style='background-color:{_OUTER_BG}'><tr><td align='center' style='padding:24px 12px'>"
+        f"<table width='980' cellpadding='0' cellspacing='0' bgcolor='{_CARD_BG}'"
+        f" style='background-color:{_CARD_BG};border:1px solid {_BORDER};max-width:980px'>"
+        f"<tr><td bgcolor='{_HEAD_BG}' style='background-color:{_HEAD_BG};padding:18px 24px;"
+        f"font-family:{_FONT}'>"
+        f"<div style='color:#fff;font-size:18px;font-weight:bold'>Falcon Cloud Security (CSPM)</div>"
+        f"<div style='color:#AEB8C4;font-size:13px;margin-top:2px'>"
+        f"Critical &amp; High Misconfigurations &middot; Falcon GovCloud</div>"
+        f"{button}</td></tr>"
+        f"<tr><td style='padding:16px 18px 4px'>{cards}</td></tr>"
+        f"<tr><td style='padding:12px 18px 18px'>"
+        f"<table width='100%' cellpadding='0' cellspacing='0' "
+        f"style='border-collapse:collapse;border:1px solid {_BORDER}'>"
+        f"<thead><tr>{header}</tr></thead><tbody>{rows}{note}</tbody></table>"
+        f"</td></tr>"
+        f"<tr><td style='padding:14px 24px;border-top:1px solid {_BORDER};"
+        f"color:{_MUTED};font-size:11px;font-family:{_FONT}'>"
+        f"Automated report from Falcon GovCloud (Foundry &amp; Fusion SOAR) "
+        f"&middot; Generated {generated}</td></tr>"
+        f"</table></td></tr></table></body>"
+    )
+    return _HTML_HEAD + body + "</html>"
 
 
 def _build_csv(findings):
