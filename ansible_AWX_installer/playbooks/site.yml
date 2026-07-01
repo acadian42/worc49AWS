@@ -1,0 +1,29 @@
+---
+# =============================================================================
+# site.yml — configure the guest VM: common prep -> K3s -> AWX.
+# Run from the host via the project .venv ansible. Inventory is generated from
+# `vagrant ssh-config`. Versions come from ../versions.yml (single source of truth).
+# =============================================================================
+- name: Provision AWX on single-node K3s
+  hosts: awx_vm
+  gather_facts: true
+  become: true
+  vars_files:
+    - "{{ playbook_dir }}/../versions.yml"
+  vars:
+    # k3s_version_override is passed by install.sh for the descending matrix;
+    # falls back to the pinned k3s.version from versions.yml.
+    k3s_version: "{{ k3s_version_override | default(k3s.version) }}"
+    # awx_state_dir is the HOST path holding generated secrets (read via lookup).
+    state_dir: "{{ awx_state_dir | default(playbook_dir ~ '/../.state') }}"
+  pre_tasks:
+    - name: Show effective versions for this run
+      ansible.builtin.debug:
+        msg:
+          - "K3s: {{ k3s_version }}"
+          - "AWX operator: {{ awx.operator_version }}  AWX: {{ awx.awx_version }}"
+          - "Namespace: {{ awx.namespace }}  NodePort: {{ awx.nodeport }}"
+  roles:
+    - role: common
+    - role: k3s
+    - role: awx

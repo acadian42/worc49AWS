@@ -1,0 +1,157 @@
+---
+# ---- Secrets (read from host .state, create in-cluster only if absent) ------
+- name: Load AWX secrets from the host state dir
+  ansible.builtin.set_fact:
+    awx_admin_password: "{{ lookup('file', state_dir + '/awx_admin_password') }}"
+    awx_secret_key: "{{ lookup('file', state_dir + '/awx_secret_key') }}"
+  no_log: true
+
+- name: Ensure manifest directories exist (root-only)
+  ansible.builtin.file:
+    path: "{{ awx_manifests_dir }}/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+  loop:
+    - operator
+    - awx
+
+- name: Check AWX namespace
+  ansible.builtin.command: "k3s kubectl get namespace {{ awx.namespace }}"
+  register: awx_ns
+  changed_when: false
+  failed_when: false
+
+- name: Create AWX namespace
+  ansible.builtin.command: "k3s kubectl create namespace {{ awx.namespace }}"
+  when: awx_ns.rc != 0
+
+- name: Check admin-password secret
+  ansible.builtin.command: "k3s kubectl -n {{ awx.namespace }} get secret awx-admin-password"
+  register: awx_adm_sec
+  changed_when: false
+  failed_when: false
+
+- name: Create admin-password secret (only if missing; preserved across reruns)
+  ansible.builtin.command: >-
+    k3s kubectl -n {{ awx.namespace }} create secret generic awx-admin-password
+    --from-literal=password={{ awx_admin_password }}
+  when: awx_adm_sec.rc != 0
+  no_log: true
+
+- name: Check secret-key secret
+  ansible.builtin.command: "k3s kubectl -n {{ awx.namespace }} get secret awx-secret-key"
+  register: awx_sk_sec
+  changed_when: false
+  failed_when: false
+
+- name: Create secret-key secret (only if missing; preserved across reruns)
+  ansible.builtin.command: >-
+    k3s kubectl -n {{ awx.namespace }} create secret generic awx-secret-key
+    --from-literal=secret_key={{ awx_secret_key }}
+  when: awx_sk_sec.rc != 0
+  no_log: true
+
+# ---- Operator (kustomize, pinned ref + kube-rbac-proxy digest override) ------
+- name: Render operator kustomization
+  ansible.builtin.template:
+    src: kustomization.yaml.j2
+    dest: "{{ awx_manifests_dir }}/operator/kustomization.yaml"
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Apply AWX operator
+  ansible.builtin.command: "k3s kubectl apply -k {{ awx_manifests_dir }}/operator"
+  register: awx_op_apply
+  changed_when: "'unchanged' not in awx_op_apply.stdout"
+
+- name: Wait for operator deployment to be Available
+  ansible.builtin.command: >-
+    k3s kubectl -n {{ awx.namespace }} rollout status
+    deploy/awx-operator-controller-manager --timeout=20s
+  register: awx_op_roll
+  until: awx_op_roll.rc == 0
+  retries: "{{ awx_wait_operator_retries }}"
+  delay: "{{ awx_wait_operator_delay }}"
+  changed_when: false
+
+# ---- AWX custom resource ----------------------------------------------------
+- name: Render AWX custom resource
+  ansible.builtin.template:
+    src: awx.yml.j2
+    dest: "{{ awx_manifests_dir }}/awx/awx.yaml"
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Apply AWX custom resource
+  ansible.builtin.command: "k3s kubectl apply -f {{ awx_manifests_dir }}/awx/awx.yaml"
+  register: awx_cr_apply
+  changed_when: "'unchanged' not in awx_cr_apply.stdout"
+
+# ---- Wait for AWX to reconcile (visible polling, bounded timeouts) ----------
+- name: Wait for PostgreSQL statefulset to be ready
+  ansible.builtin.shell: |
+    set -o pipefail
+    sts=$(k3s kubectl -n {{ awx.namespace }} get statefulset -o name 2>/dev/null | grep -m1 postgres || true)
+    [ -n "$sts" ] || exit 1
+    k3s kubectl -n {{ awx.namespace }} rollout status "$sts" --timeout=20s
+  args:
+    executable: /bin/bash
+  register: awx_pg
+  until: awx_pg.rc == 0
+  retries: "{{ awx_wait_pg_retries }}"
+  delay: "{{ awx_wait_pg_delay }}"
+  changed_when: false
+
+- name: Wait for awx-web deployment to be Available
+  ansible.builtin.command: >-
+    k3s kubectl -n {{ awx.namespace }} rollout status
+    deploy/{{ awx.resource_name }}-web --timeout=20s
+  register: awx_web
+  until: awx_web.rc == 0
+  retries: "{{ awx_wait_web_retries }}"
+  delay: "{{ awx_wait_web_delay }}"
+  changed_when: false
+
+- name: Wait for awx-task deployment to be Available
+  ansible.builtin.command: >-
+    k3s kubectl -n {{ awx.namespace }} rollout status
+    deploy/{{ awx.resource_name }}-task --timeout=20s
+  register: awx_task
+  until: awx_task.rc == 0
+  retries: "{{ awx_wait_web_retries }}"
+  delay: "{{ awx_wait_web_delay }}"
+  changed_when: false
+
+- name: Confirm migration job completed (Completed == success, not a failed pod)
+  ansible.builtin.shell: |
+    set -o pipefail
+    k3s kubectl -n {{ awx.namespace }} get jobs \
+      -o jsonpath='{range .items[*]}{.metadata.name}={.status.succeeded}{"\n"}{end}' 2>/dev/null \
+      | grep -i migration | grep -qE '=1$'
+  args:
+    executable: /bin/bash
+  register: awx_mig
+  until: awx_mig.rc == 0
+  retries: "{{ awx_wait_migration_retries }}"
+  delay: "{{ awx_wait_migration_delay }}"
+  changed_when: false
+  failed_when: false
+
+- name: Verify NodePort service exposes {{ awx.nodeport }}
+  ansible.builtin.command: >-
+    k3s kubectl -n {{ awx.namespace }} get svc {{ awx.resource_name }}-service
+    -o jsonpath={.spec.ports[0].nodePort}
+  register: awx_np
+  changed_when: false
+  failed_when: awx.nodeport | string not in awx_np.stdout
+
+- name: AWX reconciliation summary
+  ansible.builtin.debug:
+    msg:
+      - "PostgreSQL ready, awx-web Available, awx-task Available."
+      - "Migration succeeded: {{ 'yes' if awx_mig.rc == 0 else 'pending/unknown (web Available implies migrated)' }}"
+      - "NodePort: {{ awx_np.stdout }}"

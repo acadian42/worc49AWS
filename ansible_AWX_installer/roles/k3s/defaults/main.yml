@@ -1,0 +1,18 @@
+---
+# Pinned K3s version (the play overrides this via k3s_version from versions.yml
+# or the descending-matrix override). Kept here for standalone role runs.
+k3s_version: "v1.35.5+k3s1"
+
+# Official installer (downloaded to a file and executed; never piped curl|sh).
+k3s_install_url: "https://get.k3s.io"
+k3s_install_script: "/usr/local/share/k3s-install.sh"
+
+# Bundled components to disable: Traefik + ServiceLB are unnecessary because AWX
+# is reached via NodePort; local-path (storage) is retained.
+k3s_disable:
+  - traefik
+  - servicelb
+
+# Node-readiness polling.
+k3s_node_wait_retries: 30
+k3s_node_wait_delay: 10

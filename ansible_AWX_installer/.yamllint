@@ -1,0 +1,27 @@
+---
+extends: default
+
+ignore: |
+  .venv/
+  .vagrant/
+  .cache/
+  .artifacts/
+  .state/
+  inventory/generated/
+  roles/*/templates/
+
+rules:
+  line-length:
+    max: 160
+    level: warning
+  document-start: disable
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: disable
+  truthy:
+    allowed-values: ['true', 'false', 'yes', 'no']
+  indentation:
+    spaces: 2
+    indent-sequences: true
+  braces:
+    max-spaces-inside: 1
