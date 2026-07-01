@@ -1,0 +1,139 @@
+---
+# ============================================================================
+# Host firewall: default deny inbound / allow outbound, SSH from the control
+# plane, ES transport + HTTP between cluster and recorders, and Nginx from the
+# analyst subnets. Supports ufw (Debian) and firewalld (RHEL) via
+# firewall_manager. Peer IPs are derived from inventory hostvars.
+# ============================================================================
+
+- name: Build the Elasticsearch peer management IP list
+  ansible.builtin.set_fact:
+    es_peer_ips: >-
+      {{ groups['elasticsearch_physical_hosts'] | default([])
+         | map('extract', hostvars, 'management_ip') | select('defined') | list }}
+
+- name: Build the recorder peer management IP list
+  ansible.builtin.set_fact:
+    recorder_peer_ips: >-
+      {{ groups['arkime_recorders'] | default([])
+         | map('extract', hostvars, 'management_ip') | select('defined') | list }}
+
+# ---- Debian / Ubuntu: ufw -------------------------------------------------
+- name: Configure ufw on Debian-family hosts
+  when: firewall_manager == 'ufw'
+  block:
+    - name: Set the ufw default policies
+      community.general.ufw:
+        direction: "{{ item.direction }}"
+        policy: "{{ item.policy }}"
+      loop:
+        - {direction: incoming, policy: deny}
+        - {direction: outgoing, policy: allow}
+      loop_control:
+        label: "{{ item.direction }}"
+
+    - name: Allow SSH from the control plane
+      community.general.ufw:
+        rule: allow
+        port: "22"
+        proto: tcp
+        from_ip: "{{ item }}"
+      loop: "{{ control_plane_cidrs }}"
+
+    - name: Allow Elasticsearch transport between cluster hosts
+      community.general.ufw:
+        rule: allow
+        proto: tcp
+        port: "{{ es_transport_base_port }}:{{ es_transport_base_port + (elasticsearch_nodes_per_host | int) - 1 }}"
+        from_ip: "{{ item }}"
+      loop: "{{ es_peer_ips }}"
+      when: "'elasticsearch_physical_hosts' in group_names"
+
+    - name: Allow Elasticsearch HTTP from recorders and the control plane
+      community.general.ufw:
+        rule: allow
+        proto: tcp
+        port: "{{ es_http_base_port }}:{{ es_http_base_port + (elasticsearch_nodes_per_host | int) - 1 }}"
+        from_ip: "{{ item }}"
+      loop: "{{ recorder_peer_ips + control_plane_cidrs }}"
+      when: "'elasticsearch_physical_hosts' in group_names"
+
+    - name: Allow Nginx from the analyst subnets on recorder hosts
+      community.general.ufw:
+        rule: allow
+        proto: tcp
+        port: "{{ nginx_listen_port }}"
+        from_ip: "{{ item }}"
+      loop: "{{ analyst_cidrs }}"
+      when: "'arkime_recorders' in group_names"
+
+    - name: Allow HTTP (port 80) for the HTTPS redirect on recorder hosts
+      community.general.ufw:
+        rule: allow
+        proto: tcp
+        port: "80"
+        from_ip: "{{ item }}"
+      loop: "{{ analyst_cidrs }}"
+      when:
+        - "'arkime_recorders' in group_names"
+        - nginx_redirect_http | default(true) | bool
+
+    - name: Enable and activate ufw
+      community.general.ufw:
+        state: enabled
+
+# ---- RHEL: firewalld ------------------------------------------------------
+- name: Configure firewalld on RHEL-family hosts
+  when: firewall_manager == 'firewalld'
+  block:
+    - name: Ensure firewalld is running
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Set the default firewalld zone to drop
+      ansible.builtin.command: firewall-cmd --set-default-zone=drop
+      register: fw_default_zone
+      changed_when: "'ZONE_ALREADY_SET' not in fw_default_zone.stderr"
+
+    - name: Allow SSH from the control plane
+      ansible.posix.firewalld:
+        rich_rule: "rule family=ipv4 source address={{ item }} service name=ssh accept"
+        permanent: true
+        immediate: true
+        state: enabled
+      loop: "{{ control_plane_cidrs }}"
+
+    - name: Allow Elasticsearch transport between cluster hosts
+      ansible.posix.firewalld:
+        rich_rule: >-
+          rule family=ipv4 source address={{ item }}
+          port port="{{ es_transport_base_port }}-{{ es_transport_base_port + (elasticsearch_nodes_per_host | int) - 1 }}"
+          protocol=tcp accept
+        permanent: true
+        immediate: true
+        state: enabled
+      loop: "{{ es_peer_ips }}"
+      when: "'elasticsearch_physical_hosts' in group_names"
+
+    - name: Allow Elasticsearch HTTP from recorders and the control plane
+      ansible.posix.firewalld:
+        rich_rule: >-
+          rule family=ipv4 source address={{ item }}
+          port port="{{ es_http_base_port }}-{{ es_http_base_port + (elasticsearch_nodes_per_host | int) - 1 }}"
+          protocol=tcp accept
+        permanent: true
+        immediate: true
+        state: enabled
+      loop: "{{ recorder_peer_ips + control_plane_cidrs }}"
+      when: "'elasticsearch_physical_hosts' in group_names"
+
+    - name: Allow Nginx from the analyst subnets on recorder hosts
+      ansible.posix.firewalld:
+        rich_rule: "rule family=ipv4 source address={{ item }} port port=\"{{ nginx_listen_port }}\" protocol=tcp accept"
+        permanent: true
+        immediate: true
+        state: enabled
+      loop: "{{ analyst_cidrs }}"
+      when: "'arkime_recorders' in group_names"

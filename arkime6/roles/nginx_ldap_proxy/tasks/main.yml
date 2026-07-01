@@ -1,0 +1,78 @@
+---
+# ============================================================================
+# Lay down the fpc-nginx Compose project: front Nginx (TLS + auth_request) and
+# the nginx-ldap-auth-service sidecar. The playbook sets become; the role does
+# not. Config changes notify 'Recreate nginx services'.
+# ============================================================================
+
+- name: Create the Nginx Compose project directory
+  ansible.builtin.file:
+    path: "{{ nginx_compose_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "{{ nginx_dir_mode }}"
+
+- name: Create the Nginx conf.d directory
+  ansible.builtin.file:
+    path: "{{ nginx_compose_dir }}/conf.d"
+    state: directory
+    owner: root
+    group: root
+    mode: "{{ nginx_dir_mode }}"
+
+- name: Check whether an external TLS certificate is already provided
+  ansible.builtin.stat:
+    path: "{{ nginx_tls_cert }}"
+  register: nginx_external_cert
+
+- name: Generate the Nginx server certificate from the internal CA
+  ansible.builtin.include_tasks: certs.yml
+  when:
+    - internal_ca_enabled | bool
+    - not nginx_external_cert.stat.exists
+
+- name: Render the main Nginx configuration
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: "{{ nginx_compose_dir }}/nginx.conf"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: Recreate nginx services
+
+- name: Render the protected server block
+  ansible.builtin.template:
+    src: default.conf.j2
+    dest: "{{ nginx_compose_dir }}/conf.d/default.conf"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: Recreate nginx services
+
+- name: Render the LDAP auth sidecar environment file
+  ansible.builtin.template:
+    src: ldap-auth.env.j2
+    dest: "{{ nginx_compose_dir }}/ldap-auth.env"
+    owner: root
+    group: root
+    mode: "0600"
+  no_log: true
+  notify: Recreate nginx services
+
+- name: Render the Nginx Compose project
+  ansible.builtin.template:
+    src: nginx-compose.yml.j2
+    dest: "{{ nginx_compose_dir }}/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: Recreate nginx services
+
+- name: Bring up the Nginx Compose project
+  community.docker.docker_compose_v2:
+    project_src: "{{ nginx_compose_dir }}"
+    project_name: "{{ nginx_compose_project }}"
+    state: present
+    pull: never
+    wait: true

@@ -1,0 +1,69 @@
+---
+# ============================================================================
+# Arkime recorder assertions. The viewer is only reachable on loopback (Nginx
+# fronts it publicly), so probes target 127.0.0.1. A 401 is an acceptable answer
+# because the viewer enforces auth — it still proves the service is listening.
+# Capture storage must exist and be writable by the capture container UID.
+# ============================================================================
+
+- name: Probe the local Arkime viewer root
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:{{ arkime_viewer_port }}/"
+    method: GET
+    validate_certs: false
+    timeout: "{{ validation_http_timeout | int }}"
+    status_code: [200, 401]
+  register: validation_arkime_root
+  changed_when: false
+
+- name: Assert the viewer is listening and answering
+  ansible.builtin.assert:
+    that:
+      - validation_arkime_root.status in [200, 401]
+    fail_msg: "Arkime viewer on 127.0.0.1:{{ arkime_viewer_port }} did not answer (status {{ validation_arkime_root.status | default('none') }})."
+    success_msg: "Arkime viewer answered on 127.0.0.1:{{ arkime_viewer_port }} (status {{ validation_arkime_root.status }})."
+
+- name: Probe a viewer stats-style API endpoint
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:{{ arkime_viewer_port }}/api/stats"
+    method: GET
+    validate_certs: false
+    timeout: "{{ validation_http_timeout | int }}"
+    status_code: [200, 401, 403]
+  register: validation_arkime_stats
+  changed_when: false
+
+- name: Assert the stats API is reachable
+  ansible.builtin.assert:
+    that:
+      - validation_arkime_stats.status in [200, 401, 403]
+    fail_msg: "Arkime stats API on 127.0.0.1:{{ arkime_viewer_port }} is unreachable (status {{ validation_arkime_stats.status | default('none') }})."
+    success_msg: "Arkime stats API reachable (status {{ validation_arkime_stats.status }})."
+
+- name: Stat the PCAP directory
+  ansible.builtin.stat:
+    path: "{{ arkime_pcap_path }}"
+  register: validation_pcap_dir
+
+- name: Assert the PCAP directory exists and is a directory
+  ansible.builtin.assert:
+    that:
+      - validation_pcap_dir.stat.exists
+      - validation_pcap_dir.stat.isdir
+    fail_msg: "PCAP directory {{ arkime_pcap_path }} is missing or is not a directory."
+    success_msg: "PCAP directory {{ arkime_pcap_path }} exists."
+
+- name: Create and remove a probe file to confirm the PCAP directory is writable
+  ansible.builtin.tempfile:
+    path: "{{ arkime_pcap_path }}"
+    prefix: ".fpc-validation-"
+    state: file
+  register: validation_pcap_probe
+  changed_when: false
+
+- name: Remove the PCAP write-probe file
+  ansible.builtin.file:
+    path: "{{ validation_pcap_probe.path }}"
+    state: absent
+  changed_when: false
+  when: validation_pcap_probe.path is defined

@@ -1,0 +1,22 @@
+=== Elasticsearch ===
+PASS | ES: exactly 3 node containers (=3)
+PASS | ES: cluster status green (=green)
+PASS | ES: number_of_nodes == 3 (=3)
+PASS | ES: anonymous API access denied (401) (=401)
+PASS | ES: arkime_writer can authenticate (=200)
+PASS | ES: bootstrap marker present (=yes)
+PASS | ES: no initial_master_nodes after bootstrap (=0)
+PASS | ES: Xms==Xmx in every heap.options (=0)
+=== Arkime ===
+PASS | Arkime: capture container running (=1)
+PASS | Arkime: viewer container running (=1)
+PASS | Arkime: capture has NET_RAW (not fully privileged) (=false)
+PASS | Arkime: arkime_* indices exist in ES (=15>=1)
+PASS | Arkime: viewer answers on loopback 8005 (=401)
+=== Nginx / security (from host over vmnet8) ===
+PASS | Nginx: unauthenticated request denied (302/401/403) (=denied)
+PASS | Nginx: HTTP redirects to HTTPS (301) (=301)
+PASS | Security: spoofed remote-user header is rejected (=denied)
+PASS | Security: direct Viewer bypass blocked (viewer bound to loopback) (=blocked)
+
+SUMMARY: PASS=17 FAIL=0

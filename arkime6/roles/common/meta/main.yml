@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  role_name: common
+  author: FPC Platform Team
+  description: Base OS preparation — packages, time sync, sysctl, ulimits, host firewall, and internal CA trust.
+  license: MIT
+  min_ansible_version: "2.21"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+    - name: EL
+      versions:
+        - "9"

@@ -1,0 +1,9 @@
+{{ ansible_managed | comment }}
+# Managed by the FPC common role. Raised memlock and open-file limits so that
+# Elasticsearch and Arkime containers can mlock heap and hold many sockets.
+{% for user in common_limits_users %}
+{{ user }} soft memlock unlimited
+{{ user }} hard memlock unlimited
+{{ user }} soft nofile {{ common_nofile }}
+{{ user }} hard nofile {{ common_nofile }}
+{% endfor %}

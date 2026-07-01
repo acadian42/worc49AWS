@@ -1,0 +1,24 @@
+---
+# Runs once, after first cluster formation. Re-renders config WITHOUT
+# cluster.initial_master_nodes (no restart — the cluster has already formed) and
+# writes a durable marker so a Docker/host restart can never re-bootstrap.
+- name: Re-render elasticsearch.yml without initial_master_nodes
+  ansible.builtin.template:
+    src: elasticsearch.yml.j2
+    dest: "{{ es_config_path }}/{{ item.name }}/elasticsearch.yml"
+    owner: "{{ es_uid }}"
+    group: "{{ es_gid }}"
+    mode: "0640"
+  loop: "{{ es_node_defs }}"
+  loop_control:
+    label: "{{ item.name }}"
+  vars:
+    es_bootstrapped: true
+
+- name: Write the bootstrap marker
+  ansible.builtin.copy:
+    dest: "{{ es_bootstrap_marker }}"
+    content: "Cluster {{ es_cluster_name }} bootstrapped on {{ ansible_date_time.iso8601 }}\n"
+    owner: root
+    group: root
+    mode: "0644"

@@ -1,0 +1,35 @@
+---
+# ============================================================================
+# Post-deploy validation. Runs the per-tier checks from the validation role on
+# every host, then prints a single fleet-wide deployment summary. Read-only.
+# ============================================================================
+
+- name: Validate every FPC host against its tier's expectations
+  hosts: all_fpc_hosts
+  become: true
+  gather_facts: true
+  tags:
+    - validate
+  roles:
+    - validation
+
+- name: Print the deployment summary
+  hosts: all_fpc_hosts
+  become: true
+  gather_facts: false
+  run_once: true
+  tags:
+    - validate
+  tasks:
+    - name: Show the fleet-wide deployment summary
+      ansible.builtin.debug:
+        msg:
+          - "FPC deployment summary"
+          - "Elasticsearch hosts: {{ groups['elasticsearch_physical_hosts'] | default([]) | length }}"
+          - "Nodes per host (selected N): {{ elasticsearch_nodes_per_host }}"
+          - "Total ES nodes: {{ (groups['elasticsearch_physical_hosts'] | default([]) | length) * (elasticsearch_nodes_per_host | int) }}"
+          - "Arkime recorders: {{ groups['arkime_recorders'] | default([]) | length }}"
+          - "Elasticsearch version: {{ es_version }}"
+          - "Arkime version: {{ arkime_version }}"
+          - "Nginx image: {{ nginx_image }}"
+          - "LDAP auth image: {{ ldap_auth_image }}"

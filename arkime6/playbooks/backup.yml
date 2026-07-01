@@ -1,0 +1,64 @@
+---
+# ============================================================================
+# Register a filesystem snapshot repository and take a verified snapshot of the
+# Elasticsearch cluster. Runs once against the first ES host. Non-destructive.
+# The repository path must be present on every ES node (path.repo); it maps to
+# es_snapshot_repo_path on the host and /snapshots inside the containers.
+# ============================================================================
+
+- name: Snapshot the Elasticsearch cluster
+  hosts: elasticsearch_physical_hosts
+  become: true
+  gather_facts: true
+  run_once: true
+  tags:
+    - backup
+  vars:
+    es_node_certs_dir: "{{ es_config_path }}/{{ physical_host }}-node-01/certs"
+    es_snapshot_repo_name: "fpc-fs"
+    es_snapshot_container_path: "/snapshots"
+    es_snapshot_name: "fpc-snapshot-{{ ansible_date_time.iso8601_basic_short }}"
+  tasks:
+    - name: Register the filesystem snapshot repository
+      ansible.builtin.uri:
+        url: "https://{{ management_ip }}:{{ es_http_base_port }}/_snapshot/{{ es_snapshot_repo_name }}"
+        method: PUT
+        user: elastic
+        password: "{{ es_bootstrap_password }}"
+        force_basic_auth: true
+        validate_certs: "{{ es_http_tls and not air_gapped | default(false) }}"
+        ca_path: "{{ es_node_certs_dir }}/ca.crt.pem"
+        body_format: json
+        body:
+          type: fs
+          settings:
+            location: "{{ es_snapshot_container_path }}"
+            compress: true
+        status_code: [200]
+      no_log: true
+
+    - name: Take a snapshot of the whole cluster and wait for completion
+      ansible.builtin.uri:
+        url: >-
+          https://{{ management_ip }}:{{ es_http_base_port }}/_snapshot/{{ es_snapshot_repo_name }}/{{ es_snapshot_name }}?wait_for_completion=true
+        method: PUT
+        user: elastic
+        password: "{{ es_bootstrap_password }}"
+        force_basic_auth: true
+        validate_certs: "{{ es_http_tls and not air_gapped | default(false) }}"
+        ca_path: "{{ es_node_certs_dir }}/ca.crt.pem"
+        body_format: json
+        body:
+          indices: "*"
+          ignore_unavailable: true
+          include_global_state: true
+        status_code: [200]
+      register: es_snapshot_result
+      no_log: true
+
+    - name: Verify the snapshot completed successfully
+      ansible.builtin.assert:
+        that:
+          - es_snapshot_result.json.snapshot.state == 'SUCCESS'
+        fail_msg: "Snapshot {{ es_snapshot_name }} did not succeed (state={{ es_snapshot_result.json.snapshot.state | default('unknown') }})."
+        success_msg: "Snapshot {{ es_snapshot_name }} completed successfully."

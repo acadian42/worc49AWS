@@ -1,0 +1,46 @@
+---
+# ============================================================================
+# nginx_ldap_proxy role defaults.
+# Front Nginx (TLS + auth_request) plus the caltechads/nginx-ldap-auth-service
+# sidecar, run together as the 'fpc-nginx' Compose project. All other tunables
+# (nginx_server_name, nginx_tls_cert, ldap_*, arkime_*_header, ports) come from
+# the recorder group_vars contract.
+# ============================================================================
+
+# ---- Compose project ---------------------------------------------------------
+nginx_compose_project: fpc-nginx
+nginx_compose_dir: "{{ arkime_config_path }}/nginx"
+nginx_dir_mode: "0750"
+
+# ---- LDAP auth sidecar -------------------------------------------------------
+ldap_auth_listen_port: 8888
+# Session/CSRF secrets for the sidecar (Vault-injected; empty in non-prod labs).
+ldap_auth_session_secret: "{{ vault_ldap_auth_session_secret | default('') }}"
+ldap_auth_csrf_secret: "{{ vault_ldap_auth_csrf_secret | default(ldap_auth_session_secret) }}"
+# Name of the sidecar session cookie (matched by the Nginx /check subrequest).
+ldap_auth_cookie_name: nginxauth
+ldap_auth_cookie_domain: ""   # host-only cookie (no Domain attr); set to a domain only for shared LB
+# Authorization filter — the sidecar REQUIRES a {username} placeholder. The safe
+# default authorizes any authenticated directory user; production should override
+# this in group_vars to gate on group membership (needs a memberOf overlay), e.g.
+#   ldap_authorization_filter: "(&(sAMAccountName={username})(memberOf=cn=arkime-users,...))"
+ldap_authorization_filter: "({{ ldap_username_attribute }}={username})"
+
+# ---- Upstream Arkime viewer --------------------------------------------------
+# Nginx fronts the viewer on the host loopback. Mirrors the arkime_recorder
+# role default so this role is self-contained when run on its own.
+arkime_viewer_port: 8005
+
+# ---- Internal CA (signs the Nginx server cert unless an external cert exists) -
+nginx_ca_cert_dest: "{{ arkime_tls_path }}/internal-ca.pem"
+
+# ---- Nginx tuning ------------------------------------------------------------
+nginx_worker_processes: auto
+nginx_worker_connections: 4096
+nginx_keepalive_timeout: 75
+nginx_proxy_send_timeout: "{{ nginx_proxy_read_timeout }}"
+
+# ---- TLS hardening -----------------------------------------------------------
+nginx_ssl_protocols: "TLSv1.2 TLSv1.3"
+nginx_ssl_ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384"
+nginx_hsts_max_age: 31536000

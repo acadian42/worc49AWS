@@ -1,0 +1,97 @@
+---
+# ============================================================================
+# E2E Arkime recorder + Nginx/LDAP contract (LAB values).
+# A lab-only OpenLDAP container runs on the recorder so the test stays 2 VMs.
+# ============================================================================
+
+# ---- Paths -------------------------------------------------------------------
+arkime_config_path: "{{ arkime_base }}/config"
+arkime_pcap_path: "{{ arkime_base }}/pcap"
+arkime_logs_path: "{{ arkime_base }}/logs"
+arkime_etc_path: "{{ arkime_base }}/etc"
+arkime_tls_path: "{{ arkime_base }}/ssl"
+
+# ---- Elasticsearch endpoints (single ES host, 3 node ports) ------------------
+# http to match the lab es_http_tls=false (see elasticsearch_physical_hosts.yml).
+arkime_es_scheme: http
+arkime_es_endpoints:
+  - "{{ hostvars['fpc-e2e-es-01'].management_ip }}:9200"
+  - "{{ hostvars['fpc-e2e-es-01'].management_ip }}:9201"
+  - "{{ hostvars['fpc-e2e-es-01'].management_ip }}:9202"
+arkime_es_url: "{{ arkime_es_scheme }}://{{ arkime_es_endpoints | join(',' + arkime_es_scheme + '://') }}"
+
+# ---- Secrets (Vault) ---------------------------------------------------------
+arkime_password_secret: "{{ vault_arkime_password_secret }}"
+arkime_server_secret: "{{ vault_arkime_server_secret }}"
+arkime_http_realm: "Moloch"
+arkime_admin_user: admin
+arkime_admin_password: "{{ vault_arkime_admin_password }}"
+
+# ---- Index rotation / retention (small lab) ----------------------------------
+arkime_rotate_index: daily
+arkime_pcap_retention_days: 3
+arkime_free_space: "10%"
+arkime_max_file_size_g: 2
+
+# ---- Capture (lab: small; eth1 host-only is the capture iface) ---------------
+management_interface: eth0
+capture_interfaces:
+  - eth1
+capture_method: afpacket
+capture_threads: 1
+packet_threads: 1
+max_packets_in_queue: 10000
+pcap_write_size: 262144
+capture_numa_pinning: false
+capture_disable_offloads: false      # virtual NIC: leave offloads as-is in the lab
+capture_promisc: true
+
+# ---- Authentication (header+digest hybrid; fail-closed) ----------------------
+arkime_auth_mode: "header+digest"
+arkime_username_header: "remote-user"
+arkime_required_auth_header: "remote-groups"
+arkime_user_auth_ips: "127.0.0.1/32"     # only the loopback Nginx proxy is trusted
+arkime_auto_create_users: true
+arkime_default_role: "arkimeUser"
+arkime_admin_ldap_group: "arkime-admins"
+arkime_user_ldap_groups:
+  - "arkime-admins"
+  - "arkime-users"
+
+# ---- Nginx / TLS -------------------------------------------------------------
+nginx_listen_port: 443
+nginx_redirect_http: true
+nginx_server_name: "fpc-e2e-rec-01"
+nginx_tls_cert: "{{ arkime_tls_path }}/cert.pem"
+nginx_tls_key: "{{ arkime_tls_path }}/key.pem"
+nginx_client_max_body_size: "0"
+nginx_proxy_read_timeout: 3600
+nginx_hsts_enabled: true
+
+# ---- LDAP (lab OpenLDAP on the recorder, loopback) ---------------------------
+# Lab OpenLDAP (bitnami) listens on 1389 (non-root). A clean login user is added
+# via ldapadd directly under the base DN (so the sidecar's constructed bind DN
+# uid=<user>,<base> matches). bitnami's own seeded user is just a placeholder.
+ldap_url: "ldap://127.0.0.1:1389"
+lab_ldap_image: "bitnamilegacy/openldap:latest"   # lab-only throwaway (bitnami moved old tags to bitnamilegacy)
+lab_ldap_user: "placeholder"                       # bitnami seed (unused by login)
+lab_ldap_user_password: "labpass-placeholder-e2e"  # LAB-ONLY throwaway
+lab_ldap_login_user: "analyst"                     # the real test login (uid=analyst,<base>)
+lab_ldap_login_password: "labpass-analyst-e2e"     # LAB-ONLY throwaway
+# bitnami/openldap stores users as cn=<user>,ou=users,dc=lab,dc=local (cn RDN).
+# The sidecar constructs the bind DN as <username_attr>=<username>,<basedn>, so
+# the search base is the users OU and the username attribute is cn.
+ldap_base_dn: "dc=lab,dc=local"
+ldap_bind_dn: "cn=admin,dc=lab,dc=local"          # bitnami/openldap admin (lab)
+ldap_bind_password: "{{ vault_ldap_bind_password }}"
+ldap_user_filter: "(uid={username})"               # caltechads uses {username}
+ldap_group_attribute: "memberOf"
+ldap_username_attribute: "uid"
+# Lab LDAP has no memberOf overlay; authorize any authenticated directory user.
+# (Group->role mapping is a documented limitation for the smoke test.)
+ldap_authorization_filter: "(uid={username})"
+ldap_ca_file: "{{ arkime_tls_path }}/ca-trust.pem"
+ldap_starttls: false
+
+# ---- Baseline: per-recorder Nginx (no central LB) ----------------------------
+central_entrypoint_enabled: false

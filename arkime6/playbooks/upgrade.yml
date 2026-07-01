@@ -1,0 +1,126 @@
+---
+# ============================================================================
+# GATED rolling upgrade. Rolls Elasticsearch one host at a time to the new
+# pinned digest, then rolls the Arkime recorders. Shard allocation is disabled
+# around each ES restart and the cluster is driven back to green before moving
+# on. Data volumes are NEVER touched.
+#
+# Re-run with: -e upgrade_confirm=true
+# Take or verify a snapshot (playbooks/backup.yml) BEFORE running this.
+# ============================================================================
+
+- name: Roll the Elasticsearch tier to the new digest, one host at a time
+  hosts: elasticsearch_physical_hosts
+  become: true
+  gather_facts: true
+  serial: 1
+  tags:
+    - upgrade
+  vars:
+    es_node_certs_dir: "{{ es_config_path }}/{{ physical_host }}-node-01/certs"
+  tasks:
+    - name: Assert the gated upgrade is explicitly confirmed
+      ansible.builtin.assert:
+        that:
+          - upgrade_confirm | default(false) | bool
+        fail_msg: "REFUSING to upgrade. Re-run with -e upgrade_confirm=true after taking a snapshot."
+        success_msg: "upgrade_confirm=true — proceeding with the rolling upgrade."
+
+    - name: Remind the operator that a current snapshot is required
+      ansible.builtin.debug:
+        msg: >-
+          Ensure a current snapshot exists (run playbooks/backup.yml) before continuing.
+          This upgrade restarts nodes in place and does not back up data for you.
+
+    - name: Disable shard allocation before restarting this node
+      ansible.builtin.uri:
+        url: "https://{{ management_ip }}:{{ es_http_base_port }}/_cluster/settings"
+        method: PUT
+        user: elastic
+        password: "{{ es_bootstrap_password }}"
+        force_basic_auth: true
+        validate_certs: "{{ es_http_tls and not air_gapped | default(false) }}"
+        ca_path: "{{ es_node_certs_dir }}/ca.crt.pem"
+        body_format: json
+        body:
+          transient:
+            cluster.routing.allocation.enable: none
+        status_code: [200]
+      no_log: true
+
+    - name: Flush synced before restart to speed recovery
+      ansible.builtin.uri:
+        url: "https://{{ management_ip }}:{{ es_http_base_port }}/_flush"
+        method: POST
+        user: elastic
+        password: "{{ es_bootstrap_password }}"
+        force_basic_auth: true
+        validate_certs: "{{ es_http_tls and not air_gapped | default(false) }}"
+        ca_path: "{{ es_node_certs_dir }}/ca.crt.pem"
+        status_code: [200, 409]
+      no_log: true
+
+    - name: Recreate the Elasticsearch Compose project with the new digest
+      community.docker.docker_compose_v2:
+        project_src: "{{ es_compose_dir }}"
+        project_name: "{{ es_compose_project }}"
+        state: present
+        pull: never
+        recreate: always
+        wait: true
+
+    - name: Re-enable shard allocation after the node is back
+      ansible.builtin.uri:
+        url: "https://{{ management_ip }}:{{ es_http_base_port }}/_cluster/settings"
+        method: PUT
+        user: elastic
+        password: "{{ es_bootstrap_password }}"
+        force_basic_auth: true
+        validate_certs: "{{ es_http_tls and not air_gapped | default(false) }}"
+        ca_path: "{{ es_node_certs_dir }}/ca.crt.pem"
+        body_format: json
+        body:
+          transient:
+            cluster.routing.allocation.enable: all
+        status_code: [200]
+      no_log: true
+
+    - name: Wait for the cluster to return to green before the next host
+      ansible.builtin.uri:
+        url: "https://{{ management_ip }}:{{ es_http_base_port }}/_cluster/health?wait_for_status=green&timeout=60s"
+        method: GET
+        user: elastic
+        password: "{{ es_bootstrap_password }}"
+        force_basic_auth: true
+        validate_certs: "{{ es_http_tls and not air_gapped | default(false) }}"
+        ca_path: "{{ es_node_certs_dir }}/ca.crt.pem"
+        status_code: [200]
+      register: es_upgrade_health
+      until: es_upgrade_health.status == 200 and es_upgrade_health.json.status == 'green'
+      retries: "{{ es_health_retries }}"
+      delay: "{{ es_health_delay }}"
+      no_log: true
+
+- name: Roll the Arkime recorders to the new digest, one host at a time
+  hosts: arkime_recorders
+  become: true
+  gather_facts: true
+  serial: 1
+  tags:
+    - upgrade
+  tasks:
+    - name: Assert the gated upgrade is explicitly confirmed
+      ansible.builtin.assert:
+        that:
+          - upgrade_confirm | default(false) | bool
+        fail_msg: "REFUSING to upgrade. Re-run with -e upgrade_confirm=true."
+        success_msg: "upgrade_confirm=true — proceeding with the recorder roll."
+
+    - name: Recreate the Arkime Compose project with the new digest
+      community.docker.docker_compose_v2:
+        project_src: "{{ arkime_compose_dir }}"
+        project_name: "{{ arkime_compose_project }}"
+        state: present
+        pull: never
+        recreate: always
+        wait: true

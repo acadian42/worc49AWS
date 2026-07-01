@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  role_name: nginx_ldap_proxy
+  author: FPC Platform Team
+  description: Run front Nginx with TLS and auth_request plus the nginx-ldap-auth-service sidecar as the fpc-nginx Compose project.
+  license: MIT
+  min_ansible_version: "2.21"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+    - name: EL
+      versions:
+        - "9"

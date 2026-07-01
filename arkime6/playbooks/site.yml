@@ -1,0 +1,27 @@
+---
+# ============================================================================
+# FPC site orchestrator. Runs the full, NON-destructive build in dependency
+# order: preflight -> Elasticsearch -> recorders -> Nginx/LDAP -> validate.
+#
+# The destructive / one-shot / lifecycle playbooks are intentionally NOT
+# imported here and must be run explicitly (AWX gates them behind approvals):
+#   - initialize_arkime.yml  (seeds the Arkime DB; run once, needs arkime_force_init=true)
+#   - upgrade.yml            (rolling digest upgrade; needs upgrade_confirm=true)
+#   - backup.yml             (snapshot the ES cluster)
+#   - recover.yml            (restore from snapshot; needs confirm_destroy=true)
+# ============================================================================
+
+- name: Run fleet preflight checks
+  ansible.builtin.import_playbook: preflight.yml
+
+- name: Deploy the Elasticsearch tier
+  ansible.builtin.import_playbook: deploy_elasticsearch.yml
+
+- name: Deploy the Arkime recorder tier
+  ansible.builtin.import_playbook: deploy_recorders.yml
+
+- name: Deploy the Nginx and LDAP authentication boundary
+  ansible.builtin.import_playbook: deploy_nginx.yml
+
+- name: Validate the full deployment
+  ansible.builtin.import_playbook: validate.yml

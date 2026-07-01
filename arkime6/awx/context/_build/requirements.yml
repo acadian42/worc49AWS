@@ -1,0 +1,19 @@
+---
+# Galaxy collections baked into the FPC execution environment.
+# Pins MUST match ROOT/requirements.yml for reproducible AWX runs.
+collections:
+  - name: community.docker
+    version: "==5.2.1"
+    source: https://galaxy.ansible.com
+  - name: ansible.posix
+    version: ">=2.0.0,<3.0.0"
+    source: https://galaxy.ansible.com
+  - name: community.general
+    version: ">=10.0.0,<12.0.0"
+    source: https://galaxy.ansible.com
+  - name: community.crypto
+    version: ">=2.20.0,<3.0.0"
+    source: https://galaxy.ansible.com
+  - name: awx.awx
+    version: "==24.6.1"
+    source: https://galaxy.ansible.com

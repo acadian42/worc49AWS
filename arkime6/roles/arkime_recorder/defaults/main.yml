@@ -1,0 +1,49 @@
+---
+# ============================================================================
+# arkime_recorder role defaults.
+# Tunables here have safe defaults; operational values come from group_vars
+# (inventories/production/group_vars/arkime_recorders.yml). Do NOT duplicate
+# the variable contract here — only role-local knobs.
+# ============================================================================
+
+# Compose project + on-disk layout (project_src holds docker-compose.yml).
+arkime_compose_project: fpc-arkime
+arkime_compose_dir: "{{ arkime_config_path }}"
+
+# Viewer listen port (Nginx fronts this on the host loopback).
+arkime_viewer_port: 8005
+
+# Directory permissions for the Arkime data/config tree.
+arkime_dir_mode: "0755"
+
+# Elasticsearch writer credentials (least-privilege role created by ES bootstrap).
+# es_arkime_writer_password is defined in the ES group_vars and is NOT in scope on
+# recorder hosts, so source the value from the globally-available vault var first.
+arkime_es_user: arkime_writer
+arkime_es_password: "{{ vault_es_arkime_writer_password | default(es_arkime_writer_password | default('')) }}"
+
+# In-container paths (official ghcr.io/arkime/arkime image).
+arkime_container_config: /opt/arkime/etc/config.ini
+arkime_container_pcap: /opt/arkime/raw
+arkime_container_etc: /opt/arkime/etc
+arkime_container_logs: /opt/arkime/logs
+arkime_container_catrust: /opt/arkime/etc/ca-trust.pem
+
+# CA bundle shipped to the host so capture/viewer trust the ES cluster TLS.
+arkime_ca_host_path: "{{ arkime_tls_path }}/ca-trust.pem"
+
+# Bind the viewer to loopback only; Nginx is the sole public entrypoint.
+arkime_view_host: "127.0.0.1"
+
+# Viewer container healthcheck tuning.
+arkime_health_interval: 30s
+arkime_health_timeout: 10s
+arkime_health_retries: 5
+arkime_health_start_period: 60s
+
+# Capture flush window on stop (seconds) so in-flight PCAP is written.
+arkime_stop_grace_period: 60s
+
+# Force a (destructive) DB init/upgrade when running the gated init flow.
+# Mirrors the global guard in group_vars/all.yml; never set true by default.
+arkime_force_init: false

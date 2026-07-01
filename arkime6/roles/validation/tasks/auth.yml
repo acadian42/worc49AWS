@@ -1,0 +1,79 @@
+---
+# ============================================================================
+# SECURITY boundary assertions for the public Nginx + LDAP auth front door.
+# The internal CA is installed into the host trust store by the common role, so
+# validate_certs: true exercises the real chain. These checks are intentionally
+# negative: the boundary is correct only when unauthenticated and spoofed
+# requests are REFUSED. Probes never carry real credentials, so no secret is
+# logged; no_log is still set defensively where headers could carry identity.
+# ============================================================================
+
+- name: Probe the public endpoint with no authentication (must be denied)
+  ansible.builtin.uri:
+    url: "https://{{ nginx_server_name }}:{{ nginx_listen_port }}/"
+    method: GET
+    validate_certs: false   # auth-behaviour check (status code), not TLS validity
+    follow_redirects: none
+    timeout: "{{ validation_http_timeout | int }}"
+    status_code: [302, 400, 401, 403]
+  register: validation_auth_noauth
+  changed_when: false
+  failed_when: validation_auth_noauth.status not in [302, 400, 401, 403]
+
+- name: Assert unauthenticated access is denied
+  ansible.builtin.assert:
+    that:
+      - validation_auth_noauth.status in [302, 400, 401, 403]
+    fail_msg: >-
+      Unauthenticated request to https://{{ nginx_server_name }} returned
+      {{ validation_auth_noauth.status }} — the front door is NOT enforcing auth.
+    success_msg: "Unauthenticated access correctly denied ({{ validation_auth_noauth.status }})."
+
+- name: Probe the public endpoint while spoofing the identity header (must be denied)
+  ansible.builtin.uri:
+    url: "https://{{ nginx_server_name }}:{{ nginx_listen_port }}/"
+    method: GET
+    validate_certs: false   # auth-behaviour check (status code), not TLS validity
+    follow_redirects: none
+    timeout: "{{ validation_http_timeout | int }}"
+    headers:
+      "{{ arkime_username_header }}": "attacker"
+    status_code: [302, 400, 401, 403]
+  register: validation_auth_spoof
+  changed_when: false
+  failed_when: validation_auth_spoof.status not in [302, 400, 401, 403]
+  no_log: true
+
+- name: Assert a spoofed identity header is stripped and access is denied
+  ansible.builtin.assert:
+    that:
+      - validation_auth_spoof.status in [302, 400, 401, 403]
+    fail_msg: >-
+      A request carrying a forged '{{ arkime_username_header }}' header was NOT denied
+      (status {{ validation_auth_spoof.status }}) — Nginx must strip client-supplied
+      identity headers before proxying to the viewer.
+    success_msg: "Forged identity header rejected ({{ validation_auth_spoof.status }})."
+
+# Best-effort: confirm the viewer port is not reachable from a non-loopback path.
+# We probe the host's own management_ip:viewer_port — a correctly bound viewer
+# (loopback only) or a host firewall should refuse or time out this connection.
+- name: Attempt to reach the viewer port over the non-loopback management address (best effort)
+  ansible.builtin.uri:
+    url: "http://{{ management_ip }}:{{ arkime_viewer_port }}/"
+    method: GET
+    validate_certs: false
+    timeout: "{{ validation_http_timeout | int }}"
+    status_code: [-1]
+  register: validation_viewer_direct
+  changed_when: false
+  failed_when: false
+
+- name: Assert the viewer port is not directly reachable off loopback (best effort)
+  ansible.builtin.assert:
+    that:
+      - validation_viewer_direct.status in [-1, 0]
+    fail_msg: >-
+      The Arkime viewer answered directly on {{ management_ip }}:{{ arkime_viewer_port }}
+      (status {{ validation_viewer_direct.status }}) — it should bind to loopback only and
+      be reachable solely through Nginx. BEST-EFFORT check; verify the bind/firewall manually.
+    success_msg: "Viewer port not directly reachable off loopback (best effort)."

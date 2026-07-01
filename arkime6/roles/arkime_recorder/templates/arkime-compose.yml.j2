@@ -1,0 +1,71 @@
+{{ ansible_managed | comment }}
+# Arkime 6 capture + viewer, host networking (capture must see the wire and the
+# viewer is fronted by Nginx on loopback). capture drops ALL caps and re-adds only
+# NET_RAW + NET_ADMIN for live sniffing; viewer needs no extra caps. Both render
+# from the same config.ini (mounted read-only). docker.sh is the image entrypoint.
+name: {{ arkime_compose_project }}
+services:
+  capture:
+    image: {{ arkime_image }}
+    container_name: arkime-capture
+    hostname: {{ inventory_hostname }}
+    network_mode: host
+    restart: unless-stopped
+    command: ["/opt/arkime/bin/docker.sh", "capture", "--forever"]
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    stop_grace_period: {{ arkime_stop_grace_period }}
+    volumes:
+      - {{ arkime_config_path }}/config.ini:{{ arkime_container_config }}:ro
+{% if arkime_es_scheme == 'https' %}
+      - {{ arkime_ca_host_path }}:{{ arkime_container_catrust }}:ro
+{% endif %}
+      - {{ arkime_pcap_path }}:{{ arkime_container_pcap }}
+      - {{ arkime_logs_path }}:{{ arkime_container_logs }}
+      - {{ arkime_etc_path }}:{{ arkime_container_etc }}
+      - {{ arkime_tls_path }}:/opt/arkime/ssl:ro
+    logging:
+      driver: "{{ docker_log_driver }}"
+{% if docker_log_driver in ['json-file', 'local'] %}
+      options:
+        max-size: "{{ docker_log_options['max-size'] }}"
+        max-file: "{{ docker_log_options['max-file'] }}"
+{% endif %}
+
+  viewer:
+    image: {{ arkime_image }}
+    container_name: arkime-viewer
+    hostname: {{ inventory_hostname }}
+    network_mode: host
+    restart: unless-stopped
+    command: ["/opt/arkime/bin/docker.sh", "viewer", "--forever"]
+    cap_drop:
+      - ALL
+    environment:
+      ARKIME__viewHost: "{{ arkime_view_host }}"
+    stop_grace_period: {{ arkime_stop_grace_period }}
+    volumes:
+      - {{ arkime_config_path }}/config.ini:{{ arkime_container_config }}:ro
+{% if arkime_es_scheme == 'https' %}
+      - {{ arkime_ca_host_path }}:{{ arkime_container_catrust }}:ro
+{% endif %}
+      - {{ arkime_pcap_path }}:{{ arkime_container_pcap }}:ro
+      - {{ arkime_logs_path }}:{{ arkime_container_logs }}
+      - {{ arkime_etc_path }}:{{ arkime_container_etc }}
+      - {{ arkime_tls_path }}:/opt/arkime/ssl:ro
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://{{ arkime_view_host }}:{{ arkime_viewer_port }}/eshealth.json"]
+      interval: {{ arkime_health_interval }}
+      timeout: {{ arkime_health_timeout }}
+      retries: {{ arkime_health_retries }}
+      start_period: {{ arkime_health_start_period }}
+    logging:
+      driver: "{{ docker_log_driver }}"
+{% if docker_log_driver in ['json-file', 'local'] %}
+      options:
+        max-size: "{{ docker_log_options['max-size'] }}"
+        max-file: "{{ docker_log_options['max-file'] }}"
+{% endif %}

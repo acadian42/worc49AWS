@@ -1,0 +1,11 @@
+# Python dependencies for the FPC execution environment.
+# requests    -> uri/docker API interactions and awx.awx controller calls
+# pyyaml      -> YAML parsing used across modules and templates
+# passlib     -> htdigest/htpasswd generation for Arkime + Nginx auth
+# jmespath    -> json_query filters used in roles
+# cryptography-> community.crypto private CA + per-node certificate generation
+requests
+pyyaml
+passlib
+jmespath
+cryptography

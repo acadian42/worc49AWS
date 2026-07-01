@@ -1,0 +1,62 @@
+---
+# ============================================================================
+# VAGRANT LAB OVERRIDES — values only, no forked logic.
+# Heap auto-derives from each VM's actual RAM (ansible_memtotal_mb) minus
+# os_docker_reserve_gib, so small VMs get small heaps automatically.
+# ============================================================================
+
+# Lab name resolution / time
+dns_servers: ["172.28.10.1"]
+ntp_servers: ["pool.ntp.org"]
+
+# Lab images: allow the moving v6-latest/tag pulls (no digote pinning friction).
+image_delivery_mode: registry
+arkime_image: "ghcr.io/arkime/arkime/arkime:v6-latest"
+es_image: "docker.elastic.co/elasticsearch/elasticsearch:8.19.17"
+nginx_image: "nginx:1.27-alpine"
+ldap_auth_image: "caltechads/nginx-ldap-auth-service:2.6.2"
+fpc_all_images:
+  - "{{ arkime_image }}"
+  - "{{ es_image }}"
+  - "{{ nginx_image }}"
+  - "{{ ldap_auth_image }}"
+
+# Smaller reserve so tiny VMs still leave room for ES.
+os_docker_reserve_gib: 2
+es_heap_max_gib: 2
+es_min_container_gib: 1          # lab VMs are small; production keeps the default of 4
+elasticsearch_nodes_per_host: 3
+
+# Firewall relaxed scope for the lab private network.
+control_plane_cidrs: ["172.28.10.0/24"]
+analyst_cidrs: ["172.28.10.0/24"]
+
+# Lab AD/LDAP: seeded OpenLDAP test service on ldap-test-01.
+ldap_url: "ldap://172.28.10.31:389"
+ldap_starttls: false
+ldap_base_dn: "dc=lab,dc=local"
+ldap_bind_dn: "cn=arkime-svc,ou=services,dc=lab,dc=local"
+ldap_user_filter: "(uid=%(username)s)"
+ldap_username_attribute: "uid"
+arkime_user_ldap_groups: ["arkime-admins", "arkime-users"]
+
+# Lab capture interfaces match the Vagrant VMware NICs.
+capture_threads: 1
+packet_threads: 1
+capture_disable_offloads: false   # virtual NICs: leave offloads as-is in the lab
+
+# ============================================================================
+# LAB-ONLY THROWAWAY SECRETS — for the ephemeral Vagrant lab ONLY.
+# These are NOT production secrets. Production uses Ansible Vault / AWX
+# credentials (see inventories/production/group_vars/vault.example.yml) and a
+# real vault.yml is gitignored. Rotate/never reuse these values anywhere real.
+# ============================================================================
+vault_es_bootstrap_password: "labChangeMe-es-bootstrap"
+vault_es_arkime_writer_password: "labChangeMe-arkime-writer"
+vault_arkime_password_secret: "labChangeMe-arkime-pwsecret-lab0123456789"
+vault_arkime_server_secret: "labChangeMe-arkime-serversecret-lab012345"
+vault_arkime_admin_password: "labChangeMe-arkime-admin"
+vault_ldap_bind_password: "labChangeMe-ldap-bind"
+vault_ldap_auth_session_secret: "labChangeMe-session-lab0123456789abcdef"
+vault_internal_ca_key_passphrase: ""
+vault_registry_password: ""

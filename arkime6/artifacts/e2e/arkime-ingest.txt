@@ -1,0 +1,10 @@
+=== Arkime ingestion (offline import of fixture PCAP) ===
+Jun 24 22:48:36 packet.c:760 arkime_packet_log(): packets: 9 current sessions: 0/0 oldest: 0 - recv: 9 drop: 0 (0.00) queue: 0 disk: 0 packet: 0 close: 0 ns: 0 frags: 0/0 pstats: 9/0/0/0/0/0/0 ver: 6.5.0 mem: 6.40%
+PASS | Arkime: fixture sessions searchable (dst 10.99.0.80) (=1>=1)
+PASS | Arkime: session metadata has source 10.99.0.10 (=1>=1)
+PASS | Arkime: DNS fixture host searchable (fpc-e2e-smoke.example.test) (=2>=1)
+=== PCAP retrieval via Viewer API (digest admin, loopback) ===
+session node=fpc-e2e-rec-01 id=260624-JQBAI3z1seBD0q6GXXoU5TVT
+PASS | Arkime: PCAP retrieval returns bytes for a fixture session (=683683>=1)
+
+SUMMARY: PASS=4 FAIL=0

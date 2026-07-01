@@ -1,0 +1,50 @@
+---
+# Create a least-privilege native-realm role + user that Arkime capture/viewer use
+# to authenticate to Elasticsearch (config.ini elasticsearchBasicAuth). Idempotent
+# upserts via the security API; runs once against this host's first node. Skipped
+# when no writer password is configured (e.g. a security-disabled lab).
+- name: Create the arkime_writer Elasticsearch role
+  ansible.builtin.uri:
+    url: "{{ es_api_scheme }}://{{ management_ip }}:{{ es_http_base_port }}/_security/role/arkime_writer"
+    method: POST
+    user: elastic
+    password: "{{ es_bootstrap_password }}"
+    force_basic_auth: true
+    validate_certs: "{{ es_http_tls and not (air_gapped | default(false)) }}"
+    ca_path: "{{ (es_config_path ~ '/' ~ es_node_defs[0].name ~ '/certs/ca.crt.pem') if es_http_tls | bool else omit }}"
+    body_format: json
+    body:
+      cluster:
+        - monitor
+        - manage_index_templates
+        - manage_ilm
+      indices:
+        - names:
+            - "arkime_*"
+            - "sessions3-*"
+            - "history_*"
+            - ".tasks"
+          privileges:
+            - all
+    status_code: [200, 201]
+  run_once: true
+  no_log: true
+
+- name: Create the arkime_writer Elasticsearch user
+  ansible.builtin.uri:
+    url: "{{ es_api_scheme }}://{{ management_ip }}:{{ es_http_base_port }}/_security/user/arkime_writer"
+    method: POST
+    user: elastic
+    password: "{{ es_bootstrap_password }}"
+    force_basic_auth: true
+    validate_certs: "{{ es_http_tls and not (air_gapped | default(false)) }}"
+    ca_path: "{{ (es_config_path ~ '/' ~ es_node_defs[0].name ~ '/certs/ca.crt.pem') if es_http_tls | bool else omit }}"
+    body_format: json
+    body:
+      password: "{{ es_arkime_writer_password }}"
+      roles:
+        - arkime_writer
+      full_name: "Arkime writer service account"
+    status_code: [200, 201]
+  run_once: true
+  no_log: true

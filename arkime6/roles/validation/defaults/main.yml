@@ -1,0 +1,21 @@
+---
+# ============================================================================
+# Reusable validation tunables. Expected topology is derived from the inventory
+# and the benchmarked node density so assertions stay correct as the fleet grows.
+# ============================================================================
+
+# Total ES nodes the cluster should expose = physical hosts * nodes per host.
+validation_expected_es_nodes: "{{ (groups['elasticsearch_physical_hosts'] | length) * (elasticsearch_nodes_per_host | int) }}"
+
+# Master-eligible nodes the cluster must elect from (3 distinct failure domains).
+validation_expected_masters: 3
+
+# HTTP request timeout (seconds) for all validation probes.
+validation_http_timeout: 30
+
+# Acceptable cluster health colour for the green-state assertion.
+validation_required_health: green
+
+# Arkime viewer loopback port (mirrors the arkime_recorder default; the
+# validation role runs standalone so it cannot rely on that role's defaults).
+arkime_viewer_port: 8005

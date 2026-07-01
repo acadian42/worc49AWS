@@ -1,0 +1,9 @@
+# System (bindep-format) dependencies for the FPC execution environment.
+# These are installed INTO the EE image, which runs the control-plane Ansible.
+openssh-clients [platform:rpm]
+openssl [platform:rpm]
+# pip for the Python 3.12 interpreter targeted by this EE (base ships only 3.9).
+python3.12-pip [platform:rpm]
+# NOTE: the Docker Compose v2 plugin is NOT installed in the EE. Compose runs on
+# the managed target hosts (installed by the docker_engine role), invoked there
+# via community.docker.docker_compose_v2 over SSH — not inside this container.
