@@ -1,0 +1,2 @@
+---
+# No handlers required by the common role (sysctl/modules are applied inline).

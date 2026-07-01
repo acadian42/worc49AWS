@@ -1,0 +1,20 @@
+# {{ ansible_managed }}
+# Local kustomization: pin the AWX operator and FIX the discontinued
+# gcr.io/kubebuilder/kube-rbac-proxy:v0.15.0 (HTTP 404) by replacing it with the
+# upstream-maintained brancz image, pinned by DIGEST. See docs/decisions.md ADR-004.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: {{ awx.namespace }}
+
+resources:
+  - https://github.com/ansible/awx-operator/config/default?ref={{ awx.operator_version }}
+
+images:
+  # Replace the dead kube-rbac-proxy image (matched by name, no tag).
+  - name: {{ kube_rbac_proxy.old_image.split(':')[0] }}
+    newName: {{ kube_rbac_proxy.new_image }}
+    digest: {{ kube_rbac_proxy.new_digest }}
+  # Pin the operator image to the release tag (base may float it to :latest).
+  - name: {{ awx.operator_image }}
+    newTag: "{{ awx.operator_version }}"

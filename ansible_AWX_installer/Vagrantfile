@@ -1,0 +1,81 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+# =============================================================================
+# Vagrantfile — lifecycle ONLY for this project's AWX test VM.
+#
+# * Hypervisor: VMware Workstation via the vmware_desktop provider (REQUIRED).
+# * Guest: Ubuntu 24.04 (bento/ubuntu-24.04), pinned version.
+# * Forwards guest NodePort 30080 -> host 127.0.0.1 (auto-corrected if busy).
+# * No shell provisioning here: all guest config is done by host-run Ansible.
+# Run vagrant ONLY from this directory.
+# =============================================================================
+
+# Force VMware as the default provider, overriding ANY inherited
+# VAGRANT_DEFAULT_PROVIDER (e.g. a global 'docker' default). We do not touch the
+# user's global setting — only this project's process environment.
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'vmware_desktop'
+
+# Refuse only if a forbidden hypervisor is EXPLICITLY requested on the CLI.
+argv = ARGV.join(' ')
+%w[virtualbox libvirt hyperv qemu docker].each do |p|
+  if argv =~ /--provider[= ]#{p}\b/
+    abort("[Vagrantfile] This project only supports the 'vmware_desktop' provider. Refusing '#{p}'.")
+  end
+end
+
+# --- Tunables (env overrides) ------------------------------------------------
+VM_NAME     = ENV.fetch('AWX_VM_NAME', 'ansible-awx-ubuntu24')
+BOX         = ENV.fetch('AWX_BOX', 'bento/ubuntu-24.04')
+BOX_VERSION = ENV.fetch('AWX_BOX_VERSION', '202510.26.0')
+VM_CPUS     = ENV.fetch('AWX_VM_CPUS', '4').to_i
+VM_MEM      = ENV.fetch('AWX_VM_MEM', '8192').to_i
+AWX_GUEST_PORT = 30080
+AWX_HOST_PORT  = ENV.fetch('AWX_HOST_PORT', '30080').to_i
+
+Vagrant.configure('2') do |config|
+  config.vm.box         = BOX
+  config.vm.box_version = BOX_VERSION
+  config.vm.hostname    = VM_NAME
+  config.vm.define VM_NAME
+
+  # Generous boot window: first boot pulls the box + boots cloud-init.
+  config.vm.boot_timeout = 600
+  config.ssh.connect_timeout = 30
+
+  # The default /vagrant share is unnecessary (Ansible runs over SSH) and VMware
+  # shared folders can be flaky; disable it for reliability.
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+
+  # AWX: guest NodePort 30080 -> host loopback only. auto_correct picks a free
+  # host port if 30080 is busy; the real port is discovered later via `vagrant port`.
+  config.vm.network 'forwarded_port',
+                    guest: AWX_GUEST_PORT,
+                    host: AWX_HOST_PORT,
+                    host_ip: '127.0.0.1',
+                    auto_correct: true,
+                    id: 'awx'
+  # (Kubernetes API 6443 is intentionally NOT forwarded to the host.)
+
+  config.vm.provider 'vmware_desktop' do |v|
+    v.gui          = false                 # headless
+    # Full clone (not linked): this host's vmrun runs in VMware *Player* mode
+    # ("-T player"), which cannot create the snapshot a linked clone needs
+    # ("Error: The operation is not supported"). The box disk stays thin/growable,
+    # so a full clone still gets thin provisioning. See docs/decisions.md ADR-007.
+    v.linked_clone = false
+    v.vmx['displayName'] = VM_NAME
+    v.vmx['memsize']     = VM_MEM.to_s
+    v.vmx['numvcpus']    = VM_CPUS.to_s
+    v.vmx['cpuid.coresPerSocket'] = VM_CPUS.to_s
+    # Quiet, predictable NIC + disable side-channel mitigations toggle left default.
+    v.vmx['ethernet0.virtualDev'] = 'vmxnet3'
+    v.vmx['tools.syncTime']       = 'TRUE'
+  end
+
+  # Helpful banner; no provisioning logic lives in Vagrant.
+  config.vm.post_up_message = <<~MSG
+    VM '#{VM_NAME}' is up (provider: vmware_desktop, box: #{BOX} #{BOX_VERSION}).
+    AWX will be provisioned by Ansible from the host. Forwarded port for guest
+    #{AWX_GUEST_PORT} is shown by: vagrant port
+  MSG
+end

@@ -1,0 +1,35 @@
+# {{ ansible_managed }}
+# AWX custom resource. All images are explicitly pinned (nothing floats).
+apiVersion: awx.ansible.com/v1beta1
+kind: AWX
+metadata:
+  name: {{ awx.resource_name }}
+  namespace: {{ awx.namespace }}
+spec:
+  # --- access -------------------------------------------------------------
+  service_type: nodeport
+  nodeport_port: {{ awx.nodeport }}
+
+  # --- credentials (secrets pre-created from host .state) ------------------
+  admin_user: {{ awx.admin_user }}
+  admin_password_secret: awx-admin-password
+  secret_key_secret: awx-secret-key
+
+  # --- pinned images ------------------------------------------------------
+  image: {{ awx.awx_image }}
+  image_version: "{{ awx.awx_version }}"
+  control_plane_ee_image: "{{ awx.ee_image }}"
+  redis_image: "{{ awx.redis_image }}"
+  redis_image_version: "{{ awx.redis_image_version }}"
+  postgres_image: "{{ awx.postgres_image }}"
+  postgres_image_version: "{{ awx.postgres_image_version }}"
+  init_projects_container_image: "{{ awx.init_projects_image }}"
+
+  # --- operator-managed PostgreSQL on local-path --------------------------
+  postgres_storage_class: {{ awx.postgres_storage_class }}
+  postgres_storage_requirements:
+    requests:
+      storage: {{ awx.postgres_storage }}
+
+  # Single-node test box: no project persistence volume needed.
+  projects_persistence: false

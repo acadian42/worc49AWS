@@ -1,0 +1,16 @@
+---
+# Where rendered manifests live on the guest (root-only).
+awx_manifests_dir: "/var/lib/awx-installer"
+
+# Operator readiness polling (rollout status is run with a short per-try timeout
+# and wrapped in until/retries so progress is visible, not a blind sleep).
+awx_wait_operator_retries: 40
+awx_wait_operator_delay: 15
+
+# AWX component readiness polling.
+awx_wait_pg_retries: 40
+awx_wait_pg_delay: 15
+awx_wait_web_retries: 60
+awx_wait_web_delay: 15
+awx_wait_migration_retries: 60
+awx_wait_migration_delay: 15

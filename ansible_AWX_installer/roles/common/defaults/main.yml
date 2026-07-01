@@ -1,0 +1,16 @@
+---
+# Base packages needed in the guest (kept minimal; builtins do the rest).
+# git is required by kustomize to fetch the remote awx-operator base.
+common_packages:
+  - curl
+  - ca-certificates
+  - jq
+  - git
+
+# Minimum free space (GiB) required on / inside the guest for K3s+AWX+pg+images.
+common_required_free_gb: 20
+
+# Kernel modules required by K3s networking.
+common_kernel_modules:
+  - overlay
+  - br_netfilter

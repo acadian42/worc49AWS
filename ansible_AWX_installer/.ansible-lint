@@ -1,0 +1,21 @@
+---
+profile: basic
+
+exclude_paths:
+  - .venv/
+  - .cache/
+  - .vagrant/
+  - .artifacts/
+  - .state/
+  - inventory/generated/
+
+# kubectl / k3s / modprobe / sysctl are deliberate command usages (no suitable
+# builtin module; we keep them idempotent with changed_when/failed_when).
+skip_list:
+  - command-instead-of-module
+  - command-instead-of-shell
+  - no-changed-when
+
+warn_list:
+  - experimental
+  - risky-shell-pipe
