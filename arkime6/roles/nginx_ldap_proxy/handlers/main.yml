@@ -1,8 +1,0 @@
----
-- name: Recreate nginx services
-  community.docker.docker_compose_v2:
-    project_src: "{{ nginx_compose_dir }}"
-    project_name: "{{ nginx_compose_project }}"
-    state: restarted
-    pull: never
-    wait: true

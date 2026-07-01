@@ -1,7 +1,0 @@
----
-# Example per-host overrides for es-phys-01. Copy to es-phys-01.yml (gitignored).
-management_ip: 192.0.2.11
-physical_host: es-phys-01
-es_data_devices:
-  - /dev/nvme0n1
-host_cpu_cores: 32      # measured; preflight asserts capture/es tuning fits

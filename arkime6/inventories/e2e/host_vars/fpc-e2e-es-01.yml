@@ -1,5 +1,0 @@
----
-physical_host: fpc-e2e-es-01
-management_ip: "192.168.184.132"
-host_cpu_cores: 4
-es_data_devices: []

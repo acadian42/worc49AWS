@@ -1,4 +1,0 @@
----
-physical_host: fpc-e2e-rec-01
-management_ip: "192.168.184.133"
-host_cpu_cores: 4
