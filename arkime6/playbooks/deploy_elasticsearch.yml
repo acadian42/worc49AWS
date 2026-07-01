@@ -1,0 +1,29 @@
+---
+# ============================================================================
+# Stand up the Elasticsearch tier. Play 1 prepares every physical host (base
+# OS hardening + Docker engine). Play 2 lays down storage and the per-host
+# Compose project ONE HOST AT A TIME so the cluster forms and stays healthy.
+# ============================================================================
+
+- name: Prepare Elasticsearch physical hosts (base OS and Docker engine)
+  hosts: elasticsearch_physical_hosts
+  become: true
+  gather_facts: true
+  tags:
+    - common
+    - docker
+  roles:
+    - common
+    - docker_engine
+
+- name: Provision storage and bring up the Elasticsearch cluster per host
+  hosts: elasticsearch_physical_hosts
+  become: true
+  gather_facts: true
+  serial: 1
+  tags:
+    - elasticsearch
+    - es-health
+  roles:
+    - elasticsearch_host
+    - elasticsearch_cluster

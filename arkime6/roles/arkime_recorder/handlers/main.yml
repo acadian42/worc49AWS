@@ -1,0 +1,8 @@
+---
+- name: Recreate arkime services
+  community.docker.docker_compose_v2:
+    project_src: "{{ arkime_compose_dir }}"
+    project_name: "{{ arkime_compose_project }}"
+    state: restarted
+    pull: never
+    wait: true

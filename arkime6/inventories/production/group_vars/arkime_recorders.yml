@@ -1,0 +1,86 @@
+---
+# ============================================================================
+# ARKIME RECORDER + NGINX/LDAP VARIABLE CONTRACT (per recorder group).
+# Auth keys verified against Arkime 6 docs 2026-06-24 (plan §4.2, §12).
+# ============================================================================
+
+# ---- Paths -------------------------------------------------------------------
+arkime_config_path: "{{ arkime_base }}/config"
+arkime_pcap_path: "{{ arkime_base }}/pcap"
+arkime_logs_path: "{{ arkime_base }}/logs"
+arkime_etc_path: "{{ arkime_base }}/etc"
+arkime_tls_path: "{{ arkime_base }}/ssl"
+
+# ---- Elasticsearch endpoints (all 5 ES hosts; Arkime load-balances) ----------
+arkime_es_scheme: https
+arkime_es_endpoints:
+  - "es-phys-01:9200"
+  - "es-phys-02:9200"
+  - "es-phys-03:9200"
+  - "es-phys-04:9200"
+  - "es-phys-05:9200"
+arkime_es_url: "{{ arkime_es_scheme }}://{{ arkime_es_endpoints | join(',' + arkime_es_scheme + '://') }}"
+
+# ---- Secrets (Vault) — shared cluster-wide -----------------------------------
+arkime_password_secret: "{{ vault_arkime_password_secret }}"
+arkime_server_secret: "{{ vault_arkime_server_secret }}"
+arkime_http_realm: "Moloch"            # default; affects digest ha1 hash
+arkime_admin_user: admin
+arkime_admin_password: "{{ vault_arkime_admin_password }}"
+
+# ---- Index rotation / retention ----------------------------------------------
+arkime_rotate_index: daily             # hourly|hourly6|daily|weekly|monthly
+arkime_pcap_retention_days: 7
+arkime_free_space: "10%"
+arkime_max_file_size_g: 12
+
+# ---- Capture (DATA-DRIVEN — set from measured CPU/NIC/pps, never arbitrary) ---
+management_interface: eth0             # override in host_vars
+capture_interfaces:
+  - eth1                               # override in host_vars
+capture_method: afpacket               # afpacket (tpacketv3) — Arkime recommended default
+capture_threads: 2                     # tune to measured cores/NIC; preflight asserts vs host_cpu_cores
+packet_threads: 2
+max_packets_in_queue: 200000
+pcap_write_size: 262144
+capture_numa_pinning: false            # enable + set node after NUMA measurement
+capture_disable_offloads: true         # ethtool gro/lro/tso/gso off (real NICs only)
+capture_promisc: true
+
+# ---- Authentication (Arkime 6 header+digest hybrid) --------------------------
+arkime_auth_mode: "header+digest"      # header primary + digest emergency fallback
+arkime_username_header: "remote-user"  # lowercase; set by Nginx after LDAP success
+arkime_required_auth_header: "remote-groups"
+arkime_user_auth_ips: "127.0.0.1/32"   # 6.5.0 checks the CONNECTING (proxy) IP -> loopback only
+arkime_auto_create_users: true
+arkime_default_role: "arkimeUser"      # least privilege
+arkime_admin_ldap_group: "CN=arkime-admins,OU=Groups,DC=example,DC=com"   # EXAMPLE
+arkime_user_ldap_groups:               # AD groups allowed in (CSV -> requiredAuthHeaderVal)
+  - "arkime-admins"
+  - "arkime-users"
+
+# ---- Nginx / TLS -------------------------------------------------------------
+nginx_listen_port: 443
+nginx_redirect_http: true
+nginx_server_name: "{{ inventory_hostname }}"   # override with FQDN in host_vars
+nginx_tls_cert: "{{ arkime_tls_path }}/cert.pem"
+nginx_tls_key: "{{ arkime_tls_path }}/key.pem"
+nginx_client_max_body_size: "0"        # 0 = unlimited (large PCAP downloads)
+nginx_proxy_read_timeout: 3600
+nginx_hsts_enabled: true
+
+# ---- LDAP / Active Directory (LDAPS) -----------------------------------------
+ldap_url: "ldaps://ad.example.com:636"           # EXAMPLE — override
+ldap_base_dn: "DC=example,DC=com"
+ldap_bind_dn: "CN=arkime-svc,OU=Service Accounts,DC=example,DC=com"
+ldap_bind_password: "{{ vault_ldap_bind_password }}"
+ldap_user_filter: "(sAMAccountName={username})"   # caltechads sidecar uses {username}
+# Gate sign-in on membership of an allowed Arkime group (requires memberOf).
+ldap_authorization_filter: "(&(sAMAccountName={username})(|(memberOf=cn=arkime-admins,{{ ldap_base_dn }})(memberOf=cn=arkime-users,{{ ldap_base_dn }})))"
+ldap_group_attribute: "memberOf"
+ldap_username_attribute: "sAMAccountName"
+ldap_ca_file: "{{ arkime_tls_path }}/ad-ca.pem"
+ldap_starttls: false                   # using LDAPS (636); set true only for StartTLS on 389
+
+# ---- Optional central entrypoint (baseline is per-recorder Nginx) ------------
+central_entrypoint_enabled: false

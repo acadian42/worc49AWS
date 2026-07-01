@@ -1,0 +1,30 @@
+---
+# ============================================================================
+# PRODUCTION SECRETS TEMPLATE — DOCUMENTATION ONLY.
+# Copy to a real, ENCRYPTED vault and load it (or inject via AWX credentials):
+#   cp vault.example.yml vault.yml         # vault.yml is gitignored
+#   ansible-vault encrypt vault.yml
+# In AWX, prefer custom credential types / Vault credential injection instead of
+# committing any vault file. NEVER commit real secret values.
+#
+# This file's name does not match a group, so Ansible does NOT auto-load it.
+# ============================================================================
+
+# Container registry (only when image_delivery_mode=registry)
+vault_registry_password: "CHANGEME_REGISTRY_PASSWORD"
+
+# Internal CA private-key passphrase (leave "" for an unencrypted CA key)
+vault_internal_ca_key_passphrase: ""
+
+# Elasticsearch
+vault_es_bootstrap_password: "CHANGEME_ES_ELASTIC_SUPERUSER_PASSWORD"
+vault_es_arkime_writer_password: "CHANGEME_ES_ARKIME_WRITER_PASSWORD"
+
+# Arkime (passwordSecret/serverSecret should be long random hex: openssl rand -hex 32)
+vault_arkime_password_secret: "CHANGEME_ARKIME_PASSWORD_SECRET"
+vault_arkime_server_secret: "CHANGEME_ARKIME_SERVER_SECRET"
+vault_arkime_admin_password: "CHANGEME_ARKIME_ADMIN_PASSWORD"
+
+# LDAP / Active Directory bind + ldap-auth sidecar session secret
+vault_ldap_bind_password: "CHANGEME_LDAP_BIND_PASSWORD"
+vault_ldap_auth_session_secret: "CHANGEME_LDAP_AUTH_SESSION_SECRET"

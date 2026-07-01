@@ -1,0 +1,105 @@
+---
+# ============================================================================
+# GUARDED DISASTER RECOVERY. Restores Elasticsearch indices from a filesystem
+# snapshot. This CLOSES and overwrites indices and is destructive to live data,
+# so it is hard-gated behind confirm_destroy. It NEVER deletes data volumes or
+# the snapshot repository — recovery is restore-only.
+#
+# Re-run with: -e confirm_destroy=true -e restore_snapshot_name=<snapshot>
+# ============================================================================
+
+- name: Restore the Elasticsearch cluster from a snapshot (guarded)
+  hosts: elasticsearch_physical_hosts
+  become: true
+  gather_facts: true
+  run_once: true
+  tags:
+    - recover
+  vars:
+    es_node_certs_dir: "{{ es_config_path }}/{{ physical_host }}-node-01/certs"
+    es_snapshot_repo_name: "fpc-fs"
+    es_api_base: "https://{{ management_ip }}:{{ es_http_base_port }}"
+  tasks:
+    - name: Assert the destructive recovery is explicitly confirmed
+      ansible.builtin.assert:
+        that:
+          - confirm_destroy | bool
+        fail_msg: >-
+          REFUSING to restore. This CLOSES and overwrites live Elasticsearch indices.
+          Re-run with -e confirm_destroy=true ONLY after you understand the data impact.
+          Data volumes are never deleted by this playbook.
+        success_msg: "confirm_destroy=true — proceeding with the guarded restore."
+
+    - name: Assert a snapshot name to restore was provided
+      ansible.builtin.assert:
+        that:
+          - restore_snapshot_name is defined
+          - restore_snapshot_name | length > 0
+        fail_msg: "Provide the snapshot to restore: -e restore_snapshot_name=<snapshot>."
+        success_msg: "Restoring from snapshot {{ restore_snapshot_name }}."
+
+    - name: List snapshots available in the repository
+      ansible.builtin.uri:
+        url: "https://{{ management_ip }}:{{ es_http_base_port }}/_snapshot/{{ es_snapshot_repo_name }}/_all"
+        method: GET
+        user: elastic
+        password: "{{ es_bootstrap_password }}"
+        force_basic_auth: true
+        validate_certs: "{{ es_http_tls and not air_gapped | default(false) }}"
+        ca_path: "{{ es_node_certs_dir }}/ca.crt.pem"
+        status_code: [200]
+      register: es_snapshot_list
+      no_log: true
+
+    - name: Assert the requested snapshot exists
+      ansible.builtin.assert:
+        that:
+          - restore_snapshot_name in (es_snapshot_list.json.snapshots | map(attribute='snapshot') | list)
+        fail_msg: "Snapshot {{ restore_snapshot_name }} not found in repository {{ es_snapshot_repo_name }}."
+        success_msg: "Snapshot {{ restore_snapshot_name }} found — restoring."
+
+    - name: Close all indices before restore
+      ansible.builtin.uri:
+        url: "https://{{ management_ip }}:{{ es_http_base_port }}/_all/_close"
+        method: POST
+        user: elastic
+        password: "{{ es_bootstrap_password }}"
+        force_basic_auth: true
+        validate_certs: "{{ es_http_tls and not air_gapped | default(false) }}"
+        ca_path: "{{ es_node_certs_dir }}/ca.crt.pem"
+        status_code: [200]
+      no_log: true
+
+    - name: Restore the snapshot and wait for completion
+      ansible.builtin.uri:
+        url: "{{ es_api_base }}/_snapshot/{{ es_snapshot_repo_name }}/{{ restore_snapshot_name }}/_restore?wait_for_completion=true"
+        method: POST
+        user: elastic
+        password: "{{ es_bootstrap_password }}"
+        force_basic_auth: true
+        validate_certs: "{{ es_http_tls and not air_gapped | default(false) }}"
+        ca_path: "{{ es_node_certs_dir }}/ca.crt.pem"
+        body_format: json
+        body:
+          indices: "*"
+          ignore_unavailable: true
+          include_global_state: false
+        status_code: [200]
+      register: es_restore_result
+      no_log: true
+
+    - name: Wait for the cluster to return to green after restore
+      ansible.builtin.uri:
+        url: "https://{{ management_ip }}:{{ es_http_base_port }}/_cluster/health?wait_for_status=green&timeout=60s"
+        method: GET
+        user: elastic
+        password: "{{ es_bootstrap_password }}"
+        force_basic_auth: true
+        validate_certs: "{{ es_http_tls and not air_gapped | default(false) }}"
+        ca_path: "{{ es_node_certs_dir }}/ca.crt.pem"
+        status_code: [200]
+      register: es_restore_health
+      until: es_restore_health.status == 200 and es_restore_health.json.status == 'green'
+      retries: "{{ es_health_retries }}"
+      delay: "{{ es_health_delay }}"
+      no_log: true

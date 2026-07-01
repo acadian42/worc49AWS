@@ -1,0 +1,4 @@
+---
+# Host-level preparation for Elasticsearch containers (mounts, dirs, ownership).
+es_host_create_filesystems: true        # set false if devices are pre-formatted/mounted
+es_host_dir_mode: "0755"

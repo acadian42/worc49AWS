@@ -1,0 +1,18 @@
+---
+# ============================================================================
+# Dispatches the per-tier validation task files based on the group the current
+# host belongs to. ES hosts run the cluster checks; recorders run the Arkime
+# viewer checks and the public Nginx/LDAP security checks.
+# ============================================================================
+
+- name: Validate the Elasticsearch cluster
+  ansible.builtin.include_tasks: elasticsearch.yml
+  when: "'elasticsearch_physical_hosts' in group_names"
+
+- name: Validate the local Arkime viewer and capture storage
+  ansible.builtin.include_tasks: arkime.yml
+  when: "'arkime_recorders' in group_names"
+
+- name: Validate the public authentication boundary
+  ansible.builtin.include_tasks: auth.yml
+  when: "'arkime_recorders' in group_names"

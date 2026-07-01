@@ -1,0 +1,41 @@
+---
+- name: Create the Elasticsearch base directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ es_uid }}"
+    group: "{{ es_gid }}"
+    mode: "{{ es_host_dir_mode }}"
+  loop:
+    - "{{ es_base }}"
+    - "{{ es_data_path }}"
+    - "{{ es_logs_path }}"
+    - "{{ es_config_path }}"
+    - "{{ es_snapshot_repo_path }}"
+
+- name: Create a filesystem on dedicated Elasticsearch data devices
+  community.general.filesystem:
+    fstype: "{{ es_fs_type }}"
+    dev: "{{ item }}"
+  loop: "{{ es_data_devices }}"
+  when:
+    - es_host_create_filesystems | bool
+    - es_data_devices | length > 0
+
+- name: Mount the Elasticsearch data device
+  ansible.posix.mount:
+    path: "{{ es_data_path }}"
+    src: "{{ es_data_devices[0] }}"
+    fstype: "{{ es_fs_type }}"
+    opts: "{{ es_mount_opts }}"
+    state: mounted
+  when: es_data_devices | length > 0
+
+- name: Re-assert ownership of the data path after mount
+  ansible.builtin.file:
+    path: "{{ es_data_path }}"
+    state: directory
+    owner: "{{ es_uid }}"
+    group: "{{ es_gid }}"
+    mode: "{{ es_host_dir_mode }}"
+  when: es_data_devices | length > 0

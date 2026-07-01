@@ -1,0 +1,30 @@
+{
+  "organization": 2,
+  "execution_environment": 4,
+  "project": 8,
+  "machine_credential": 3,
+  "secrets_credential_type": 31,
+  "secrets_credential": 4,
+  "inventory": 2,
+  "inventory_source": 9,
+  "job_templates": {
+    "preflight": 10,
+    "deploy_elasticsearch": 11,
+    "initialize_arkime": 12,
+    "deploy_recorders": 13,
+    "lab_ldap": 18,
+    "deploy_nginx": 14,
+    "validate": 15
+  },
+  "workflow": 16,
+  "workflow_nodes": {
+    "preflight": 8,
+    "elasticsearch": 9,
+    "approval": 10,
+    "initialize": 11,
+    "recorders": 12,
+    "lab_ldap": 13,
+    "nginx": 14,
+    "validate": 15
+  }
+}

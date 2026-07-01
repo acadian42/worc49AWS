@@ -1,0 +1,76 @@
+# ============================================================================
+# seed.ldif — lab OpenLDAP seed for the Vagrant ldap-test-01 service.
+#
+# Consistent with inventories/vagrant/group_vars/all.yml:
+#   ldap_base_dn:            dc=lab,dc=local
+#   ldap_bind_dn:            cn=arkime-svc,ou=services,dc=lab,dc=local
+#   ldap_user_filter:        (uid=%(username)s)
+#   ldap_username_attribute: uid
+#   arkime_user_ldap_groups: [arkime-admins, arkime-users]
+#
+# Apply with (default OpenLDAP admin DN for the lab container):
+#   ldapadd -x -H ldap://172.28.10.31:389 \
+#           -D "cn=admin,dc=lab,dc=local" -w <admin-pw> -f seed.ldif
+#
+# Passwords below are SSHA hashes of "Passw0rd!" — LAB ONLY, never reuse.
+# Regenerate with:  slappasswd -s 'Passw0rd!'
+# ============================================================================
+
+# ---- Base + org units -------------------------------------------------------
+dn: dc=lab,dc=local
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: FPC Lab
+dc: lab
+
+dn: ou=people,dc=lab,dc=local
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=lab,dc=local
+objectClass: organizationalUnit
+ou: groups
+
+dn: ou=services,dc=lab,dc=local
+objectClass: organizationalUnit
+ou: services
+
+# ---- Service (bind) account used by the ldap-auth sidecar -------------------
+dn: cn=arkime-svc,ou=services,dc=lab,dc=local
+objectClass: inetOrgPerson
+cn: arkime-svc
+sn: Service
+uid: arkime-svc
+userPassword: {SSHA}lab-replace-with-slappasswd-output
+
+# ---- Users ------------------------------------------------------------------
+# Admin user (member of arkime-admins -> mapped to Arkime admin role).
+dn: uid=alice,ou=people,dc=lab,dc=local
+objectClass: inetOrgPerson
+cn: Alice Admin
+sn: Admin
+uid: alice
+mail: alice@lab.local
+userPassword: {SSHA}lab-replace-with-slappasswd-output
+
+# Regular user (member of arkime-users -> least-privilege Arkime user).
+dn: uid=bob,ou=people,dc=lab,dc=local
+objectClass: inetOrgPerson
+cn: Bob User
+sn: User
+uid: bob
+mail: bob@lab.local
+userPassword: {SSHA}lab-replace-with-slappasswd-output
+
+# ---- Groups (groupOfNames; memberOf is computed by the overlay) -------------
+dn: cn=arkime-admins,ou=groups,dc=lab,dc=local
+objectClass: groupOfNames
+cn: arkime-admins
+member: uid=alice,ou=people,dc=lab,dc=local
+
+dn: cn=arkime-users,ou=groups,dc=lab,dc=local
+objectClass: groupOfNames
+cn: arkime-users
+member: uid=bob,ou=people,dc=lab,dc=local
+member: uid=alice,ou=people,dc=lab,dc=local

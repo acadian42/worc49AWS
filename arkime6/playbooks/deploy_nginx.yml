@@ -1,0 +1,18 @@
+---
+# ============================================================================
+# Deploy the public authentication boundary on each recorder: front Nginx
+# (TLS + auth_request) plus the LDAP auth sidecar, as the 'fpc-nginx' Compose
+# project. Run AFTER the recorders are up so the loopback viewer upstream exists.
+# ============================================================================
+
+- name: Deploy the Nginx and LDAP authentication proxy on each recorder
+  hosts: arkime_recorders
+  become: true
+  gather_facts: true
+  tags:
+    - nginx
+  roles:
+    # common provides the internal CA (pki.yml) that nginx_ldap_proxy signs the
+    # server certificate against, plus the host firewall allowing 443.
+    - common
+    - nginx_ldap_proxy

@@ -1,0 +1,22 @@
+---
+# Minimum acceptable per-container memory (GiB). Production guard; lab lowers this.
+es_min_container_gib: 4
+
+# Dedicated-master sizing (only used when es_dedicated_masters=true).
+es_master_heap_gib: 2
+es_master_mem_gib: 4
+
+# Compose project + image
+es_compose_project: fpc-es
+es_compose_dir: "{{ es_config_path }}"
+
+# Health gating
+es_health_retries: 60
+es_health_delay: 10
+es_health_min_status: yellow            # green after first replica assignment; yellow acceptable mid-rollout
+
+# Whether to apply cluster-wide allocation/awareness settings (run once)
+es_apply_cluster_settings: true
+
+# ES image env knobs
+es_extra_env: {}                        # optional map of extra ES settings as env vars

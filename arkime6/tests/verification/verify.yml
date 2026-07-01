@@ -1,0 +1,18 @@
+---
+# ============================================================================
+# verify.yml — post-deploy verification entrypoint for the FPC stack.
+#
+# Thin wrapper that runs the reusable `validation` role against every FPC host,
+# mirroring playbooks/validate.yml so CI, the Vagrant lab, and operators all
+# exercise an identical set of assertions. The role self-selects per-tier checks
+# from group_names (ES hosts -> cluster checks; recorders -> Arkime + auth
+# boundary), so a single play covers the whole fleet.
+#
+# Run:  ansible-playbook -i inventories/vagrant/hosts.yml tests/verification/verify.yml
+# ============================================================================
+- name: Verify the deployed FPC stack across all hosts
+  hosts: all_fpc_hosts
+  become: true
+  gather_facts: true
+  roles:
+    - role: validation

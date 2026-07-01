@@ -1,0 +1,17 @@
+---
+# Install Docker CE from the official Docker dnf repository (Rocky/EL 9).
+
+- name: Add the Docker CE dnf repository
+  ansible.builtin.yum_repository:
+    name: docker-ce-stable
+    description: Docker CE Stable
+    baseurl: "{{ docker_dnf_repo_baseurl }}"
+    gpgcheck: true
+    gpgkey: "{{ docker_dnf_repo_gpgkey }}"
+    enabled: true
+    file: docker-ce
+
+- name: Install Docker CE and the Compose v2 plugin
+  ansible.builtin.dnf:
+    name: "{{ docker_dnf_packages }}"
+    state: present

@@ -1,0 +1,58 @@
+---
+# Deliver the digest-pinned FPC container images to this host. Two modes:
+#   load_from_archive: ship *.tar.gz from the control node and docker load them.
+#   registry:          authenticate (if needed) and pull each image by digest.
+
+- name: Deliver images from a shipped archive
+  when: image_delivery_mode == 'load_from_archive'
+  block:
+    - name: Ensure the image archive directory exists on the host
+      ansible.builtin.file:
+        path: "{{ image_archive_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Copy the image archives to the host
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ image_archive_dir }}/{{ item | basename }}"
+        owner: root
+        group: root
+        mode: "0644"
+      loop: "{{ query('fileglob', image_archive_src ~ '/*.tar.gz') }}"
+      loop_control:
+        label: "{{ item | basename }}"
+
+    - name: Find the shipped image archives on the host
+      ansible.builtin.find:
+        paths: "{{ image_archive_dir }}"
+        patterns: "*.tar.gz"
+      register: docker_shipped_archives
+
+    - name: Load each shipped image archive into Docker
+      community.docker.docker_image_load:
+        path: "{{ item.path }}"
+      loop: "{{ docker_shipped_archives.files }}"
+      loop_control:
+        label: "{{ item.path | basename }}"
+
+- name: Deliver images from a private registry
+  when: image_delivery_mode == 'registry'
+  block:
+    - name: Authenticate to the container registry
+      community.docker.docker_login:
+        registry_url: "{{ registry_url }}"
+        username: "{{ registry_username }}"
+        password: "{{ registry_password }}"
+      when: registry_url != ''
+      no_log: true
+
+    - name: Pull each FPC image by digest
+      community.docker.docker_image_pull:
+        name: "{{ item }}"
+        pull: not_present
+      loop: "{{ fpc_all_images }}"
+      loop_control:
+        label: "{{ item }}"

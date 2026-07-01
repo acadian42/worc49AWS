@@ -1,0 +1,89 @@
+---
+# Generate the Nginx server certificate on the control node from the internal CA
+# (created once by the common role pki.yml), then ship it to the host. Runs only
+# when no external certificate is present at nginx_tls_cert.
+- name: Set local PKI paths
+  ansible.builtin.set_fact:
+    pki_local_dir: "{{ playbook_dir }}/../pki"
+    nginx_cert_local_dir: "{{ playbook_dir }}/../pki/nginx/{{ inventory_hostname }}"
+
+- name: Create the local certificate directory
+  ansible.builtin.file:
+    path: "{{ nginx_cert_local_dir }}"
+    state: directory
+    mode: "0700"
+  delegate_to: localhost
+  become: false
+
+- name: Generate the Nginx server private key
+  community.crypto.openssl_privatekey:
+    path: "{{ nginx_cert_local_dir }}/nginx.key.pem"
+    type: RSA
+    size: 2048
+    mode: "0600"
+  delegate_to: localhost
+  become: false
+  no_log: true
+
+- name: Generate the Nginx server CSR with correct SANs
+  community.crypto.openssl_csr:
+    path: "{{ nginx_cert_local_dir }}/nginx.csr"
+    privatekey_path: "{{ nginx_cert_local_dir }}/nginx.key.pem"
+    common_name: "{{ nginx_server_name }}"
+    subject_alt_name:
+      - "DNS:{{ nginx_server_name }}"
+      - "DNS:{{ inventory_hostname }}"
+      - "IP:{{ management_ip }}"
+    mode: "0600"
+  delegate_to: localhost
+  become: false
+
+- name: Sign the Nginx server certificate with the internal CA
+  community.crypto.x509_certificate:
+    path: "{{ nginx_cert_local_dir }}/nginx.crt.pem"
+    csr_path: "{{ nginx_cert_local_dir }}/nginx.csr"
+    provider: ownca
+    ownca_path: "{{ pki_local_dir }}/ca.crt.pem"
+    ownca_privatekey_path: "{{ pki_local_dir }}/ca.key.pem"
+    ownca_privatekey_passphrase: "{{ internal_ca_key_passphrase | default(omit) if (internal_ca_key_passphrase | default('')) | length > 0 else omit }}"
+    ownca_not_after: "+{{ tls_cert_validity_days }}d"
+    mode: "0644"
+  delegate_to: localhost
+  become: false
+  no_log: true
+
+- name: Create the TLS directory on the host
+  ansible.builtin.file:
+    path: "{{ arkime_tls_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Ship the Nginx server certificate to the host
+  ansible.builtin.copy:
+    src: "{{ nginx_cert_local_dir }}/nginx.crt.pem"
+    dest: "{{ nginx_tls_cert }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Recreate nginx services
+
+- name: Ship the Nginx server private key to the host
+  ansible.builtin.copy:
+    src: "{{ nginx_cert_local_dir }}/nginx.key.pem"
+    dest: "{{ nginx_tls_key }}"
+    owner: root
+    group: root
+    mode: "0640"
+  no_log: true
+  notify: Recreate nginx services
+
+- name: Ship the internal CA certificate to the host for client verification
+  ansible.builtin.copy:
+    src: "{{ pki_local_dir }}/ca.crt.pem"
+    dest: "{{ nginx_ca_cert_dest }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Recreate nginx services

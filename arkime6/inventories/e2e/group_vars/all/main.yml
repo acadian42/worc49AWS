@@ -1,0 +1,84 @@
+---
+# ============================================================================
+# E2E SMOKE inventory — global contract with LAB values. Self-contained (an
+# inventory does not inherit another inventory's group_vars), so this mirrors
+# the production contract with lab-only values. NO production logic is forked;
+# only values differ. Secrets live in the adjacent ansible-vault file vault.yml.
+# ============================================================================
+
+# ---- Lab marker (production playbooks/tests can assert on this) --------------
+fpc_lab: true
+fpc_lab_profile: e2e_smoke
+
+# ---- Supported OS matrix -----------------------------------------------------
+supported_os_matrix:
+  - {family: Debian, distribution: Ubuntu, versions: ["24.04"]}
+  - {family: RedHat, distribution: Rocky, versions: ["9"]}
+fpc_primary_os: "Ubuntu 24.04 LTS"
+
+# ---- Time / DNS (VMs have NAT internet on eth0) ------------------------------
+ntp_servers: ["pool.ntp.org"]
+dns_servers: ["192.168.184.2"]
+chrony_max_offset_seconds: 1
+
+# ---- Image delivery: registry pull (VMs reach the internet via NAT) ----------
+image_delivery_mode: registry
+image_archive_dir: /opt/fpc/images
+registry_url: ""
+registry_username: ""
+registry_password: "{{ vault_registry_password | default('') }}"
+air_gapped: false
+
+# ---- Pinned images (tags for the lab; production uses digests) ---------------
+arkime_version: "v6.5.0"
+arkime_image_repo: "ghcr.io/arkime/arkime/arkime"
+arkime_image: "ghcr.io/arkime/arkime/arkime:v6.5.0"
+es_version: "8.19.17"
+es_image_repo: "docker.elastic.co/elasticsearch/elasticsearch"
+es_image: "docker.elastic.co/elasticsearch/elasticsearch:8.19.17"
+nginx_image_repo: "nginx"
+nginx_image: "nginx:1.27-alpine"
+ldap_auth_image_repo: "caltechads/nginx-ldap-auth-service"
+ldap_auth_image: "caltechads/nginx-ldap-auth-service:2.6.2"
+fpc_all_images:
+  - "{{ arkime_image }}"
+  - "{{ es_image }}"
+  - "{{ nginx_image }}"
+  - "{{ ldap_auth_image }}"
+
+# ---- Docker engine -----------------------------------------------------------
+docker_compose_min_version: "2.18.0"
+docker_log_driver: local
+docker_log_options:
+  max-size: "10m"
+  max-file: "3"
+docker_daemon_options:
+  live-restore: true
+  log-driver: "{{ docker_log_driver }}"
+
+# ---- Filesystem layout -------------------------------------------------------
+fpc_base: /fpc
+es_base: "{{ fpc_base }}/es8"
+arkime_base: "{{ fpc_base }}/arkime6"
+
+# ---- Internal PKI ------------------------------------------------------------
+internal_ca_enabled: true
+internal_ca_dir: "{{ fpc_base }}/pki"
+internal_ca_cn: "FPC E2E Internal CA"
+internal_ca_key_passphrase: "{{ vault_internal_ca_key_passphrase | default('') }}"
+tls_cert_validity_days: 825
+
+# ---- Host firewall (lab subnets only; AWX pods egress via the AWX VM's
+#       vmnet8 IP, so SSH must be allowed from the whole NAT subnet) -----------
+firewall_enabled: true
+firewall_manager: ufw
+control_plane_cidrs:
+  - 192.168.184.0/24      # vmnet8 NAT (AWX VM + pod egress + host gateway)
+  - 172.16.66.0/24        # host-only mgmt/capture network
+analyst_cidrs:
+  - 192.168.184.0/24
+  - 172.16.66.0/24
+
+# ---- Destructive guards (must stay false except in the gated init step) ------
+confirm_destroy: false
+arkime_force_init: false

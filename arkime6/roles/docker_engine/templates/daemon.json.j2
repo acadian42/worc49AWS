@@ -1,0 +1,2 @@
+{# daemon.json is strict JSON and must NOT contain comments (Docker rejects '#'). #}
+{{ docker_daemon_options | combine({'log-opts': docker_log_options}) | to_nice_json }}

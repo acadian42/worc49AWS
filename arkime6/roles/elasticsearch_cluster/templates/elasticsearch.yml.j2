@@ -1,0 +1,40 @@
+{{ ansible_managed | comment }}
+# Per-node config for {{ item.name }} ({{ item.roles | join(',') }})
+cluster.name: {{ es_cluster_name }}
+node.name: {{ item.name }}
+node.roles: [{{ item.roles | join(', ') }}]
+node.attr.{{ es_awareness_attribute }}: {{ physical_host }}
+
+network.host: {{ es_bind_host }}
+network.publish_host: {{ es_publish_host }}
+http.port: {{ item.http_port }}
+transport.port: {{ item.transport_port }}
+
+path.data: /usr/share/elasticsearch/data
+path.logs: /usr/share/elasticsearch/logs
+path.repo: ["/snapshots"]
+
+bootstrap.memory_lock: true
+
+discovery.seed_hosts: [{% for h in es_seed_hosts %}"{{ h }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{% if not (es_bootstrapped | default(false)) %}
+# First-formation only — removed by finalize_bootstrap.yml; guarded by {{ es_bootstrap_marker }}
+cluster.initial_master_nodes: [{% for m in es_initial_master_names %}"{{ m }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{% endif %}
+
+cluster.routing.allocation.awareness.attributes: {{ es_awareness_attribute }}
+{% if es_security_enabled %}
+
+xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: {{ es_transport_tls | string | lower }}
+xpack.security.transport.ssl.verification_mode: certificate
+xpack.security.transport.ssl.key: certs/node.key.pem
+xpack.security.transport.ssl.certificate: certs/node.crt.pem
+xpack.security.transport.ssl.certificate_authorities: ["certs/ca.crt.pem"]
+xpack.security.http.ssl.enabled: {{ es_http_tls | string | lower }}
+{% if es_http_tls %}
+xpack.security.http.ssl.key: certs/node.key.pem
+xpack.security.http.ssl.certificate: certs/node.crt.pem
+xpack.security.http.ssl.certificate_authorities: ["certs/ca.crt.pem"]
+{% endif %}
+{% endif %}

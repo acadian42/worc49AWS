@@ -1,0 +1,21 @@
+---
+# Galaxy requirements for the FPC Arkime 6 build.
+# Versions verified 2026-06-24 (see docs/_sources/). Pin exact versions for reproducibility.
+collections:
+  - name: community.docker
+    version: "==5.2.1"          # docker_compose_v2, docker_image_pull (digest), docker_container
+    source: https://galaxy.ansible.com
+  - name: ansible.posix
+    version: ">=2.0.0,<3.0.0"   # sysctl, mount, firewalld helpers
+    source: https://galaxy.ansible.com
+  - name: community.general
+    version: ">=10.0.0,<12.0.0" # misc helpers (e.g. ufw, json_query filters)
+    source: https://galaxy.ansible.com
+  - name: community.crypto
+    version: ">=2.20.0,<3.0.0"  # private CA + per-node certificate generation
+    source: https://galaxy.ansible.com
+  - name: awx.awx
+    version: "==24.6.1"         # AWX objects-as-code (matches AWX 24.6.1)
+    source: https://galaxy.ansible.com
+
+roles: []
