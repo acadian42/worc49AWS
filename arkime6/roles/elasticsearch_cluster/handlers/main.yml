@@ -1,8 +1,0 @@
----
-- name: Restart elasticsearch nodes
-  community.docker.docker_compose_v2:
-    project_src: "{{ es_compose_dir }}"
-    project_name: "{{ es_compose_project }}"
-    state: restarted
-    pull: never
-    wait: true
