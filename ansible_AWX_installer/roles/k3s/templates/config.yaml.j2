@@ -1,7 +1,0 @@
-# {{ ansible_managed }}
-# K3s server configuration (persistent). Managed by the k3s Ansible role.
-write-kubeconfig-mode: "0644"
-disable:
-{% for c in k3s_disable %}
-  - {{ c }}
-{% endfor %}
