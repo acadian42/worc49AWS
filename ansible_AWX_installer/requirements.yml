@@ -1,9 +1,0 @@
----
-# Ansible Galaxy requirements.
-#
-# Intentionally minimal: the playbook uses only ansible.builtin modules.
-# All Kubernetes operations run `kubectl` on the guest (rendered via
-# ansible.builtin.template + applied with ansible.builtin.command using
-# explicit changed_when/failed_when), so no kubernetes.core collection is
-# required and no extra Python libraries are needed on the control node.
-collections: []
