@@ -1,0 +1,31 @@
+{
+  "$comment_scope": "SMD VS Code enterprise policy baseline (CC-03, CC-08, CC-13). Deploy as POLICY, not user settings: Windows = Group Policy/Intune registry values under HKLM\\SOFTWARE\\Policies\\Microsoft\\VSCode (ADMX templates ship in each VS Code release, policies dir); macOS = configuration profile; Linux = /etc/vscode policy file. Policy values override user/workspace settings and show as 'managed by your organization'. Requires VS Code >= 1.96 for AllowedExtensions. Verify exact policy names against the enterprise policies reference for the deployed version.",
+
+  "TelemetryLevel": "off",
+  "$comment_telemetry": "Governs VS Code + first-party + participating third-party extension telemetry. Some third-party extensions may not honor it — the allowlist below is the mitigation. Use 'error' instead of 'off' only if crash reports are wanted.",
+
+  "EnableFeedback": false,
+  "$comment_feedback": "Disables issue reporter/survey outbound flows.",
+
+  "UpdateMode": "manual",
+  "$comment_updates": "Updates delivered via SMD software distribution on a ring cadence (CC-13). If patch latency becomes a concern, switch to 'default' with automatic checks and keep deployment controlled.",
+
+  "AllowedExtensions": {
+    "$comment": "Allowlist by publisher, extension ID, optionally pinned versions. Everything unlisted is blocked; already-installed violations are disabled. Confirm the exact marketplace ID of the Claude Code extension at deployment. Keep this list in a reviewed repo (allowlist-as-code) and generate the per-OS payloads from it.",
+    "anthropic.claude-code": true,
+    "ms-python.python": true,
+    "ms-python.vscode-pylance": true,
+    "dbaeumer.vscode-eslint": true,
+    "esbenp.prettier-vscode": true,
+    "redhat.vscode-yaml": true,
+    "eamodio.gitlens": true
+  },
+
+  "$comment_ai_surfaces": "If GitHub Copilot is not licensed/approved: simply omit github.copilot* from AllowedExtensions (blocked by default), and disable built-in chat/agent surfaces via the current policy names on the deployed version (e.g., MCP discovery and chat tool auto-approval controls) so no unreviewed model path rides in through the editor.",
+
+  "$comment_workspace_trust": "Workspace Trust must remain enabled (default). Do not ship any policy/setting that disables the trust prompt; untrusted folders are the front line against repo-borne task/config execution (R1).",
+
+  "$comment_settings_sync": "Disable Settings Sync for managed profiles so policy-adjacent user settings are not round-tripped through Microsoft accounts.",
+
+  "$comment_marketplace": "Optional hardening step: private marketplace (self-hosted gallery) with upstream allowlisting for air-gap or stricter supply-chain posture. Not required for Phase 0."
+}
